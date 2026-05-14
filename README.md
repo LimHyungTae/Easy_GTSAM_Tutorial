@@ -2,7 +2,7 @@
 
 A self-contained, bilingual (English / 한국어) tutorial site explaining what actually happens inside [GTSAM](https://gtsam.org/) when you call `BetweenFactor`, `evaluateError`, `optimize()`, and friends.
 
-**Live site:** <https://limhyungtae.github.io/gtsam/>
+**Live site:** <https://limhyungtae.github.io/gtsam_for_everyone/>
 
 **What's covered**
 

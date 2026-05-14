@@ -9,17 +9,17 @@
   <meta name="author" content="Hyungtae Lim" />
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
 
-  <link rel="canonical" href="https://limhyungtae.github.io/gtsam/" />
+  <link rel="canonical" href="https://limhyungtae.github.io/gtsam_for_everyone/" />
 
   <!-- Open Graph -->
   <meta property="og:title" content="【GTSAM】 How GTSAM Works · A Bilingual Internals Tutorial" />
   <meta property="og:description" content="A hands-on tutorial on how GTSAM actually works inside: factor graphs, BetweenFactor, Lie group Jacobians, Adjoint map, and numerical-derivative debugging." />
   <meta property="og:type" content="article" />
-  <meta property="og:url" content="https://limhyungtae.github.io/gtsam/" />
+  <meta property="og:url" content="https://limhyungtae.github.io/gtsam_for_everyone/" />
   <meta property="og:site_name" content="How GTSAM Works" />
   <meta property="og:locale" content="en_US" />
   <meta property="og:locale:alternate" content="ko_KR" />
-  <meta property="og:image" content="https://limhyungtae.github.io/gtsam/figures/gtsam_solving.png" />
+  <meta property="og:image" content="https://limhyungtae.github.io/gtsam_for_everyone/figures/gtsam_solving.png" />
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
@@ -37,10 +37,10 @@
     "description": "A bilingual (English/Korean) deep-dive into how GTSAM works internally, written by a postdoc working with the GTSAM maintainers at MIT.",
     "inLanguage": ["en", "ko"],
     "keywords": "GTSAM, factor graph, pose graph SLAM, BetweenFactor, Lie group, Jacobian, Adjoint, ISAM2, robotics, SLAM",
-    "url": "https://limhyungtae.github.io/gtsam/",
+    "url": "https://limhyungtae.github.io/gtsam_for_everyone/",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://limhyungtae.github.io/gtsam/"
+      "@id": "https://limhyungtae.github.io/gtsam_for_everyone/"
     },
     "author": {
       "@type": "Person",
@@ -1004,7 +1004,7 @@
 
         <div class="author-toggle-wrap">
           <button class="author-toggle-btn" type="button" id="author-toggle" aria-expanded="false" aria-controls="author-card">
-            <span class="open-label">How's Hyungtae Lim?</span>
+            <span class="open-label">Who's Hyungtae Lim?</span>
             <span class="close-label">× <span data-lang="en">Close</span><span data-lang="ko">닫기</span></span>
           </button>
           <div class="author-card" id="author-card" role="region" aria-label="About the author">
@@ -1255,7 +1255,7 @@ Values result = isam.calculateEstimate();</code></pre>
   </h3>
   <p>
     <span data-lang="en">
-	      I am a postdoc in Luca Carlone's group at MIT, where GTSAM is the default backend, so I often need to read its internals. Surprisingly little material explains what GTSAM is doing under the hood, so this series fills that gap: it looks at the pose-graph (or factor-graph) optimization exposed through GTSAM's tidy classes from the Lie-group machinery underneath.
+	      I am a postdoc in Luca Carlone's group at MIT, where GTSAM is the default backend, so I often need to read its internals. Surprisingly little material explains what GTSAM is doing under the hood, so this series fills that gap: it traces the pose-graph (or factor-graph) optimization exposed through GTSAM's tidy classes down to the Lie-group machinery underneath.
     </span>
     <span data-lang="ko">
 	      나는 GTSAM의 주요 관리자인 Luca Carlone 교수님 연구실에서 포닥으로 일하고 있다 보니, GTSAM 기반으로 코드를 짤 일이 많아졌고 자연스럽게 내부를 깊이 들여다볼 일도 많아졌다. GTSAM이 내부적으로 어떻게 동작하는지 설명하는 글은 생각보다 많지 않아서, 이 시리즈에서는 GTSAM이 제공하는 pose graph(혹은 factor graph) optimization이 Lie group 위에서 어떻게 돌아가는지 면밀히 다뤄보고자 한다.
@@ -1608,7 +1608,7 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
 
   <p>
     <span data-lang="en">
-	      If you reuse a factor that already ships with GTSAM, you do not need to know the Jacobian inside. The moment you write your own factor, however, you have to derive it yourself; in my experience this is the main reason GTSAM feels harder to approach than Ceres. Before we tackle the GTSAM-flavored <code>H</code> matrices (which start in <a href="#ch4-unary-factor">Chapter 4</a>), this chapter sets up the necessary scaffolding on $\SE(2)$.
+	      If you reuse a factor that already ships with GTSAM, you do not need to dig into its Jacobian. The moment you write your own factor, however, you have to derive it yourself; in my experience this is the main reason GTSAM feels harder to approach than Ceres. Before we tackle the GTSAM-flavored <code>H</code> matrices (which start in <a href="#ch4-unary-factor">Chapter 4</a>), this chapter sets up the necessary scaffolding on $\SE(2)$.
     </span>
     <span data-lang="ko">
 	      이미 만들어진 factor를 가져다 쓸 때는 Jacobian을 깊이 파고들 필요가 없지만, 새로운 factor를 직접 만들 때는 Jacobian을 손으로 유도해야 한다(개인적으로 사용자 입장에서 GTSAM이 Ceres보다 진입 장벽이 높은 가장 큰 이유라고 생각한다). GTSAM 특유의 <code>H</code> matrix는 <a href="#ch4-unary-factor">4장</a>부터 본격적으로 다루기로 하고, 이번 글에서는 그 전에 필요한 $\SE(2)$의 기초를 다진다.
@@ -2458,7 +2458,7 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
         </h3>
         <p>
           <span data-lang="en">
-            The previous chapter's <code>UnaryFactor</code> example had no rotational dependence inside $h(\cdot)$, so $\delta_\theta$ disappeared at the end. To get used to the case where a rotation is genuinely involved, here is a second worked example. If skew-symmetric matrices feel comfortable from the earlier chapter, this derivation will read smoothly.
+            The previous chapter's <code>UnaryFactor</code> example had no rotational dependence inside $h(\cdot)$, so $\delta_\theta$ disappeared at the end. To get used to the case where a rotation is genuinely involved, here is a second worked example. If you are comfortable with skew-symmetric matrices from the earlier chapter, this derivation will read smoothly.
           </span>
           <span data-lang="ko">
             앞 챕터의 <code>UnaryFactor</code> 예제에서는 measurement function $h(\cdot)$ 안에 rotation에 대한 의존이 없어 $\delta_\theta$가 사라졌다. Rotation이 실제로 등장할 때 <code>H</code>를 구하는 감각을 익히기 위해 두 번째 예제를 보자. Skew-symmetric matrix 성질이 손에 익었다면 이 글도 무난하게 따라올 수 있다.
@@ -3325,7 +3325,7 @@ Class between(const Class&amp; g, ChartJacobian H1,
       <section class="section" id="ch9-pgmo-deformation">
   <span class="section-tag">09 · Kimera-PGMO</span>
   <h2 class="copy-heading">
-	    <span data-lang="en">Kimera-PGMO's Deformation Factor Derivation</span>
+	    <span data-lang="en">Deriving Kimera-PGMO's deformation factor</span>
     <span data-lang="ko">Kimera-PGMO의 Deformation Factor 유도</span>
   </h2>
   <p class="section-lead">
@@ -4026,8 +4026,8 @@ int main() {
 
       <footer class="page-foot">
         <p>
-          <span data-lang="en">Maintained by <a href="https://limhyungtae.github.io/">Hyungtae Lim</a>. Source on <a href="https://github.com/LimHyungTae/gtsam">GitHub</a>. PRs and issues welcome.</span>
-          <span data-lang="ko"><a href="https://limhyungtae.github.io/">임형태</a>가 유지보수 중. 소스: <a href="https://github.com/LimHyungTae/gtsam">GitHub</a>. PR과 issue 환영.</span>
+          <span data-lang="en">Maintained by <a href="https://limhyungtae.github.io/">Hyungtae Lim</a>. Source on <a href="https://github.com/LimHyungTae/gtsam_for_everyone">GitHub</a>. PRs and issues welcome.</span>
+          <span data-lang="ko"><a href="https://limhyungtae.github.io/">임형태</a>가 유지보수 중. 소스: <a href="https://github.com/LimHyungTae/gtsam_for_everyone">GitHub</a>. PR과 issue 환영.</span>
         </p>
         <p style="margin-top:6px;font-size:12.5px;">
           <span data-lang="en">Built with KaTeX &amp; Prism. Figures are reproduced from the author's original Korean blog posts.</span>
