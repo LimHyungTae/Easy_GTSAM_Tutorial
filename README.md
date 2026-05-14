@@ -35,4 +35,6 @@ cd docs && python3 -m http.server 8000
 # open http://localhost:8000
 ```
 
+**Deployment.** Pushes to `main` are deployed to GitHub Pages by `.github/workflows/pages.yml` (uploads the `docs/` folder as a Pages artifact). One-time setup: in the repo Settings → Pages, set **Source: GitHub Actions**. After that, every push to `main` redeploys automatically.
+
 **PRs and issues welcome.** Especially: typo fixes, clearer math explanations, broken-link reports.
