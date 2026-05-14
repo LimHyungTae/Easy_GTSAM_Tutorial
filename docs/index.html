@@ -437,16 +437,22 @@
       display: block;
     }
 
-    /* Prism tokens — same as paper-writing-checklist */
-    .token.comment, .token.prolog, .token.doctype, .token.cdata { color: #94a3b8 !important; font-style: italic; }
-    .token.punctuation { color: #cbd5e1 !important; }
-    .token.property, .token.tag, .token.constant, .token.symbol, .token.deleted { color: #f87171 !important; }
-    .token.boolean, .token.number { color: #fbbf24 !important; }
-    .token.selector, .token.attr-name, .token.string, .token.char, .token.builtin, .token.inserted { color: #6ee7b7 !important; }
-    .token.operator, .token.entity, .token.url, .language-css .token.string, .style .token.string { color: #fcd34d !important; }
-    .token.atrule, .token.attr-value, .token.keyword { color: #60a5fa !important; }
-    .token.function, .token.class-name { color: #c4b5fd !important; }
-    .token.regex, .token.important, .token.variable { color: #fca5a5 !important; }
+    /* Prism tokens — calmer palette tuned for C++ on #0b1020.
+       The earlier palette (vivid blue keywords, bright purple class-names) was
+       borrowed from a LaTeX-only site, where keywords are rare. In C++ every
+       line has const/class/auto/template, so vivid keywords looked loud.
+       This palette loosely follows VS Code Dark+. */
+    .token { font-weight: normal !important; }
+    .token.comment, .token.prolog, .token.doctype, .token.cdata { color: #6a9c6a !important; font-style: italic; }
+    .token.punctuation { color: #c8c8c8 !important; }
+    .token.property, .token.tag, .token.constant, .token.symbol, .token.deleted { color: #d4a570 !important; }
+    .token.boolean, .token.number { color: #b5cea8 !important; }
+    .token.selector, .token.attr-name, .token.string, .token.char, .token.builtin, .token.inserted { color: #ce9178 !important; }
+    .token.operator, .token.entity, .token.url, .language-css .token.string, .style .token.string { color: #c8c8c8 !important; }
+    .token.atrule, .token.attr-value, .token.keyword { color: #7aa6d6 !important; }   /* muted blue (was vivid #60a5fa) */
+    .token.function { color: #dcdcaa !important; }                                     /* pale yellow */
+    .token.class-name { color: #4ec9b0 !important; }                                   /* teal */
+    .token.regex, .token.important, .token.variable { color: #9cdcfe !important; }     /* light blue */
 
     /* === Headings interaction === */
     .copy-heading {
