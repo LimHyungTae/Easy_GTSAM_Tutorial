@@ -391,6 +391,18 @@
       color: #1f2937;
       word-break: break-word;
     }
+    /* Defensive: anything inside a Prism <pre> block must NOT inherit the
+       inline-code pill (gray bg + padding + border-radius). Spans rendered
+       by Prism (.token) and any nested <code> get cleared. */
+    pre[class*="language-"],
+    pre[class*="language-"] code,
+    pre[class*="language-"] code *,
+    pre[class*="language-"] .token,
+    pre[class*="language-"] .token * {
+      background: transparent !important;
+      padding: 0 !important;
+      border-radius: 0 !important;
+    }
     pre[class*="language-"],
     pre[class*="language-"] code,
     pre[class*="language-"] code[class*="language-"] {
@@ -437,22 +449,17 @@
       display: block;
     }
 
-    /* Prism tokens — calmer palette tuned for C++ on #0b1020.
-       The earlier palette (vivid blue keywords, bright purple class-names) was
-       borrowed from a LaTeX-only site, where keywords are rare. In C++ every
-       line has const/class/auto/template, so vivid keywords looked loud.
-       This palette loosely follows VS Code Dark+. */
+    /* Prism tokens — original palette (rolled back from VS Code Dark+ trial) */
     .token { font-weight: normal !important; }
-    .token.comment, .token.prolog, .token.doctype, .token.cdata { color: #6a9c6a !important; font-style: italic; }
-    .token.punctuation { color: #c8c8c8 !important; }
-    .token.property, .token.tag, .token.constant, .token.symbol, .token.deleted { color: #d4a570 !important; }
-    .token.boolean, .token.number { color: #b5cea8 !important; }
-    .token.selector, .token.attr-name, .token.string, .token.char, .token.builtin, .token.inserted { color: #ce9178 !important; }
-    .token.operator, .token.entity, .token.url, .language-css .token.string, .style .token.string { color: #c8c8c8 !important; }
-    .token.atrule, .token.attr-value, .token.keyword { color: #7aa6d6 !important; }   /* muted blue (was vivid #60a5fa) */
-    .token.function { color: #dcdcaa !important; }                                     /* pale yellow */
-    .token.class-name { color: #4ec9b0 !important; }                                   /* teal */
-    .token.regex, .token.important, .token.variable { color: #9cdcfe !important; }     /* light blue */
+    .token.comment, .token.prolog, .token.doctype, .token.cdata { color: #94a3b8 !important; font-style: italic; }
+    .token.punctuation { color: #cbd5e1 !important; }
+    .token.property, .token.tag, .token.constant, .token.symbol, .token.deleted { color: #f87171 !important; }
+    .token.boolean, .token.number { color: #fbbf24 !important; }
+    .token.selector, .token.attr-name, .token.string, .token.char, .token.builtin, .token.inserted { color: #6ee7b7 !important; }
+    .token.operator, .token.entity, .token.url, .language-css .token.string, .style .token.string { color: #fcd34d !important; }
+    .token.atrule, .token.attr-value, .token.keyword { color: #60a5fa !important; }
+    .token.function, .token.class-name { color: #c4b5fd !important; }
+    .token.regex, .token.important, .token.variable { color: #fca5a5 !important; }
 
     /* === Headings interaction === */
     .copy-heading {
