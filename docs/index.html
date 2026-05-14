@@ -106,7 +106,10 @@
         var(--bg);
       color: var(--ink);
       line-height: 1.65;
+      overflow-x: hidden;            /* no accidental horizontal page scroll on mobile */
+      -webkit-text-size-adjust: 100%; /* iOS Safari should not inflate text on landscape */
     }
+    body.sidebar-open { overflow: hidden; }  /* lock background scroll while mobile sidebar is open */
 
     body[data-lang="en"] [data-lang="ko"] { display: none; }
     body[data-lang="ko"] [data-lang="en"] { display: none; }
@@ -133,6 +136,7 @@
       grid-template-columns: var(--sidebar-width) 1fr;
       gap: 0;
       padding: 0 24px;
+      min-width: 0;
     }
 
     /* === Sidebar === */
@@ -141,6 +145,7 @@
       top: 0;
       align-self: start;
       height: 100vh;
+      height: 100dvh;                /* dynamic viewport: handles iOS Safari toolbar correctly */
       overflow-y: auto;
       padding: 28px 14px 28px 0;
       border-right: 1px solid var(--line);
@@ -219,19 +224,22 @@
     .sidebar-toggle {
       display: none;
       position: fixed;
-      bottom: 20px;
+      bottom: calc(20px + env(safe-area-inset-bottom));  /* respect iPhone home-bar safe area */
       left: 20px;
       z-index: 60;
-      width: 50px;
-      height: 50px;
+      width: 52px;
+      height: 52px;
       border-radius: 50%;
       border: 0;
       background: var(--ink);
       color: #fff;
       font-size: 22px;
+      line-height: 1;
       cursor: pointer;
       box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+      touch-action: manipulation;     /* eliminate iOS double-tap-zoom delay on the button */
     }
+    .sidebar-toggle:active { transform: scale(0.96); }
     .sidebar-backdrop {
       display: none;
       position: fixed;
@@ -756,18 +764,23 @@
       .sidebar {
         position: fixed;
         top: 0; left: 0;
-        width: 290px;
+        width: min(86vw, 320px);    /* never wider than viewport on small phones */
         height: 100vh;
+        height: 100dvh;             /* iOS Safari friendly */
         background: #fff;
         z-index: 50;
         transform: translateX(-100%);
-        transition: transform 0.22s;
+        transition: transform 0.22s ease;
         box-shadow: 0 0 30px rgba(0,0,0,0.18);
-        padding: 24px 16px;
+        padding: 24px 16px max(24px, env(safe-area-inset-bottom)) 16px;
         border-right: 1px solid var(--line);
+        -webkit-overflow-scrolling: touch;
       }
       .sidebar.open { transform: translateX(0); }
       .sidebar-toggle { display: flex; align-items: center; justify-content: center; }
+      .sidebar-backdrop { transition: opacity 0.22s ease; opacity: 0; }
+      .sidebar-backdrop.active { opacity: 1; }
+      .sidebar-link { padding: 12px 12px; font-size: 14.5px; }  /* bigger tap target on touch */
       .main-content { padding: 18px 0 60px 0; }
     }
 
@@ -777,6 +790,7 @@
       .header-tools { justify-items: start; }
       .hero { padding: 26px; }
       .section { padding: 22px; }
+      .about-footer-head { gap: 6px; }
     }
 
     @media (max-width: 600px) {
@@ -787,12 +801,12 @@
       .subtitle { font-size: 16px; }
       .lead { font-size: 15.5px; line-height: 1.6; }
       .section { padding: 18px 14px; border-radius: 20px; }
-      .section h2 { font-size: 22px; }
-      .section h3 { font-size: 17.5px; margin-top: 22px; }
+      .section h2 { font-size: 22px; word-break: keep-all; }
+      .section h3 { font-size: 17.5px; margin-top: 22px; word-break: keep-all; }
       .section h4 { font-size: 15px; }
       .section li { margin: 6px 0; }
       .section ul, .section ol { padding-left: 20px; }
-      .lang-btn { padding: 7px 12px; font-size: 12px; }
+      .lang-btn { padding: 8px 14px; font-size: 12px; min-height: 36px; }
       .lang-toggle { box-shadow: none; }
       .compare { gap: 10px; margin: 12px 0; }
       .compare > .col { padding: 12px; border-radius: 12px; }
@@ -802,7 +816,12 @@
         line-height: 1.5;
       }
       pre[class*="language-"] { padding: 12px; border-radius: 10px; }
-      code { font-size: 0.88em; padding: 1px 5px; }
+      code {
+        font-size: 0.88em;
+        padding: 1px 5px;
+        overflow-wrap: anywhere;     /* break long identifiers gracefully */
+        word-break: break-word;
+      }
       .reading-item { padding: 14px; }
       .reading-item h3 { font-size: 16px; }
       .reading-item p { font-size: 13.5px; }
@@ -810,6 +829,50 @@
       .callout, .note, .warn { padding: 14px; border-radius: 14px; font-size: 14px; }
       .keyword { font-size: 11px; padding: 5px 9px; }
       .about-footer { padding: 20px; }
+      .about-cta a { padding: 10px 14px; font-size: 12.5px; }   /* bigger tap area */
+      /* KaTeX adjustments for small screens: smaller and scrollable */
+      .katex { font-size: 0.98em !important; }
+      .katex-display {
+        max-width: 100%;
+        margin: 12px -4px;            /* slight bleed so matrices have edge to scroll into */
+        padding-left: 4px;
+        padding-right: 4px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero { padding: 18px 16px; }
+      h1 { font-size: 28px; line-height: 1.08; }
+      .subtitle { font-size: 15.5px; }
+      .lead { font-size: 14.8px; }
+      .section { padding: 16px 12px; }
+      .section h2 { font-size: 20px; }
+      .section h3 { font-size: 16.5px; }
+      .keyword-row { gap: 6px; }
+      .keyword { padding: 4px 8px; font-size: 10.5px; }
+      .author-toggle-btn { padding: 7px 14px; font-size: 10.5px; letter-spacing: 0.14em; }
+      .about-footer-head { display: block; }
+      .about-footer-role { display: block; margin-top: 4px; }
+      .sidebar-toggle { width: 48px; height: 48px; font-size: 20px; bottom: calc(16px + env(safe-area-inset-bottom)); left: 16px; }
+      pre[class*="language-"], pre[class*="language-"] code { font-size: 11.5px !important; }
+      pre[class*="language-"] { padding: 10px 11px; }
+      .katex { font-size: 0.92em !important; }
+      .reading-item { padding: 13px; gap: 10px; }
+    }
+
+    /* Pointer-coarse (touch) devices: kill hover-only affordances and ensure ≥44px tap targets */
+    @media (hover: none) and (pointer: coarse) {
+      .copy-heading { text-decoration-color: rgba(220,38,38,0.35); }  /* always visibly clickable on touch */
+      .sidebar-link { min-height: 44px; display: flex; align-items: center; }
+      .lang-btn { min-height: 36px; }
+      .about-cta a { min-height: 40px; }
+      .author-links a { min-height: 36px; }
+    }
+
+    /* Respect users who don't want motion */
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .sidebar, .sidebar-backdrop, .sidebar-toggle, .author-card { transition: none !important; animation: none !important; }
     }
   </style>
 </head>
@@ -1179,7 +1242,7 @@ Values result = isam.calculateEstimate();</code></pre>
   <span class="section-tag">01 · Internals</span>
   <h2 class="copy-heading">
     <span data-lang="en">BetweenFactor: how SLAM optimization actually works</span>
-    <span data-lang="ko">BetweenFactor: SLAM optimization은 실제로 어떻게 굴러가나</span>
+	    <span data-lang="ko">BetweenFactor: SLAM optimization은 실제로 어떻게 돌아가나</span>
   </h2>
   <p class="section-lead">
     <span data-lang="en">A line-by-line tour of <code>BetweenFactor::evaluateError</code>, the four steps it hides, and why GTSAM phrases the residual as a tangent-space vector rather than a plain matrix difference.</span>
@@ -1192,10 +1255,10 @@ Values result = isam.calculateEstimate();</code></pre>
   </h3>
   <p>
     <span data-lang="en">
-      I am currently a postdoc in Luca Carlone's group at MIT, where GTSAM is the default backend, so I end up reading its internals fairly often. There is surprisingly little material that walks through what GTSAM is actually doing on the inside, so this series fills that gap: the pose-graph (or factor-graph) optimization that GTSAM exposes through a few tidy classes, viewed from the Lie-group machinery underneath.
+	      I am a postdoc in Luca Carlone's group at MIT, where GTSAM is the default backend, so I often need to read its internals. Surprisingly little material explains what GTSAM is doing under the hood, so this series fills that gap: it looks at the pose-graph (or factor-graph) optimization exposed through GTSAM's tidy classes from the Lie-group machinery underneath.
     </span>
     <span data-lang="ko">
-      나는 GTSAM의 주 관리자인 Luca Carlone 교수님네에 포닥으로 와 있다보니, GTSAM 기반으로 코드를 짤 일이 많아졌고 자연스럽게 깊게 공부할 일도 많아졌다. GTSAM 내부적으로 어떻게 동작하는지 설명하는 글이 생각보다 없어서, GTSAM이 제공하는 pose graph (혹은 factor graph) optimization을 Lie group 위에서 어떻게 굴리는지 면밀히 다뤄보고자 한다.
+	      나는 GTSAM의 주요 관리자인 Luca Carlone 교수님 연구실에서 포닥으로 일하고 있다 보니, GTSAM 기반으로 코드를 짤 일이 많아졌고 자연스럽게 내부를 깊이 들여다볼 일도 많아졌다. GTSAM이 내부적으로 어떻게 동작하는지 설명하는 글은 생각보다 많지 않아서, 이 시리즈에서는 GTSAM이 제공하는 pose graph(혹은 factor graph) optimization이 Lie group 위에서 어떻게 돌아가는지 면밀히 다뤄보고자 한다.
     </span>
   </p>
   <p>
@@ -1213,10 +1276,10 @@ Values result = isam.calculateEstimate();</code></pre>
   </h3>
   <p>
     <span data-lang="en">
-      As <code>Pose2SLAMExample.cpp</code> already shows, a pose-graph problem in GTSAM is three steps: (i) build a <code>NonlinearFactorGraph</code> and add the constraints (here, <code>BetweenFactor</code>s) you want; (ii) provide an initial guess for every variable through <code>Values</code>; (iii) hand both to an optimizer and call <code>optimize()</code>. So the question is: how does <code>BetweenFactor</code> actually turn this graph into an optimization problem?
+	      As <code>Pose2SLAMExample.cpp</code> already shows, a pose-graph problem in GTSAM has three steps: (i) build a <code>NonlinearFactorGraph</code> and add the constraints (here, <code>BetweenFactor</code>s) you want; (ii) provide an initial guess for every variable through <code>Values</code>; (iii) hand both to an optimizer and call <code>optimize()</code>. So the question is: how does <code>BetweenFactor</code> actually turn this graph into an optimization problem?
     </span>
     <span data-lang="ko">
-      <code>Pose2SLAMExample.cpp</code>에서 보았듯이, GTSAM에서 pose graph optimization을 하는 절차는 (i) <code>NonlinearFactorGraph</code>에 우리가 원하는 constraint(여기서는 <code>BetweenFactor</code>)를 더해 graph 구조를 만들고, (ii) 그 graph에 필요한 initial value를 <code>Values</code>로 채워준 뒤, (iii) optimizer에 넘겨 optimize하면 끝이다. 그렇다면 <code>BetweenFactor</code>는 내부적으로 어떻게 동작해서 optimization을 가능하게 해줄까?
+	      <code>Pose2SLAMExample.cpp</code>에서 보았듯이, GTSAM에서 pose graph optimization을 하는 절차는 크게 세 단계이다. (i) <code>NonlinearFactorGraph</code>에 원하는 constraint(여기서는 <code>BetweenFactor</code>)를 더해 graph 구조를 만들고, (ii) 그 graph에 필요한 initial value를 <code>Values</code>로 채운 뒤, (iii) 둘을 optimizer에 넘겨 <code>optimize()</code>를 호출하면 된다. 그렇다면 <code>BetweenFactor</code>는 내부적으로 어떻게 동작해서 optimization을 가능하게 할까?
     </span>
   </p>
 
@@ -1238,10 +1301,10 @@ graph.add(BetweenFactor&lt;Pose2&gt;(5, 2, Pose2(2, 0, M_PI_2), model));
 
   <p>
     <span data-lang="en">
-      Conceptually, <code>BetweenFactor</code> encodes a relative-pose (or, more generally, a relative-Lie-group) measurement between two variables. If you wanted a pose-to-point distance instead, you would use <code>PoseToPointFactor</code>. Because the user only has to declare which factors connect which variables, Frank Dellaert calls this a <i>factor graph</i>; the term <i>pose graph</i> is just the special case in which every variable is a pose.
+	      Conceptually, <code>BetweenFactor</code> encodes a relative-pose measurement between two variables, or more generally a relative measurement on a Lie group. If you wanted a pose-to-point distance instead, you would use <code>PoseToPointFactor</code>. Because the user only has to declare which factors connect which variables, Frank Dellaert calls this a <i>factor graph</i>; the term <i>pose graph</i> is just the special case in which every variable is a pose.
     </span>
     <span data-lang="ko">
-      개념적으로 <code>BetweenFactor</code>는 Lie group으로 정의된 두 객체 간의 상대적인 '거리'(position일 수도, pose일 수도 있다; 정의하기 나름)를 measurement로 쓰는 factor이다. Pose-to-point 거리를 쓰고 싶다면 <code>PoseToPointFactor</code>를 쓰면 된다. 사용자가 어떤 factor가 어떤 변수들에 연결되는지만 선언해주면 되기 때문에 Frank Dellaert 교수님은 이를 <i>factor graph</i>라고 부르고, <i>pose graph</i>는 모든 변수가 pose인 특수 케이스라고 생각하면 된다.
+	      개념적으로 <code>BetweenFactor</code>는 두 변수 사이의 상대 pose measurement를 표현하는 factor이며, 더 일반적으로는 Lie group 위에서 정의된 상대 measurement를 표현한다고 볼 수 있다. Pose-to-point 거리를 쓰고 싶다면 <code>PoseToPointFactor</code>를 쓰면 된다. 사용자는 어떤 factor가 어떤 변수들에 연결되는지만 선언하면 되기 때문에 Frank Dellaert 교수님은 이를 <i>factor graph</i>라고 부르고, <i>pose graph</i>는 모든 변수가 pose인 특수 케이스라고 생각하면 된다.
     </span>
   </p>
 
@@ -1343,10 +1406,10 @@ initialEstimate.insert(5, Pose2(2.1, 2.1, -M_PI_2));
 
   <p>
     <span data-lang="en">
-      Following the <a href="https://gtsam.org/gtsam.org/2020/06/28/gtsam-conventions.html">GTSAM convention</a>, key <code>1</code> here is the <code>from</code> frame (the reference) and key <code>2</code> is the <code>to</code> frame: "<code>from</code>" reads as "with respect to". This is the opposite convention from point-cloud registration, where the source cloud is <code>from</code>. If that twist confuses you, see my older note on <a href="https://limhyungtae.github.io/2022-09-04-SLAM,-Robotics-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D%EC%9D%84-%EC%9C%84%ED%95%9C-3%EA%B0%80%EC%A7%80-%EC%BD%94%EB%94%A9-%EA%BF%80%ED%8C%81-(1)/">coordinate-frame conventions</a>.
+	      Following the <a href="https://gtsam.org/gtsam.org/2020/06/28/gtsam-conventions.html">GTSAM convention</a>, the first key is the <code>from</code> frame (the reference) and the second key is the <code>to</code> frame: "<code>from</code>" reads as "with respect to". This is the opposite convention from point-cloud registration, where the source cloud is <code>from</code>. If that twist confuses you, see my older note on <a href="https://limhyungtae.github.io/2022-09-04-SLAM,-Robotics-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D%EC%9D%84-%EC%9C%84%ED%95%9C-3%EA%B0%80%EC%A7%80-%EC%BD%94%EB%94%A9-%EA%BF%80%ED%8C%81-(1)/">coordinate-frame conventions</a>.
     </span>
     <span data-lang="ko">
-      <a href="https://gtsam.org/gtsam.org/2020/06/28/gtsam-conventions.html">GTSAM convention</a>에 따르면 여기서 key <code>1</code>이 <code>from</code>(즉 기준 좌표계)이고 key <code>2</code>가 <code>to</code>이다. <code>from</code>은 "with respect to"의 의미이다. Registration에서는 source를 <code>from</code>이라 부르는 것과 정반대 convention이라 헷갈리기 쉬운데, 이해가 잘 안 가는 이는 <a href="https://limhyungtae.github.io/2022-09-04-SLAM,-Robotics-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D%EC%9D%84-%EC%9C%84%ED%95%9C-3%EA%B0%80%EC%A7%80-%EC%BD%94%EB%94%A9-%EA%BF%80%ED%8C%81-(1)/">예전 좌표계 컨벤션 글</a>을 한 번 읽어보자.
+	      <a href="https://gtsam.org/gtsam.org/2020/06/28/gtsam-conventions.html">GTSAM convention</a>에 따르면 첫 번째 key가 <code>from</code>(즉 기준 좌표계)이고 두 번째 key가 <code>to</code>이다. <code>from</code>은 "with respect to"의 의미이다. Registration에서 source를 <code>from</code>이라 부르는 convention과 정반대라 헷갈리기 쉬운데, 이해가 잘 안 가는 이는 <a href="https://limhyungtae.github.io/2022-09-04-SLAM,-Robotics-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D%EC%9D%84-%EC%9C%84%ED%95%9C-3%EA%B0%80%EC%A7%80-%EC%BD%94%EB%94%A9-%EA%BF%80%ED%8C%81-(1)/">예전 좌표계 컨벤션 글</a>을 한 번 읽어보자.
     </span>
   </p>
 
@@ -1359,7 +1422,7 @@ initialEstimate.insert(5, Pose2(2.1, 2.1, -M_PI_2));
       The next line, <code>Vector rval = traits&lt;T&gt;::Local(measured_, hx, ...)</code>, compares the measured relative pose <code>measured_</code> with the predicted one <code>hx</code> and returns a residual <code>rval</code>. If these were ordinary vectors, we could just write <code>hx - measured_</code>. But on $\SE(2)$ or $\SE(3)$, "addition" is matrix multiplication and "subtraction" is multiplication by an inverse. So <code>Local</code> computes
     </span>
     <span data-lang="ko">
-      다음 줄 <code>Vector rval = traits&lt;T&gt;::Local(measured_, hx, ...)</code>은 measurement <code>measured_</code>와 추정된 상대 pose <code>hx</code>를 비교해 residual <code>rval</code>을 만든다. 만약 이 둘이 단순 vector였다면 <code>hx - measured_</code>라고 쓰면 끝이었을 텐데, $\SE(2)$나 $\SE(3)$ 위에서는 덧셈이 행렬 곱셈, 뺄셈이 inverse와의 곱셈인 곱셈의 세계이다. 그래서 <code>Local</code>은 다음을 계산한다:
+	      다음 줄 <code>Vector rval = traits&lt;T&gt;::Local(measured_, hx, ...)</code>은 measurement <code>measured_</code>와 추정된 상대 pose <code>hx</code>를 비교해 residual <code>rval</code>을 만든다. 만약 이 둘이 단순 vector였다면 <code>hx - measured_</code>라고 쓰면 끝이었을 텐데, $\SE(2)$나 $\SE(3)$ 위에서는 덧셈이 행렬 곱셈이고 뺄셈은 inverse를 곱하는 연산으로 표현된다. 그래서 <code>Local</code>은 다음을 계산한다:
     </span>
   </p>
 
@@ -1369,7 +1432,7 @@ initialEstimate.insert(5, Pose2(2.1, 2.1, -M_PI_2));
 
   <p>
     <span data-lang="en">
-      i.e., it maps the relative error from the manifold into the tangent space at the identity via the $\Log$ map, returning a plain real vector <code>rval</code> (length 3 for $\SE(2)$, length 6 for $\SE(3)$). The optional Jacobians <code>H1</code>, <code>H2</code> are produced along the way; deriving them in closed form is the topic of the next several chapters.
+	      In other words, it maps the relative error from the manifold into the tangent space at the identity via the $\Log$ map, returning a plain real vector <code>rval</code> (length 3 for $\SE(2)$, length 6 for $\SE(3)$). The optional Jacobians <code>H1</code>, <code>H2</code> are produced along the way; deriving them in closed form is the topic of the next several chapters.
     </span>
     <span data-lang="ko">
       즉, manifold 위에서 정의된 측정/예측 차이를 $\Log$ map을 통해 identity 주변의 tangent space로 끌어내려 vector <code>rval</code>로 표현한다($\SE(2)$이면 길이 3, $\SE(3)$이면 길이 6). 이 과정에서 Jacobian <code>H1</code>, <code>H2</code>도 함께 계산되지만, closed-form으로 어떻게 유도되는지는 다음 글들에서 본격적으로 다룬다.
@@ -1402,7 +1465,7 @@ initialEstimate.insert(5, Pose2(2.1, 2.1, -M_PI_2));
       Matching variable names: the <code>H1</code>, <code>H2</code> coming out of <code>evaluateError</code> are exactly $H_{j_1}$ and $H_{j_2}$ in the figure; the prediction <code>hx</code> and the measurement <code>measured_</code> play the roles of $h(\xi_{j_1}, \xi_{j_2})$ and $\Delta\xi_i$, with their <code>Local</code> giving the residual $b_i$. The unknowns we actually solve for are the per-iteration updates $\delta_{j_1}, \delta_{j_2}$: small tangent-space corrections to the current estimates of poses $j_1$ and $j_2$.
     </span>
     <span data-lang="ko">
-      변수 이름을 매칭하면 이렇다: <code>evaluateError</code>가 채워주는 <code>H1</code>, <code>H2</code>는 위 그림의 $H_{j_1}, H_{j_2}$, prediction <code>hx</code>와 measurement <code>measured_</code>는 각각 $h(\xi_{j_1}, \xi_{j_2})$와 $\Delta\xi_i$에 해당하며, 이 둘의 <code>Local</code> 결과가 residual $b_i$이다. 우리가 실제로 풀어내는 미지수는 매 iteration 당 update $\delta_{j_1}, \delta_{j_2}$, 즉 pose $j_1$, $j_2$의 현재 추정값에 더해줄 tangent space 상의 작은 보정량이다.
+	      변수 이름을 매칭하면 이렇다. <code>evaluateError</code>가 채워주는 <code>H1</code>, <code>H2</code>는 위 그림의 $H_{j_1}, H_{j_2}$이고, prediction <code>hx</code>와 measurement <code>measured_</code>는 각각 $h(\xi_{j_1}, \xi_{j_2})$와 $\Delta\xi_i$에 해당하며, 이 둘의 <code>Local</code> 결과가 residual $b_i$이다. 우리가 실제로 풀어내는 미지수는 iteration마다 구하는 update $\delta_{j_1}, \delta_{j_2}$, 즉 pose $j_1$, $j_2$의 현재 추정값에 더해줄 tangent space 상의 작은 보정량이다.
     </span>
   </p>
 
@@ -1489,10 +1552,10 @@ gtsam::Pose3 pose_to   = poseEigToGtsamPose(
   </h3>
   <p>
     <span data-lang="en">
-      The chapter title says "easy", but "deep" is honestly closer to the truth: at the user level you can run pose-graph SLAM in GTSAM without ever opening <code>BetweenFactor.h</code>. Still, in a research setting it pays to know exactly what the library is doing on your behalf, which is what this series tries to give you. The next chapter starts unpacking the <code>H1</code>/<code>H2</code> Jacobians we glossed over here, beginning with the algebra of $\SE(2)$.
+	      At the user level, you can run pose-graph SLAM in GTSAM without ever opening <code>BetweenFactor.h</code>. Still, in a research setting it pays to know exactly what the library is doing on your behalf, and that is what this series tries to provide. The next chapter starts unpacking the <code>H1</code>/<code>H2</code> Jacobians we glossed over here, beginning with the algebra of $\SE(2)$.
     </span>
     <span data-lang="ko">
-      '쉽게 이해하기'라고 적었지만, '깊게 이해하기'가 더 정직한 제목 같다. 사실 사용자 입장에서는 <code>BetweenFactor.h</code>를 한 번도 안 열어도 pose graph SLAM을 잘 돌릴 수 있다. 그러나 연구를 하다 보면 자기 코드가 안에서 정확히 무엇을 하는지 아는 사람이 결국 이기는 것 같다. 다음 글부터는 이번에 얼버무리고 넘어간 <code>H1</code>/<code>H2</code> Jacobian을, $\SE(2)$의 대수적 구조에서 시작해 차근차근 유도해 본다.
+	      사실 사용자 입장에서는 <code>BetweenFactor.h</code>를 한 번도 열지 않아도 pose graph SLAM을 잘 돌릴 수 있다. 그러나 연구를 하다 보면 라이브러리가 내부에서 정확히 무엇을 대신 처리해 주는지 아는 것이 중요해진다. 다음 글부터는 이번에 간단히 넘어간 <code>H1</code>/<code>H2</code> Jacobian을, $\SE(2)$의 대수적 구조에서 시작해 차근차근 유도해 본다.
     </span>
   </p>
 
@@ -1508,8 +1571,8 @@ gtsam::Pose3 pose_to   = poseEigToGtsamPose(
     <span data-lang="ko">SE(2): transformation matrix, Jacobian, 그리고 block 연산</span>
   </h2>
   <p class="section-lead">
-    <span data-lang="en">Derive the Jacobian of a planar transform two ways: entry by entry, and as a tidy block expression à la Frank Dellaert. Same matrix, very different mental load.</span>
-    <span data-lang="ko">평면 transform의 Jacobian을 두 가지 방식으로 유도한다. 하나는 원소 하나하나, 다른 하나는 Frank Dellaert식 깔끔한 block 표기. 결과는 같은 행렬이지만 머리에 남는 부담은 전혀 다르다.</span>
+	    <span data-lang="en">Derive the Jacobian of a planar transform two ways: entry by entry, and in the compact block style used by Frank Dellaert. Same matrix, much easier bookkeeping.</span>
+	    <span data-lang="ko">평면 transform의 Jacobian을 두 가지 방식으로 유도한다. 하나는 원소 하나하나, 다른 하나는 Frank Dellaert식의 간결한 block 표기이다. 결과는 같은 행렬이지만, block 표기가 훨씬 관리하기 쉽다.</span>
   </p>
 
   <h3>
@@ -1521,7 +1584,7 @@ gtsam::Pose3 pose_to   = poseEigToGtsamPose(
       Unlike Ceres, which derives Jacobians for you through <code>autodiff</code>, GTSAM expects you to know how a Jacobian is built. In <a href="#ch1-between-factor">Chapter 1</a> we deliberately skipped over how <code>H1</code> and <code>H2</code> in <code>evaluateError</code> are produced:
     </span>
     <span data-lang="ko">
-      Ceres는 <code>autodiff</code>로 Jacobian을 알잘딱으로 구해주지만, GTSAM은 어떻게 Jacobian이 나오는지 사용자가 알아야 한다. <a href="#ch1-between-factor">1편</a>에서는 <code>evaluateError</code>의 <code>H1</code>, <code>H2</code>가 어떻게 채워지는지 일부러 건너뛰었다:
+	      Ceres는 <code>autodiff</code>로 Jacobian을 자동으로 구해주지만, GTSAM은 어떻게 Jacobian이 나오는지 사용자가 이해하고 있어야 한다. <a href="#ch1-between-factor">1편</a>에서는 <code>evaluateError</code>의 <code>H1</code>, <code>H2</code>가 어떻게 채워지는지 일부러 건너뛰었다:
     </span>
   </p>
 
@@ -1545,10 +1608,10 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
 
   <p>
     <span data-lang="en">
-      If you reuse a factor that already ships with GTSAM, you can stay blissfully ignorant of the Jacobian inside. But the moment you write your own factor you have to derive it yourself; in my experience this is the single biggest reason GTSAM has a steeper user-facing slope than Ceres. Before we tackle the GTSAM-flavored <code>H</code> matrices (which start in <a href="#ch4-unary-factor">Chapter 4</a>), this chapter sets up the necessary scaffolding on $\SE(2)$.
+	      If you reuse a factor that already ships with GTSAM, you do not need to know the Jacobian inside. The moment you write your own factor, however, you have to derive it yourself; in my experience this is the main reason GTSAM feels harder to approach than Ceres. Before we tackle the GTSAM-flavored <code>H</code> matrices (which start in <a href="#ch4-unary-factor">Chapter 4</a>), this chapter sets up the necessary scaffolding on $\SE(2)$.
     </span>
     <span data-lang="ko">
-      이미 만들어진 factor를 갖다 쓸 때는 Jacobian을 깊이 파고들 필요가 없지만, 새로운 factor를 직접 만들 때는 Jacobian을 손으로 유도해야 한다(개인적으로 사용자 입장에서 GTSAM이 Ceres보다 진입 장벽이 높은 가장 큰 이유라고 생각된다). GTSAM 특유의 <code>H</code> matrix는 <a href="#ch4-unary-factor">4편</a>부터 본격적으로 다루기로 하고, 이번 글에서는 그 전에 필요한 $\SE(2)$의 기초를 다진다.
+	      이미 만들어진 factor를 가져다 쓸 때는 Jacobian을 깊이 파고들 필요가 없지만, 새로운 factor를 직접 만들 때는 Jacobian을 손으로 유도해야 한다(개인적으로 사용자 입장에서 GTSAM이 Ceres보다 진입 장벽이 높은 가장 큰 이유라고 생각한다). GTSAM 특유의 <code>H</code> matrix는 <a href="#ch4-unary-factor">4장</a>부터 본격적으로 다루기로 하고, 이번 글에서는 그 전에 필요한 $\SE(2)$의 기초를 다진다.
     </span>
   </p>
 
@@ -1591,10 +1654,10 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
 
   <p>
     <span data-lang="en">
-      (Aside on notation: IEEE style wants matrices and vectors in <b>boldface</b>; we follow that convention throughout this site.)
+	      (Aside on notation: IEEE style writes matrices and vectors in <b>boldface</b>; we follow that convention throughout this site.)
     </span>
     <span data-lang="ko">
-      (표기 노트: IEEE 스타일에서는 행렬과 vector는 굵은 글씨로 쓴다; 이 사이트 전체가 그 convention을 따른다.)
+	      (표기 노트: IEEE 스타일에서는 행렬과 vector를 굵은 글씨로 쓴다. 이 사이트 전체가 그 convention을 따른다.)
     </span>
   </p>
 
@@ -1665,7 +1728,7 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
   </p>
 
   <h3>
-    <span data-lang="en">4. Block operations: the slicker form</span>
+	    <span data-lang="en">4. Block operations: the compact form</span>
     <span data-lang="ko">4. Block operation으로 다시 쓰기</span>
   </h3>
   <p>
@@ -1673,7 +1736,7 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
       Frank Dellaert's notes write the same Jacobian in a much more compact block form. Equation (1) above can be condensed to
     </span>
     <span data-lang="ko">
-      Frank Dellaert 교수님 자료를 보면 위의 Jacobian을 훨씬 더 섹시(?)하게 block 연산으로 적는다. 식 (1)을 좀 더 간결히 쓰면
+	      Frank Dellaert 교수님 자료를 보면 위의 Jacobian을 훨씬 더 간결한 block 연산으로 적는다. 식 (1)을 좀 더 간결히 쓰면
     </span>
   </p>
 
@@ -1686,7 +1749,7 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
       and the Jacobian in (2) becomes the block expression
     </span>
     <span data-lang="ko">
-      이가 되고, 식 (2)의 Jacobian은 다음 block 표현으로 정리된다:
+	      식 (3)이 되고, 식 (2)의 Jacobian은 다음 block 표현으로 정리된다:
     </span>
   </p>
 
@@ -1762,8 +1825,8 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
     <span data-lang="ko">2차원에서 본 Skew-symmetric matrix: 도대체 어디서 튀어나왔나</span>
   </h2>
   <p class="section-lead">
-    <span data-lang="en">Differentiating a 2D rotation produces a skew-symmetric matrix almost for free; the small-angle approximation then turns "multiplicative" rotation updates into ordinary additions. We follow that thread into 3D and into the physical meaning of $\lfloor\cdot\rfloor_\times$.</span>
-    <span data-lang="ko">2D rotation을 미분하기만 해도 skew-symmetric matrix가 거의 공짜로 튀어나오고, small angle approximation을 끼얹으면 "곱셈"이어야 할 회전 증분을 덧셈으로 적을 수 있게 된다. 이 흐름을 3차원과 $\lfloor\cdot\rfloor_\times$의 물리적 의미까지 이어 본다.</span>
+	    <span data-lang="en">Differentiating a 2D rotation naturally produces a skew-symmetric matrix; the small-angle approximation then turns multiplicative rotation updates into ordinary additions. We follow that thread into 3D and into the physical meaning of $\lfloor\cdot\rfloor_\times$.</span>
+	    <span data-lang="ko">2D rotation을 미분하면 skew-symmetric matrix가 자연스럽게 등장하고, small angle approximation을 적용하면 곱셈으로 표현되던 회전 증분을 덧셈으로 적을 수 있게 된다. 이 흐름을 3차원과 $\lfloor\cdot\rfloor_\times$의 물리적 의미까지 이어 본다.</span>
   </p>
 
   <h3>
@@ -1785,10 +1848,10 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
   </h3>
   <p>
     <span data-lang="en">
-      Anyone who has met the 2D rotation matrix knows it as the familiar "cos-minus-sin / sin-cos" pattern (recent Korean high-school curricula apparently don't teach matrices anymore, but bear with me):
+	      If you have seen the 2D rotation matrix before, you probably know it as the familiar "cos-minus-sin / sin-cos" pattern:
     </span>
     <span data-lang="ko">
-      나와 비슷한 교과 과정을 거친 이라면 2D rotation은 각도 $\theta$에 대해 다음과 같이 쓰여진다는 사실을, 일명 '코마신신코'로 알고 있을 것이다(요즘에는 고등학교 때 행렬 자체를 안 배운다는데...):
+	      2D rotation matrix는 각도 $\theta$에 대해 다음과 같이 쓰인다. 흔히 외우는 방식으로 말하면 '코마신신코' 형태이다:
     </span>
   </p>
 
@@ -1822,7 +1885,7 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
       A small but useful rewrite: we can factor this back through $R(\theta)$ itself. With
     </span>
     <span data-lang="ko">
-      약간의 trick으로 이 결과를 다시 $R(\theta)$를 통해 표현해 보자. 정의
+	      이 결과를 다시 $R(\theta)$를 통해 표현해 보자. 정의
     </span>
   </p>
 
@@ -1930,7 +1993,7 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
 
   <p>
     <span data-lang="en">
-      That is the punchline: thanks to $\hat{\Omega}$, the rotation update is now <b>additive</b>. As long as the rotation increment $\delta_\theta$ is small, we can express a change of orientation as a sum rather than a product. This same trick is the workhorse behind every <code>H</code> Jacobian derivation later in this series.
+	      That is the key point: thanks to $\hat{\Omega}$, the rotation update is now <b>additive</b>. As long as the rotation increment $\delta_\theta$ is small, we can express a change of orientation as a sum rather than a product. This same trick is the workhorse behind every <code>H</code> Jacobian derivation later in this series.
     </span>
     <span data-lang="ko">
       이게 핵심이다. 식 (9)에서 보듯이, $\hat{\Omega}$ 덕분에 rotation의 변화량을 <b>덧셈으로 표현</b>할 수 있게 된다. 회전 증분 $\delta_\theta$가 충분히 작으면, 상태 변화를 덧셈으로 쓸 수 있다는 뜻이다. 이 특성은 이후 GTSAM의 <code>H</code> Jacobian 유도에서 끊임없이 활용된다.
@@ -1943,7 +2006,7 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
   </h3>
   <p>
     <span data-lang="en">
-      For pedagogy I have stayed in 2D, but the same picture holds in 3D. In 2D a small rotation was a single scalar $\delta_\theta$; in 3D we instead use a 3-vector $\bm{\omega} = (\omega_x, \omega_y, \omega_z)$ to describe small rotations about an arbitrary axis. The update then reads
+	      For clarity I have stayed in 2D, but the same picture holds in 3D. In 2D a small rotation was a single scalar $\delta_\theta$; in 3D we instead use a 3-vector $\bm{\omega} = (\omega_x, \omega_y, \omega_z)$ to describe small rotations about an arbitrary axis. The update then reads
     </span>
     <span data-lang="ko">
       설명의 편의를 위해 2차원에서만 다뤘지만, 3차원에서도 같은 그림이 그대로 성립한다. 2D에서는 미소 회전을 scalar $\delta_\theta$로 표현했지만, 3D에서는 임의의 축에 대한 회전을 3-vector $\bm{\omega} = (\omega_x, \omega_y, \omega_z)$로 적는다. 그러면 회전 update는 다음 꼴이다:
@@ -1968,7 +2031,7 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
       Structurally this is exactly (9). What makes it look harder is just the unfamiliar operator $\lfloor\cdot\rfloor_\times$. In 2D the rotation axis was pinned to $z$, so we could absorb everything into a single matrix $\hat{\Omega}$ times the scalar $\delta_\theta$. In 3D the rotation axis is free, and $\lfloor\bm{\omega}\rfloor_\times$ is how we package "axis plus magnitude" into a single matrix.
     </span>
     <span data-lang="ko">
-      구조적으로 이는 식 (9)와 정확히 같은 꼴이다. 복잡해 보이는 이유는 단지 익숙치 않은 operator $\lfloor\cdot\rfloor_\times$ 때문이다. 2D에서는 회전축이 $z$ 방향으로 고정되어 있어서 회전의 변화량을 $\hat{\Omega}$와 scalar $\delta_\theta$의 곱으로 적을 수 있었지만, 3D에서는 임의의 축에 대한 회전이 가능하므로 그 정보를 함께 담기 위해 위의 operator가 필요하다.
+	      구조적으로 이는 식 (9)와 정확히 같은 꼴이다. 복잡해 보이는 이유는 단지 익숙지 않은 operator $\lfloor\cdot\rfloor_\times$ 때문이다. 2D에서는 회전축이 $z$ 방향으로 고정되어 있어서 회전의 변화량을 $\hat{\Omega}$와 scalar $\delta_\theta$의 곱으로 적을 수 있었지만, 3D에서는 임의의 축에 대한 회전이 가능하므로 그 정보를 함께 담기 위해 위의 operator가 필요하다.
     </span>
   </p>
 
@@ -2035,10 +2098,10 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
 
   <p>
     <span data-lang="en">
-      What does any of this mean physically? A vector transformed by a skew-symmetric matrix is an <b>angular velocity</b>: it points along the dark arrow in the figure above. Put differently, the skew operator rotates a vector onto the tangent direction of its own circular orbit.
+	      What does any of this mean physically? Multiplying a vector by a skew-symmetric matrix gives the tangential direction induced by an <b>angular velocity</b>; it points along the dark arrow in the figure above. Put differently, the skew operator rotates a vector onto the tangent direction of its own circular orbit.
     </span>
     <span data-lang="ko">
-      그렇다면 이게 물리적으로 무엇을 뜻할까? Skew-symmetric matrix로 변형된 vector는 물리적으로 <b>angular velocity</b>이며, 위 그림의 진한 검은 화살표에 해당한다. 즉, 어떤 vector에 skew matrix를 곱하면 그 vector가 그리는 원 궤도의 접선 방향을 가리키게 된다는 뜻이다.
+	      그렇다면 이게 물리적으로 무엇을 뜻할까? 어떤 vector에 skew-symmetric matrix를 곱하면 <b>angular velocity</b>가 유도하는 접선 방향이 나오며, 위 그림의 진한 검은 화살표가 바로 그 방향이다. 즉, 어떤 vector에 skew matrix를 곱하면 그 vector가 그리는 원 궤도의 접선 방향을 가리키게 된다는 뜻이다.
     </span>
   </p>
 
@@ -2053,10 +2116,10 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
 
   <p>
     <span data-lang="en">
-      The picture in 3D is the same, only that the tangent now lives in the plane normal to the rotation axis. If you have read about Lie groups and Lie algebras and felt the terminology was the hardest part, the intuition is just this: a multiplicative quantity that lives on the manifold (the group) can, near the identity, be re-expressed through additions and subtractions (the algebra). Equation (9) and equation (10) are precisely that re-expression in 2D and 3D, with $\hat{\Omega}$ and $\lfloor\cdot\rfloor_\times$ as the bridge.
+	      The picture in 3D is the same, except that the tangent now lies in the plane normal to the rotation axis. If you have read about Lie groups and Lie algebras and felt the terminology was the hardest part, the intuition is just this: a multiplicative quantity that lives on the manifold (the group) can, near the identity, be re-expressed through additions and subtractions (the algebra). Equation (9) and equation (10) are precisely that re-expression in 2D and 3D, with $\hat{\Omega}$ and $\lfloor\cdot\rfloor_\times$ as the bridge.
     </span>
     <span data-lang="ko">
-      3차원에서도 마찬가지로, 어떤 공간 상의 움직임에 대해 접하는 평면 상의 vector를 뜻한다. SLAM을 깊게 들여다본 이라면 Lie group이니 Lie algebra니 하는 말을 들어 보았을 텐데, 직관만 말하면 이런 얘기이다. 원래라면 곱셈으로 표현해야 하는 값(group)을, 항등원 주변에서는 덧셈/뺄셈(algebra)으로 표현 가능하게 만들어 주는 것. 식 (9)와 식 (10)이 2D와 3D에서의 바로 그 표현이며, $\hat{\Omega}$와 $\lfloor\cdot\rfloor_\times$가 그 다리 역할을 한다.
+	      3차원에서도 그림은 같다. 다만 접선 방향 vector가 이제 회전축에 수직인 평면 안에 놓인다는 점만 다르다. SLAM을 깊게 들여다본 이라면 Lie group이니 Lie algebra니 하는 말을 들어 보았을 텐데, 직관만 말하면 이런 얘기이다. 원래라면 곱셈으로 표현해야 하는 값(group)을, 항등원 주변에서는 덧셈/뺄셈(algebra)으로 표현 가능하게 만들어 주는 것. 식 (9)와 식 (10)이 2D와 3D에서의 바로 그 표현이며, $\hat{\Omega}$와 $\lfloor\cdot\rfloor_\times$가 그 다리 역할을 한다.
     </span>
   </p>
 
@@ -2073,7 +2136,7 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
         </h2>
         <p class="section-lead">
           <span data-lang="en">Why GTSAM's <code>H</code> matrix in a unary factor turns out to be the rotation matrix, not a textbook partial derivative: a step-by-step Lie-group derivation built around a spring-mass example.</span>
-          <span data-lang="ko">GTSAM unary factor의 <code>H</code> 행렬이 교과서적인 partial derivative가 아니라 rotation matrix로 떨어지는 이유: spring-mass 예제를 따라가며 Lie group 위에서 단계별로 유도해본다.</span>
+	          <span data-lang="ko">GTSAM unary factor의 <code>H</code> 행렬이 교과서적인 partial derivative가 아니라 rotation matrix로 나오는 이유: spring-mass 예제를 따라가며 Lie group 위에서 단계별로 유도해 본다.</span>
         </p>
 
         <h3>
@@ -2082,10 +2145,10 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
         </h3>
         <p>
           <span data-lang="en">
-            By this point in the series, you have a working picture of what a Jacobian is. The confusion that almost everyone hits in GTSAM is a different one: when you write a custom factor and fill in the <code>H</code> matrix, the block that you intuitively expect to be an identity comes back as a rotation matrix. This chapter exists to explain that single observation. Consider the canonical <code>UnaryFactor</code> example.
+	            By this point in the series, you have a working picture of what a Jacobian is. A common confusion in GTSAM is more specific: when you write a custom factor and fill in the <code>H</code> matrix, the block you might intuitively expect to be an identity appears instead as a rotation matrix. This chapter explains that observation through the canonical <code>UnaryFactor</code> example.
           </span>
           <span data-lang="ko">
-            여기까지 읽었으면 Jacobian 자체는 잘 이해했을 것이다. 하지만 GTSAM에서 <code>H</code> 행렬을 구할 때 많은 사람들이 혼란을 겪는 부분이 있다. 사실 이 챕터는 바로 이 점을 설명하기 위해 작성되었다. 아래 예시를 통해 자세히 살펴보자.
+	            여기까지 읽었으면 Jacobian 자체는 어느 정도 이해했을 것이다. 하지만 GTSAM에서 <code>H</code> 행렬을 구할 때 많은 사람들이 혼란을 겪는 지점이 있다. 직관적으로는 identity가 나올 것 같은 블록이 실제로는 rotation matrix로 등장한다는 점이다. 이 챕터에서는 canonical <code>UnaryFactor</code> 예제를 통해 그 이유를 설명한다.
           </span>
         </p>
 
@@ -2133,7 +2196,7 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
             Call the two scalar components of the error $f_1 = t_x - m_x$ (the <code>q.x() - mx_</code> line) and $f_2 = t_y - m_y$ (the <code>q.y() - my_</code> line). The textbook reflex is to take partial derivatives with respect to the entries of the pose:
           </span>
           <span data-lang="ko">
-            리턴되는 measurement function을 각각 $f_1 = t_x - m_x$ (<code>q.x() - mx_</code>), $f_2 = t_y - m_y$ (<code>q.y() - my_</code>)라 정의해보자. 교과서적으로는 pose의 성분에 대해 곧장 편미분을 취하고 싶어진다.
+	            error의 두 scalar component를 각각 $f_1 = t_x - m_x$ (<code>q.x() - mx_</code>), $f_2 = t_y - m_y$ (<code>q.y() - my_</code>)라 정의해 보자. 교과서적으로는 pose의 성분에 대해 곧장 편미분을 취하고 싶어진다.
           </span>
         </p>
 
@@ -2159,10 +2222,10 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
         </h3>
         <p>
           <span data-lang="en">
-            The reason $\bm{H}$ does not look like a flat partial derivative is that the optimization variable lives on a Lie group rather than in a flat vector space. The full meaning of $\bm{H}$ will come at the end; first, the mechanics. In the Lie-group picture, a pose is a transformation matrix $\bm{T}$. During optimization GTSAM (i) picks up a small update written as a vector, then (ii) lifts it back to a transformation and right-multiplies it onto the current pose. The update rule is
+	            The reason $\bm{H}$ does not look like a flat partial derivative is that the optimization variable lives on a Lie group rather than in a flat vector space. The full meaning of $\bm{H}$ will come at the end; first, the mechanics. In the Lie-group picture, a pose is a transformation matrix $\bm{T}$. During optimization GTSAM (i) solves for a small update written as a vector, then (ii) lifts it back to a transformation and right-multiplies it onto the current pose. The update rule is
           </span>
           <span data-lang="ko">
-            $\bm{H}$가 우리가 생각한 것과 다른 형태로 유도되는 이유는, 우리가 optimize하고자 하는 변수가 Lie group 위의 값이기 때문이다 ($\bm{H}$의 진짜 의미는 글의 마지막에 다시 정리한다). Lie group의 세계에서는 pose가 transformation matrix $\bm{T}$로 표현되고, optimization 시에는 (i) pose를 업데이트할 미소 pose를 vector 형태로 취득한 뒤 (ii) 이를 다시 transformation matrix로 되돌려 pose의 우측에 곱해 업데이트한다.
+	            $\bm{H}$가 우리가 생각한 것과 다른 형태로 유도되는 이유는, 우리가 optimize하고자 하는 변수가 flat vector space가 아니라 Lie group 위의 값이기 때문이다($\bm{H}$의 진짜 의미는 글의 마지막에 다시 정리한다). Lie group의 세계에서는 pose가 transformation matrix $\bm{T}$로 표현되고, optimization 시에는 (i) pose를 업데이트할 작은 update를 vector 형태로 구한 뒤 (ii) 이를 다시 transformation matrix로 되돌려 pose의 우측에 곱해 업데이트한다.
           </span>
         </p>
 
@@ -2175,7 +2238,7 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
             Rewriting (1) at the level of the vector parameterization (the "boxplus" convention), a small vector $\bm{\delta}$ updates the vector-form pose $\bm{\xi}$ as
           </span>
           <span data-lang="ko">
-            수식 (1)을 vector의 형태로 표현(이를 parameterize라 부른다)해보면, 미소 vector $\bm{\delta}$에 의해 vector꼴 pose $\bm{\xi}$가 다음과 같이 증분된다.
+	            수식 (1)을 vector 형태의 parameterization으로 다시 쓰면, 미소 vector $\bm{\delta}$에 의해 vector꼴 pose $\bm{\xi}$가 다음과 같이 증분된다.
           </span>
         </p>
 
@@ -2215,7 +2278,7 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
 
         <p>
           <span data-lang="en">
-            Only in this form can each iteration solve for the optimal $\bm{\delta}$. Here $\bm{m}$ is the 2D point stored in <code>mx_</code> and <code>my_</code>. The punchline is already in sight: the matrix sitting in front of $\bm{\delta}$ is exactly the <code>H</code> that GTSAM asks you to fill in.
+	            Only in this form can each iteration solve for the optimal $\bm{\delta}$. Here $\bm{m}$ is the 2D point stored in <code>mx_</code> and <code>my_</code>. The key point is already in sight: the matrix sitting in front of $\bm{\delta}$ is exactly the <code>H</code> that GTSAM asks you to fill in.
           </span>
           <span data-lang="ko">
             이 꼴이 되어야 매 iteration마다 최적의 $\bm{\delta}$를 구할 수 있게 된다. 여기서 $\bm{m}$은 코드에서 <code>mx_</code>, <code>my_</code>로 표현되어 있는 measurement 2D 점이다. 즉, 선형화를 위해 $\bm{\delta}$ 앞에 곱해지는 표현식이 바로 우리가 구하고자 하는 <code>H</code>이다.
@@ -2239,7 +2302,7 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
             With the framing settled, let's actually compute $\bm{H}$. Take the variables in (2) as $\bm{\xi} = [t_x,\,t_y,\,\theta]^\intercal$ and $\bm{\delta} = [\delta_x,\,\delta_y,\,\delta_\theta]^\intercal$. The right-multiplication update of (1) on $\SE(2)$ reads
           </span>
           <span data-lang="ko">
-            이제 직접 $\bm{H}$를 유도해보자. 수식 (2)의 변수들을 각각 $\bm{\xi} = [t_x,\,t_y,\,\theta]^\intercal$, $\bm{\delta} = [\delta_x,\,\delta_y,\,\delta_\theta]^\intercal$라 하자. 수식 (1)을 활용하면 $\SE(2)$ 상에서의 증분은 다음과 같다.
+	            이제 직접 $\bm{H}$를 유도해 보자. 수식 (2)의 변수들을 각각 $\bm{\xi} = [t_x,\,t_y,\,\theta]^\intercal$, $\bm{\delta} = [\delta_x,\,\delta_y,\,\delta_\theta]^\intercal$라 하자. 수식 (1)을 활용하면 $\SE(2)$ 상에서의 증분은 다음과 같다.
           </span>
         </p>
 
@@ -2369,7 +2432,7 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
             It is the coefficient matrix that multiplies the local perturbation $\bm{\delta}$ in the linearization of $h(\bm{\xi} \oplus \bm{\delta})$. To keep this distinction visible, earlier chapters used $\bm{J}$ for a generic Jacobian and reserve $\bm{H}$ for the perturbation-side Jacobian that GTSAM actually consumes.
           </span>
           <span data-lang="ko">
-            미소 증분 vector $\bm{\delta}$ 앞에 곱해지는 계수 행렬임을 주의하자. 그래서 이전 글들을 보면 일반적인 Jacobian을 가리킬 때는 $\bm{J}$라고 칭하고, GTSAM이 실제로 받아 쓰는 $\bm{\delta}$용 Jacobian은 <code>H</code>라고 구분해 적었다.
+	            미소 증분 vector $\bm{\delta}$ 앞에 곱해지는 계수 행렬임을 주의하자. 그래서 이전 글들에서는 일반적인 Jacobian을 가리킬 때는 $\bm{J}$라고 표기하고, GTSAM이 실제로 받아 쓰는 $\bm{\delta}$용 Jacobian은 <code>H</code>라고 구분해 적었다.
           </span>
         </p>
 
@@ -2404,10 +2467,10 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
 
         <p>
           <span data-lang="en">
-            GTSAM's <code>Rot2.cpp</code> defines <code>unrotate</code> as follows. It returns the rotated point and also fills two Jacobian blocks, <code>H1</code> and <code>H2</code>:
+	            GTSAM's <code>Rot2.cpp</code> defines <code>unrotate</code> as follows. It returns the transformed point and also fills two Jacobian blocks, <code>H1</code> and <code>H2</code>:
           </span>
           <span data-lang="ko">
-            GTSAM의 <code>Rot2.cpp</code>에는 다음과 같이 <code>unrotate</code> 함수가 정의되어 있다. 회전된 점뿐만 아니라 두 개의 Jacobian 블록 <code>H1</code>, <code>H2</code>도 함께 채워준다.
+	            GTSAM의 <code>Rot2.cpp</code>에는 다음과 같이 <code>unrotate</code> 함수가 정의되어 있다. 변환된 점뿐만 아니라 두 개의 Jacobian 블록 <code>H1</code>, <code>H2</code>도 함께 채워준다.
           </span>
         </p>
 
@@ -2541,10 +2604,10 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
 
         <p>
           <span data-lang="en">
-            For $\bm{H}_1$ the perturbation $\delta\theta$ is sandwiched in the middle of the term $\bm{R}^\intercal \bm{R}(\pi/2)\,\delta\theta\,\bm{p}$. Because $\delta\theta \in \R$ is a scalar, we are free to slide it to the rear. We then use the skew-symmetric identity from the previous chapter,
+	            For $\bm{H}_1$ the perturbation $\delta\theta$ is sandwiched in the middle of the term $\bm{R}^\intercal \bm{R}(\pi/2)\,\delta\theta\,\bm{p}$. Because $\delta\theta \in \R$ is a scalar, we are free to move it to the end. We then use the skew-symmetric identity from the previous chapter,
           </span>
           <span data-lang="ko">
-            $\bm{H}_1$은 식 $\bm{R}^\intercal \bm{R}(\pi/2)\,\delta\theta\,\bm{p}$의 중간에 $\delta\theta$가 끼어 있는데, $\delta\theta \in \R$는 scalar이므로 자유롭게 뒤로 보낼 수 있다. 그리고 앞 챕터에서 본 skew-symmetric 항등식
+	            $\bm{H}_1$은 식 $\bm{R}^\intercal \bm{R}(\pi/2)\,\delta\theta\,\bm{p}$의 중간에 $\delta\theta$가 끼어 있는데, $\delta\theta \in \R$는 scalar이므로 자유롭게 맨 뒤로 보낼 수 있다. 그리고 앞 챕터에서 본 skew-symmetric 항등식
           </span>
         </p>
 
@@ -2603,7 +2666,7 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
             The recurring lesson is that working comfortably in GTSAM means thinking in terms of the local perturbation rather than the global coordinates. A small notational aside: this chapter wrote $f(\cdot)$ rather than $h(\cdot)$. The function $f$ here is what is called an <i>action</i>: it transforms an $N$-dimensional point by an $(N+1)\times(N+1)$ transformation matrix. The name $h(\cdot)$ is reserved for measurement functions, so $f$ is used here to keep the two concepts distinct.
           </span>
           <span data-lang="ko">
-            결국 GTSAM에서는 delta(local perturbation)에 대한 이해가 핵심이다. 표기 관련 한 가지 메모: 이 글에서는 $h(\cdot)$이 아니라 $f(\cdot)$로 표기했다. 여기서 $f$는 멋있는 말로 'action'이라 부르며, $N$차원의 점을 $(N+1)\times(N+1)$ transformation matrix로 변환하는 연산을 가리킨다. measurement function $h(\cdot)$와 구분하기 위해 다른 기호를 썼다.
+	            결국 GTSAM에서는 delta(local perturbation)에 대한 이해가 핵심이다. 표기 관련 한 가지 메모: 이 글에서는 $h(\cdot)$이 아니라 $f(\cdot)$로 표기했다. 여기서 $f$는 보통 'action'이라 부르며, $N$차원의 점을 $(N+1)\times(N+1)$ transformation matrix로 변환하는 연산을 가리킨다. measurement function $h(\cdot)$와 구분하기 위해 다른 기호를 썼다.
           </span>
         </p>
 
@@ -2612,7 +2675,7 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
             With <code>Rot2::unrotate</code> demystified, the next chapters tackle the <code>H1</code> and <code>H2</code> of <code>BetweenFactor</code> for <code>Pose2</code> and <code>Pose3</code>, which the very first chapter glossed over.
           </span>
           <span data-lang="ko">
-            이제 <code>H</code> 값을 유도하는 방법에 어느 정도 친숙해졌으니, 첫 글에서 그냥 넘어갔던 <code>Pose2</code>와 <code>Pose3</code>에 대한 <code>BetweenFactor</code>의 <code>H1</code>, <code>H2</code>를 다음 챕터들에서 유도해보자.
+	            이제 <code>H</code> 값을 유도하는 방법에 어느 정도 친숙해졌으니, 첫 글에서 넘어갔던 <code>Pose2</code>와 <code>Pose3</code>에 대한 <code>BetweenFactor</code>의 <code>H1</code>, <code>H2</code>를 다음 챕터들에서 유도해 보자.
           </span>
         </p>
 
@@ -2638,7 +2701,7 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
   </h3>
   <p>
     <span data-lang="en">By now Jacobians should feel familiar, so let us finally derive the blocks <code>H1</code> and <code>H2</code> for <code>Pose2</code> as they appear in the actual GTSAM code below.</span>
-    <span data-lang="ko">자, 그럼 Jacobian에 대해 많이 친숙해진 것 같으니 대망의, <code>Pose2</code> 상에서 아래 코드의 <code>H1</code>과 <code>H2</code>를 구해보자.</span>
+	    <span data-lang="ko">이제 Jacobian에 어느 정도 익숙해졌으니, 아래 GTSAM 코드에 등장하는 <code>Pose2</code>의 <code>H1</code>과 <code>H2</code>를 직접 구해 보자.</span>
   </p>
 
 <pre><code class="language-cpp">/// evaluate error, returns vector of errors size of tangent space
@@ -2669,7 +2732,7 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
   </h3>
   <p>
     <span data-lang="en">Let $\bm{\xi}\in\R^3$ be the vector that parameterizes an $\SE(2)$ element, and let $\bm{\delta} = [\delta\bm{t};\,\delta\theta]^\intercal$ be a small perturbation. Composing the two transformation matrices,</span>
-    <span data-lang="ko">2D 상의 Lie group인 $\SE(2)$와 대응되는 vector $\bm{\xi}\in\R^3$를 $\bm{\delta} = [\delta\bm{t};\,\delta\theta]^\intercal$로 update하는 식을 먼저 유도해 보자. 다음 곱을 통해</span>
+	    <span data-lang="ko">먼저 $\SE(2)$ 원소를 parameterize하는 vector를 $\bm{\xi}\in\R^3$, 작은 perturbation을 $\bm{\delta} = [\delta\bm{t};\,\delta\theta]^\intercal$라 두자. 두 transformation matrix를 다음처럼 곱하면</span>
   </p>
 
   $$
@@ -2697,8 +2760,8 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
   $$
 
   <p>
-    <span data-lang="en">In 2D we are unusually lucky: the rotation of $\SE(2)$ collapses to a single yaw angle, so the rotation update is just an ordinary scalar addition, and (1) stays this simple. In 3D this trick is hopeless. From here on we write $\bm{0}_{1\times 2}$ simply as $\bm{0}$.</span>
-    <span data-lang="ko">2D 차원에서의 rotation은 완전 러키비키하게 단순한 yaw 각의 덧셈으로 $\SE(2)$의 회전을 표현할 수 있기 때문에, (1)과 같이 단순하게 표기할 수 있다 (3차원에서는 어림도 없다!). 앞으로는 편의상 $\bm{0}_{1\times 2}$를 그냥 $\bm{0}$이라고 적겠다.</span>
+	    <span data-lang="en">In 2D the rotation part of $\SE(2)$ reduces to a single yaw angle, so the rotation update is just an ordinary scalar addition and (1) stays simple. In 3D the same step is more involved. From here on we write $\bm{0}_{1\times 2}$ simply as $\bm{0}$.</span>
+	    <span data-lang="ko">2D에서는 $\SE(2)$의 rotation이 단일 yaw angle로 줄어들기 때문에, 회전 update가 단순한 scalar 덧셈이 되어 (1)처럼 간단히 표기할 수 있다. 3D에서는 같은 단계가 훨씬 복잡해진다. 앞으로는 편의상 $\bm{0}_{1\times 2}$를 그냥 $\bm{0}$이라고 적겠다.</span>
   </p>
 
   <h3>
@@ -2706,8 +2769,8 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
     <span data-lang="ko">Step 2. Measurement function $h(\cdot)$ 정의</span>
   </h3>
   <p>
-    <span data-lang="en">On a Lie group, the "difference" between two poses is realized by multiplying $\bm{T}^{w}_1$ by the inverse of $\bm{T}^{w}_2$, exactly as the C++ snippet does. Expanding,</span>
-    <span data-lang="ko">Lie group 상에서 두 pose 간의 뺄셈에 대응되는 개념은 위의 코드에서처럼 <code>p1</code>의 transformation matrix를 inverse한 $(\bm{T}^{w}_1)^{-1}$에 <code>p2</code>의 transformation matrix $\bm{T}^{w}_2$를 곱하는 것이다. 따라서 다음 수식을 전개하면:</span>
+	    <span data-lang="en">On a Lie group, the "difference" between two poses is realized by multiplying the inverse of $\bm{T}^{w}_1$ by $\bm{T}^{w}_2$, exactly as the C++ snippet does. Expanding,</span>
+	    <span data-lang="ko">Lie group 상에서 두 pose 간의 뺄셈에 대응되는 개념은 위의 코드에서처럼 <code>p1</code>의 transformation matrix를 inverse한 $(\bm{T}^{w}_1)^{-1}$에 <code>p2</code>의 transformation matrix $\bm{T}^{w}_2$를 곱하는 것이다. 따라서 다음 수식을 전개하면:</span>
   </p>
 
   $$
@@ -2760,7 +2823,7 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
   </h3>
   <p>
     <span data-lang="en">A quick recap before we expand: recall the GTSAM optimization picture from <a href="#ch1-between-factor">Chapter 1</a>. The Jacobians come from matching $h(\bm{\xi}_1\oplus\bm{\delta}_1, \bm{\xi}_2\oplus\bm{\delta}_2)$ to $h(\bm{\xi}_1, \bm{\xi}_2)\oplus\bm{\delta}$, expanding both sides, and reading off the coefficients of $\bm{\delta}_1$ and $\bm{\delta}_2$. Specifically we want $\bm{H}_1$ and $\bm{H}_2$ such that $\bm{\delta}$ is a linear combination of $\bm{\delta}_1$ and $\bm{\delta}_2$.</span>
-    <span data-lang="ko">자, 다시 복습을 해보자: <a href="#ch1-between-factor">Chapter 1</a>에 등장하는 GTSAM optimization 그림을 떠올리자. 우리가 할 일은 그림 상의 $h(\bm{\xi}_1\oplus\bm{\delta}_1, \bm{\xi}_2\oplus\bm{\delta}_2) = h(\bm{\xi}_1, \bm{\xi}_2)\oplus\bm{\delta}$를 전개해서, $\bm{\delta}$를 $\bm{\delta}_1$와 $\bm{\delta}_2$의 선형 조합으로 표현할 수 있는 $\bm{H}_1$과 $\bm{H}_2$를 구하는 것이다.</span>
+	    <span data-lang="ko">잠시 복습해 보자. <a href="#ch1-between-factor">1장</a>에 등장한 GTSAM optimization 그림을 떠올리면, 우리가 할 일은 $h(\bm{\xi}_1\oplus\bm{\delta}_1, \bm{\xi}_2\oplus\bm{\delta}_2)$와 $h(\bm{\xi}_1, \bm{\xi}_2)\oplus\bm{\delta}$를 각각 전개한 뒤, $\bm{\delta}$를 $\bm{\delta}_1$과 $\bm{\delta}_2$의 선형 조합으로 표현하는 $\bm{H}_1$과 $\bm{H}_2$를 구하는 것이다.</span>
   </p>
 
   <h4>
@@ -2840,7 +2903,7 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
   </h3>
   <p>
     <span data-lang="en">Setting (5) equal to (6) gives the final equations. The translation row reduces to</span>
-    <span data-lang="ko">따라서 최종적으로 수식 (5)와 수식 (6)을 같다고 놓고 풀면 우리가 원하는 <code>H1</code>과 <code>H2</code>를 구할 수 있다. 미소 translation $\delta\bm{t}$는 다음 수식을 전개하면 된다:</span>
+	    <span data-lang="ko">따라서 수식 (5)와 수식 (6)을 같다고 놓고 풀면 우리가 원하는 <code>H1</code>과 <code>H2</code>를 구할 수 있다. 먼저 translation row는 다음과 같이 정리된다:</span>
   </p>
 
   $$
@@ -2860,7 +2923,7 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
 
   <p>
     <span data-lang="en">Solving these two equations and writing the result in the form $\bm{\delta} = \bm{H}_1\,\bm{\delta}_1 + \bm{H}_2\,\bm{\delta}_2$ yields</span>
-    <span data-lang="ko">이 두 식을 풀어서 $\bm{\delta} = \bm{H}_1\,\bm{\delta}_1 + \bm{H}_2\,\bm{\delta}_2$의 꼴로 정리하면 최종적으로 다음과 같이 유도할 수 있다:</span>
+	    <span data-lang="ko">이 두 식을 풀어서 $\bm{\delta} = \bm{H}_1\,\bm{\delta}_1 + \bm{H}_2\,\bm{\delta}_2$의 꼴로 정리하면 다음과 같이 유도된다:</span>
   </p>
 
   $$
@@ -2914,8 +2977,8 @@ Matrix3 Pose2::AdjointMap() const {
 </code></pre>
 
   <p>
-    <span data-lang="en">Now look again at (7). The block in front of $\bm{\delta}_1$ is exactly $h(\bm{\xi}_2, \bm{\xi}_1)$ (with indices swapped), i.e.,</span>
-    <span data-lang="ko">그리고 다시 수식 (7)을 살펴보자. <code>H1</code> matrix는 $h(\bm{\xi}_2, \bm{\xi}_1)$의(i.e.,</span>
+	    <span data-lang="en">Now look again at (7). The block in front of $\bm{\delta}_1$ is the <code>AdjointMap</code> of the relative pose with the indices swapped, namely $h(\bm{\xi}_2, \bm{\xi}_1)$:</span>
+	    <span data-lang="ko">이제 수식 (7)을 다시 보자. $\bm{\delta}_1$ 앞에 있는 블록은 index가 뒤바뀐 상대 pose, 즉 $h(\bm{\xi}_2, \bm{\xi}_1)$의 <code>AdjointMap</code>에 해당한다:</span>
   </p>
 
   $$
@@ -2926,8 +2989,8 @@ Matrix3 Pose2::AdjointMap() const {
   $$
 
   <p>
-    <span data-lang="en">fed into the <code>AdjointMap</code>. To see this, identify <code>t_</code> in the snippet with $\bm{R}^{\intercal}_2(\bm{t}_1 - \bm{t}_2)$; then the swap $(x, y) \to (y, -x)$ inside <code>AdjointMap()</code> is precisely multiplication by $-\hat{\Omega}$.</span>
-    <span data-lang="ko"><code>AdjointMap()</code> 함수와 대응된다는 것을 알 수 있다. 이 경우 위 코드 snippet의 <code>t_</code>가 $\bm{R}^{\intercal}_2(\bm{t}_1 - \bm{t}_2)$가 되고, 코드 상에서 $(x, y)$를 $(y, -x)$로 변경하는 것이 $-\hat{\Omega}$를 곱해주는 것을 의미한다.</span>
+	    <span data-lang="en">To see this, identify <code>t_</code> in the snippet with $\bm{R}^{\intercal}_2(\bm{t}_1 - \bm{t}_2)$; then the swap $(x, y) \to (y, -x)$ inside <code>AdjointMap()</code> is precisely multiplication by $-\hat{\Omega}$.</span>
+	    <span data-lang="ko">이를 확인하려면 위 코드 snippet의 <code>t_</code>를 $\bm{R}^{\intercal}_2(\bm{t}_1 - \bm{t}_2)$와 대응시키면 된다. 그러면 코드에서 $(x, y)$를 $(y, -x)$로 바꾸는 부분이 정확히 $-\hat{\Omega}$를 곱하는 연산임을 알 수 있다.</span>
   </p>
 
   <p>
@@ -2957,11 +3020,11 @@ Class between(const Class&amp; g, ChartJacobian H1,
   </h3>
   <p>
     <span data-lang="en">We have at last derived <code>H1</code> and <code>H2</code> for <code>Pose2::BetweenFactor</code>. To repeat a caveat from earlier chapters: a user who just wants to <i>use</i> <code>BetweenFactor</code> never needs to know any of this. But when SLAM optimization has to be debugged or extended at a low level, this derivation is unavoidable; without it, GTSAM's behavior is opaque.</span>
-    <span data-lang="ko">대망의 <code>Pose2</code>의 <code>BetweenFactor</code>의 <code>H1</code>과 <code>H2</code>를 구하는 방법에 대해 알아보았다. 다시금 강조하지만, 단순히 <code>BetweenFactor</code>를 사용하는 입장에서는 전혀 알 필요가 없는 부분이다. 다만, SLAM의 optimization을 굉장히 low-level로 다뤄야 할 일이 있을 때 이런 과정을 모르면 GTSAM이 어떻게 동작하는지 <b>절대</b> 이해할 수 없기 때문에, 저 <code>H</code> matrix를 어떻게 유도하는지 정리해 보았다.</span>
+	    <span data-lang="ko"><code>Pose2::BetweenFactor</code>의 <code>H1</code>과 <code>H2</code>를 구하는 방법을 유도해 보았다. 다시 강조하지만, 단순히 <code>BetweenFactor</code>를 사용하는 입장에서는 전혀 알 필요가 없는 부분이다. 다만 SLAM optimization을 low-level에서 디버깅하거나 확장해야 할 때는 이런 과정을 모르면 GTSAM이 어떻게 동작하는지 이해하기 어렵다. 그래서 <code>H</code> matrix가 어떻게 유도되는지 정리해 보았다.</span>
   </p>
   <p>
     <span data-lang="en">The exposition above favors readability over rigor. If a step feels opaque, re-read the skew-symmetric and unary-factor chapters (<a href="#ch3-skew-symmetric">Chapter 3</a> and <a href="#ch4-unary-factor">Chapter 4</a>) and try again.</span>
-    <span data-lang="ko">최대한 수학적 엄밀성을 따지기보다 이해가 쉽도록 풀어 써 보았는데, 모쪼록 읽는 분께 도움이 되었으면 한다. 만약 이해가 잘 안되는 부분이 있다면 앞선 글에서 설명했던 skew-symmetric matrix 부분(<a href="#ch3-skew-symmetric">Chapter 3</a>)과 unary factor(<a href="#ch4-unary-factor">Chapter 4</a>)를 다시 한 번 차근차근 읽어본 후 재도전하는 것을 추천한다.</span>
+	    <span data-lang="ko">위 설명은 수학적 엄밀성보다 읽기 쉬운 흐름을 우선했다. 이해가 잘 안 되는 부분이 있다면 앞선 skew-symmetric matrix 장(<a href="#ch3-skew-symmetric">3장</a>)과 unary factor 장(<a href="#ch4-unary-factor">4장</a>)을 다시 한 번 차근차근 읽어본 뒤 재도전해 보자.</span>
   </p>
 
   <div class="blog-backlink" data-lang="ko">
@@ -2976,7 +3039,7 @@ Class between(const Class&amp; g, ChartJacobian H1,
     <span data-lang="ko">Adjoint map, 가장 쉽게 이해하기</span>
   </h2>
   <p class="section-lead">
-    <span data-lang="en">An intuitive reading of the <code>AdjointMap</code> that appears in <code>H1</code>: it is the operator that carries an infinitesimal pose change expressed in <code>p1</code>'s frame over to <code>p2</code>'s frame, illustrated with a train-and-bird analogy.</span>
+	    <span data-lang="en">An intuitive reading of the <code>AdjointMap</code> that appears in <code>H1</code>: it maps an infinitesimal pose change expressed in <code>p1</code>'s frame into <code>p2</code>'s frame, illustrated with a train-and-bird analogy.</span>
     <span data-lang="ko"><code>BetweenFactor</code>의 <code>H1</code>에 등장하는 <code>AdjointMap</code>이 <code>p1</code> 좌표계의 미소 pose 변화량을 <code>p2</code> 좌표계로 옮겨주는 역할을 한다는 점을, 기차와 새 비유를 곁들여 직관적으로 풀어 설명한다.</span>
   </p>
 
@@ -2986,24 +3049,24 @@ Class between(const Class&amp; g, ChartJacobian H1,
   </h3>
   <p>
     <span data-lang="en">In the previous chapter, the Jacobian block in front of $\bm{\delta}_1$ turned out to be an <code>AdjointMap()</code>. What does multiplying $\bm{\delta}_1$ by this adjoint matrix actually <i>do</i> physically?</span>
-    <span data-lang="ko">그렇다면, 이전 글에서 $\bm{\delta}_1$ 앞에 <code>AdjointMap()</code>을 곱해주는 행위가 물리적으로 무슨 의미일까?</span>
+    <span data-lang="ko">그렇다면, 이전 글에서 $\bm{\delta}_1$ 앞에 <code>AdjointMap()</code>을 곱한다는 것은 물리적으로 무슨 의미일까?</span>
   </p>
   <p>
     <span data-lang="en">In short: the adjoint matrix takes the perturbation $\bm{\delta}_1$ expressed in <code>p1</code>'s local frame and re-expresses it in <code>p2</code>'s frame.</span>
-    <span data-lang="ko">결론적으로 말하자면, 이 adjoint matrix는 <code>p1</code> 관점 좌표계 상의 오차 $\bm{\delta}_1$를 <code>p2</code>의 좌표계로 변환하는 역할을 한다.</span>
+	    <span data-lang="ko">결론적으로 말하면, 이 adjoint matrix는 <code>p1</code>의 local frame에 표현된 perturbation $\bm{\delta}_1$를 <code>p2</code>의 좌표계로 다시 표현하는 역할을 한다.</span>
   </p>
   <p>
-    <span data-lang="en">Picture yourself sitting in a train, watching a bird fly outside through the window. From the bird's own frame, it mostly moves forward along its body, i.e., translation in $+x$ with a bit of rotation. From inside the train, however, the same flight looks quite different depending on the relative pose between you and the bird at that instant.</span>
-    <span data-lang="ko">우리가 기차에 타 있고, 기차 창문을 통해 새가 날아다니는 모습을 관찰한다고 가정해 보자. 새의 관점에서 보면, 새는 주로 자기 몸통 기준 앞쪽 방향으로 나아가니, $+x$ 방향으로의 병진 운동에 약간의 회전이 더해진 모양일 것이다. 하지만 기차에 타 있는 우리 관점에서는, 우리와 새의 그 순간 pose 차이에 따라 동일한 움직임이 전혀 다르게 보일 수 있다.</span>
+    <span data-lang="en">Picture yourself sitting in a train, watching a bird fly outside through the window. In the bird's own frame, the motion is mostly forward along its body: translation in $+x$ with a bit of rotation. From inside the train, however, the same flight looks quite different depending on the relative pose between you and the bird at that instant.</span>
+    <span data-lang="ko">우리가 기차에 타 있고, 기차 창문을 통해 새가 날아다니는 모습을 관찰한다고 가정해 보자. 새의 관점에서 보면, 새는 주로 자기 몸통 기준 앞쪽 방향으로 움직인다. 즉, $+x$ 방향 병진 운동에 약간의 회전이 더해진 모양일 것이다. 하지만 기차에 타 있는 우리 관점에서는, 우리와 새의 그 순간 pose 차이에 따라 동일한 움직임이 전혀 다르게 보일 수 있다.</span>
   </p>
   <ul>
     <li>
-      <span data-lang="en">If the bird is offset perpendicularly outward from the window, its forward flight will look (from our seat) like a motion that drifts <i>away</i> from the window while rotating.</span>
-      <span data-lang="ko">새와 우리 사이의 방향이 창문 바깥쪽으로 수직이면, 새의 움직임이 기차 안의 우리에게는 창문에서 멀어지면서 회전하는 것처럼 관측될 것이다.</span>
+	      <span data-lang="en">If the bird is offset outward from the window, perpendicular to the train, its forward flight will look from our seat like a motion that drifts <i>away</i> from the window while rotating.</span>
+	      <span data-lang="ko">새가 창문 바깥쪽, 즉 기차에 수직인 방향으로 떨어져 있다면, 새의 움직임은 기차 안의 우리에게 창문에서 멀어지면서 회전하는 것처럼 관측될 것이다.</span>
     </li>
     <li>
-      <span data-lang="en">If the offset is perpendicularly inward, the same flight looks like a motion that drifts <i>toward</i> the window while rotating.</span>
-      <span data-lang="ko">반대로 방향이 창문 안쪽으로 수직이라면, 같은 움직임이 창문 쪽으로 가까워지면서 회전하는 것처럼 보일 수 있다.</span>
+	      <span data-lang="en">If the offset is inward instead, the same flight looks like a motion that drifts <i>toward</i> the window while rotating.</span>
+	      <span data-lang="ko">반대로 새가 창문 안쪽 방향으로 떨어져 있다면, 같은 움직임이 창문 쪽으로 가까워지면서 회전하는 것처럼 보일 수 있다.</span>
     </li>
   </ul>
 
@@ -3013,7 +3076,7 @@ Class between(const Class&amp; g, ChartJacobian H1,
   </h3>
   <p>
     <span data-lang="en">The perturbations $\bm{\delta}_1$ and $\bm{\delta}_2$ derived in the <code>BetweenFactor</code> are described in two <i>different</i> local frames (those of <code>p1</code> and <code>p2</code>), so they cannot be subtracted directly. The role of the adjoint map is to take $\bm{\delta}_1$, currently in <code>p1</code>'s frame, and rewrite it in <code>p2</code>'s frame, after which the subtraction is well-defined.</span>
-    <span data-lang="ko">따라서, 우리가 이전 <code>BetweenFactor</code>를 통해 도출해낸 $\bm{\delta}_1$와 $\bm{\delta}_2$는 각기 다른 좌표계인 <code>p1</code>과 <code>p2</code>에서의, local 좌표계 기준으로 묘사되어 있기 때문에 바로 뺄셈을 할 수 없다. 하지만 이 <code>p1</code> 관점의 미소 pose 변화량 $\bm{\delta}_1$에 adjoint map을 곱해주어 좌표계를 <code>p2</code> 관점으로 통일시키면 뺄셈이 가능해진다.</span>
+	    <span data-lang="ko">따라서 이전 <code>BetweenFactor</code>에서 도출한 $\bm{\delta}_1$과 $\bm{\delta}_2$는 각각 <code>p1</code>과 <code>p2</code>의 서로 다른 local frame에 표현되어 있으므로 바로 뺄 수 없다. 하지만 <code>p1</code> 관점의 미소 pose 변화량 $\bm{\delta}_1$에 adjoint map을 곱해 좌표계를 <code>p2</code> 관점으로 통일하면 뺄셈이 가능해진다.</span>
   </p>
   <p>
     <span data-lang="en">With that in mind, look again at equation (7) from <a href="#ch6-pose2-between">Chapter 6</a>:</span>
@@ -3052,8 +3115,8 @@ Class between(const Class&amp; g, ChartJacobian H1,
   </p>
 
   <div class="note">
-    <span data-lang="en">This chapter aims for an undergraduate to first-year master's level of intuition rather than full rigor. Readers who want the deeper treatment can consult <a href="https://github.com/borglab/gtsam/blob/develop/doc/math.pdf" target="_blank" rel="noreferrer"><code>doc/math.pdf</code></a> in the GTSAM repository (not exactly bedtime reading).</span>
-    <span data-lang="ko">학부생부터 석사 1년차 초 학생들이 깊은 수학적 이해 없이도 따라올 수 있도록 최대한 쉽게 써 보았다. 진또배기 맛을 보고 싶다면 GTSAM 레포지토리의 <a href="https://github.com/borglab/gtsam/blob/develop/doc/math.pdf" target="_blank" rel="noreferrer"><code>doc/math.pdf</code></a>를 읽어보면 되지만, 추천하지는 않는다.</span>
+	    <span data-lang="en">This chapter aims for intuition at roughly an undergraduate to first-year master's level rather than full rigor. Readers who want the deeper treatment can consult <a href="https://github.com/borglab/gtsam/blob/develop/doc/math.pdf" target="_blank" rel="noreferrer"><code>doc/math.pdf</code></a> in the GTSAM repository.</span>
+	    <span data-lang="ko">이 장은 완전한 수학적 엄밀성보다 학부생부터 석사 1년차 정도의 독자가 따라올 수 있는 직관을 목표로 썼다. 더 깊은 수학적 설명이 필요하다면 GTSAM 레포지토리의 <a href="https://github.com/borglab/gtsam/blob/develop/doc/math.pdf" target="_blank" rel="noreferrer"><code>doc/math.pdf</code></a>를 참고하면 된다.</span>
   </div>
 
   <div class="blog-backlink" data-lang="ko">
@@ -3069,7 +3132,7 @@ Class between(const Class&amp; g, ChartJacobian H1,
   </h2>
   <p class="section-lead">
     <span data-lang="en">The 3D analog of <a href="#ch6-pose2-between">Chapter 6</a>: define the update and measurement functions for <code>Pose3</code>, list the skew-symmetric identities that drive the expansion, and arrive at the closed-form <code>H1</code> and <code>H2</code> blocks.</span>
-    <span data-lang="ko"><code>Pose3</code>의 <code>BetweenFactor</code>에서 <code>H1</code>, <code>H2</code>를 직접 유도해 보도록 update function과 measurement function을 정의하고, skew-symmetric matrix identity 등 전개에 필요한 핵심 hint와 최종 결과까지 정리한다.</span>
+	    <span data-lang="ko"><code>Pose3</code>의 <code>BetweenFactor</code>에서 <code>H1</code>, <code>H2</code>를 직접 유도하기 위해 update function과 measurement function을 정의하고, skew-symmetric matrix identity 등 전개에 필요한 핵심 hint와 최종 결과까지 정리한다.</span>
   </p>
 
   <h3>
@@ -3078,7 +3141,7 @@ Class between(const Class&amp; g, ChartJacobian H1,
   </h3>
   <p>
     <span data-lang="en">Finally, the <code>Pose3</code> case. The same four-step recipe from <a href="#ch6-pose2-between">Chapter 6</a> applies. Rather than spelling out every line of algebra, this chapter sets up the problem and provides the algebraic hints needed to finish the derivation as an exercise.</span>
-    <span data-lang="ko">이제 마지막으로 <code>Pose3</code>의 <code>H1</code>과 <code>H2</code>를 구해보자. <a href="#ch6-pose2-between">Chapter 6</a>의 <code>Pose2</code> 때와 마찬가지로, 아래 네 단계를 따르면 쉽게 수식을 유도해 볼 수 있다. 다만 연습 문제 삼아 직접 풀어볼 수 있도록 자세한 과정은 생략하고, 전개 시 필요한 테크닉만 hint로 적어두겠다(절대 귀찮아서가 아님).</span>
+	    <span data-lang="ko">이제 마지막으로 <code>Pose3</code>의 <code>H1</code>과 <code>H2</code>를 구해 보자. <a href="#ch6-pose2-between">6장</a>의 <code>Pose2</code> 때와 마찬가지로, 아래 네 단계를 따르면 수식을 유도할 수 있다. 다만 연습 문제처럼 직접 풀어볼 수 있도록 자세한 전개는 생략하고, 필요한 테크닉만 hint로 정리한다.</span>
   </p>
 
   <h3>
@@ -3086,8 +3149,8 @@ Class between(const Class&amp; g, ChartJacobian H1,
     <span data-lang="ko">Step 1. Update function 정의</span>
   </h3>
   <p>
-    <span data-lang="en">A subtlety first: 2D pose vectors put translation before rotation, but GTSAM's 3D pose vector uses the opposite order, rotation before translation. There is no mathematical reason; it is simply GTSAM's convention. Writing the rotation increment as $\bm{w}\in\R^3$ and the translation increment as $\bm{v}\in\R^3$, the tangent vector is $\bm{\delta} = [\bm{w};\,\bm{v}]^\intercal \in \R^6$. The 2D approximation $\mathrm{Rot}(\delta\theta) \simeq \bm{I} + \hat{\Omega}\,\delta\theta$ generalizes in 3D to $\bm{I} + [\bm{w}]_\times$ (revisit <a href="#ch3-skew-symmetric">Chapter 3</a> if this is unfamiliar). Composing the two transformation matrices,</span>
-    <span data-lang="ko">Translation-rotation 순으로 적었던 2D와는 달리 GTSAM에서 3D pose를 vector화할 때는 rotation-translation 순으로 적는다는 점에 유의하자(따로 수학적 이유는 없고, GTSAM의 convention이다). Vector 꼴로 표현된 rotation/translation 변화량을 각각 $\bm{w}\in\R^3$, $\bm{v}\in\R^3$라 하면, $\bm{\delta} = [\bm{w};\,\bm{v}]^\intercal \in \R^6$로 표현된다. 그리고 2D에서 $\mathrm{Rot}(\delta\theta) \simeq \bm{I} + \hat{\Omega}\,\delta\theta$로 표현했던 것이 3차원에서는 $\bm{I} + [\bm{w}]_\times$에 대응되기 때문에(이해가 어렵다면 <a href="#ch3-skew-symmetric">Chapter 3</a>의 skew-symmetric matrix 글을 다시 보자), 이를 풀어 쓰면 다음과 같다:</span>
+	    <span data-lang="en">A subtlety first: 2D pose vectors put translation before rotation, but GTSAM's 3D pose vector uses the opposite order: rotation before translation. There is no mathematical reason; it is simply GTSAM's convention. Write the rotation increment as $\bm{w}\in\R^3$ and the translation increment as $\bm{v}\in\R^3$, so the tangent vector is $\bm{\delta} = [\bm{w};\,\bm{v}]^\intercal \in \R^6$. The 2D approximation $\mathrm{Rot}(\delta\theta) \simeq \bm{I} + \hat{\Omega}\,\delta\theta$ generalizes in 3D to $\bm{I} + [\bm{w}]_\times$ (revisit <a href="#ch3-skew-symmetric">Chapter 3</a> if this is unfamiliar). Composing the two transformation matrices,</span>
+	    <span data-lang="ko">먼저 convention을 하나 짚고 가자. Translation-rotation 순으로 적었던 2D와 달리, GTSAM에서 3D pose를 vector화할 때는 rotation-translation 순으로 적는다. 따로 수학적 이유가 있다기보다 GTSAM의 convention이다. Vector 꼴로 표현된 rotation/translation 변화량을 각각 $\bm{w}\in\R^3$, $\bm{v}\in\R^3$라 하면, tangent vector는 $\bm{\delta} = [\bm{w};\,\bm{v}]^\intercal \in \R^6$이다. 2D에서 $\mathrm{Rot}(\delta\theta) \simeq \bm{I} + \hat{\Omega}\,\delta\theta$로 표현했던 근사는 3D에서 $\bm{I} + [\bm{w}]_\times$에 대응된다(이해가 어렵다면 <a href="#ch3-skew-symmetric">3장</a>의 skew-symmetric matrix 글을 다시 보자). 이를 풀어 쓰면 다음과 같다:</span>
   </p>
 
   $$
@@ -3116,8 +3179,8 @@ Class between(const Class&amp; g, ChartJacobian H1,
   $$
 
   <p>
-    <span data-lang="en">Here $\Log(\cdot)$ plays the role that "$\mathrm{Rot}(\theta) \to \theta$" played in 2D: it maps a 3D rotation matrix to its 3D rotation vector. The only property we will use is injectivity in the sense that $\Log(A) = \Log(B)$ implies $A = B$, so we never need to know the internals of $\Log(\cdot)$ to do the expansion.</span>
-    <span data-lang="ko">여기서 $\Log(\cdot)$는 2차원에서 $\mathrm{Rot}(\theta)$를 $\theta$로 간단히 표현했던 것처럼, 3차원 rotation matrix를 3차원 rotation vector로 변환해주는 함수라고 받아들이면 된다. 우리가 사용할 성질은 $\Log(A) = \Log(B)$이면 $A = B$라는 것뿐이므로, $\Log(\cdot)$의 내부 동작은 수식 전개 시 알 필요가 없다.</span>
+	    <span data-lang="en">Here $\Log(\cdot)$ plays the role that "$\mathrm{Rot}(\theta) \to \theta$" played in 2D: it maps a 3D rotation matrix to its 3D rotation vector. For this derivation, the only property we need is that matching the two $\Log(\cdot)$ outputs lets us match the corresponding rotation matrices, so we do not need the internal formula of $\Log(\cdot)$.</span>
+	    <span data-lang="ko">여기서 $\Log(\cdot)$는 2차원에서 $\mathrm{Rot}(\theta)$를 $\theta$로 간단히 표현했던 것처럼, 3차원 rotation matrix를 3차원 rotation vector로 변환해주는 함수라고 받아들이면 된다. 이 유도에서 필요한 성질은 두 $\Log(\cdot)$ 결과가 같으면 대응되는 rotation matrix도 같다고 놓고 전개할 수 있다는 점뿐이므로, $\Log(\cdot)$의 내부 공식은 알 필요가 없다.</span>
   </p>
 
   <h3>
@@ -3170,7 +3233,7 @@ Class between(const Class&amp; g, ChartJacobian H1,
 
   <p>
     <span data-lang="en">The simple subtraction $\theta_2 - \theta_1$ from 2D becomes the slightly heavier $\Log(\bm{R}^{\intercal}_1\bm{R}_2)$, but the underlying idea (a rotation difference) is the same.</span>
-    <span data-lang="ko">2D에서 $\theta_2 - \theta_1$로 간단히 표현되던 rotation 차이가 차원이 증가하며 $\Log(\bm{R}^{\intercal}_1\bm{R}_2)$라는 조금 복잡한 형태가 되었을 뿐, 두 rotation의 차이를 표현하려는 기저 원리는 동일하다.</span>
+	    <span data-lang="ko">2D에서 $\theta_2 - \theta_1$로 간단히 표현되던 rotation 차이가 차원이 증가하며 $\Log(\bm{R}^{\intercal}_1\bm{R}_2)$라는 조금 복잡한 형태가 되었을 뿐, 두 rotation의 차이를 표현한다는 기본 아이디어는 동일하다.</span>
   </p>
 
   <h3>
@@ -3179,7 +3242,7 @@ Class between(const Class&amp; g, ChartJacobian H1,
   </h3>
   <p>
     <span data-lang="en">From here on, try the algebra yourself. The two pieces to compute are exactly as in the 2D case:</span>
-    <span data-lang="ko">자, 여기서부터는 스스로 한 번 해보자. 풀어야 할 두 부분은 2D 때와 동일하다:</span>
+	    <span data-lang="ko">여기서부터는 직접 전개해 보자. 풀어야 할 두 부분은 2D 때와 동일하다:</span>
   </p>
   <ul>
     <li>
@@ -3237,8 +3300,8 @@ Class between(const Class&amp; g, ChartJacobian H1,
   </ul>
 
   <p>
-    <span data-lang="en">When the dust settles, the answer is</span>
-    <span data-lang="ko">최종적으로 풀면 다음과 같은 결과가 나와야 한다:</span>
+	    <span data-lang="en">After simplifying, the answer is</span>
+	    <span data-lang="ko">정리하면 다음과 같은 결과가 나와야 한다:</span>
   </p>
 
   $$
@@ -3251,7 +3314,7 @@ Class between(const Class&amp; g, ChartJacobian H1,
 
   <div class="note">
     <span data-lang="en">As predicted by <a href="#ch7-adjoint">Chapter 7</a>, $\bm{H}_1$ is exactly $-\Ad$ for the pose $h(\bm{\xi}_2, \bm{\xi}_1)$, and $\bm{H}_2$ is the identity. The same <code>between</code> routine in <code>gtsam/base/Lie.h</code> from <a href="#ch6-pose2-between">Chapter 6</a> handles both 2D and 3D with no change, since the adjoint identity holds in every dimension.</span>
-    <span data-lang="ko"><a href="#ch7-adjoint">Chapter 7</a>에서 예고했듯, $\bm{H}_1$은 $h(\bm{\xi}_2, \bm{\xi}_1)$의 $-\Ad$이고 $\bm{H}_2$는 identity이다. <a href="#ch6-pose2-between">Chapter 6</a>에서 본 <code>gtsam/base/Lie.h</code>의 <code>between</code> 함수가 2D와 3D 모두에서 그대로 동작하는 이유가 바로 이것이다.</span>
+	    <span data-lang="ko"><a href="#ch7-adjoint">7장</a>에서 예고했듯, $\bm{H}_1$은 $h(\bm{\xi}_2, \bm{\xi}_1)$의 $-\Ad$이고 $\bm{H}_2$는 identity이다. <a href="#ch6-pose2-between">6장</a>에서 본 <code>gtsam/base/Lie.h</code>의 <code>between</code> 함수가 2D와 3D 모두에서 그대로 동작하는 이유가 바로 이것이다.</span>
   </div>
 
   <div class="blog-backlink" data-lang="ko">
@@ -3262,12 +3325,12 @@ Class between(const Class&amp; g, ChartJacobian H1,
       <section class="section" id="ch9-pgmo-deformation">
   <span class="section-tag">09 · Kimera-PGMO</span>
   <h2 class="copy-heading">
-    <span data-lang="en">Kimera-PGMO's Deformation Factor derivation</span>
+	    <span data-lang="en">Kimera-PGMO's Deformation Factor Derivation</span>
     <span data-lang="ko">Kimera-PGMO의 Deformation Factor 유도</span>
   </h2>
   <p class="section-lead">
-    <span data-lang="en">A worked Jacobian for Kimera-PGMO's <code>DeformationEdgeFactor</code>, showing how rotation invariance reshapes the residual so each iteration costs one matrix multiply instead of two.</span>
-    <span data-lang="ko">Kimera-PGMO의 <code>DeformationEdgeFactor</code>를 직접 유도해보고, rotation invariance를 활용한 residual 재구성으로 매 iteration의 matrix multiplication을 두 번에서 한 번으로 줄이는 트릭을 정리한다.</span>
+	    <span data-lang="en">A worked Jacobian for Kimera-PGMO's <code>DeformationEdgeFactor</code>, showing how rotation invariance reshapes the residual so each iteration needs one matrix multiplication instead of two.</span>
+	    <span data-lang="ko">Kimera-PGMO의 <code>DeformationEdgeFactor</code>를 직접 유도해 보고, rotation invariance를 활용한 residual 재구성으로 매 iteration의 matrix multiplication을 두 번에서 한 번으로 줄이는 방법을 정리한다.</span>
   </p>
 
   <h3>
@@ -3284,10 +3347,10 @@ Class between(const Class&amp; g, ChartJacobian H1,
   </p>
   <p>
     <span data-lang="en">
-      With GTSAM well understood, let us read Yun's <code>DeformationEdgeFactor</code> as our worked example. If the previous chapters made sense, the inner workings of this factor should be readable too. (Note: the source is still being refactored upstream; as of February 5, 2025 the snippet below may not match the official repo line-for-line.)
+	      With GTSAM well understood, let us read Yun's implementation of <code>DeformationEdgeFactor</code> as our worked example. If the previous chapters made sense, the inner workings of this factor should be readable too. (Note: the source is still being refactored upstream; as of February 5, 2025, the snippet below may not match the official repo line-for-line.)
     </span>
     <span data-lang="ko">
-      자, 이제 GTSAM을 잘 이해했다면 실전 연습으로 Yun이 짜둔 <code>DeformationEdgeFactor</code>를 분석해보자. 앞의 글들을 잘 이해했다면, 이 factor의 동작원리를 이해할 수 있어야 한다(주의: 내부적으로 리팩토링 중인 코드여서, 25년 2월 5일 기준 official repo의 코드와 100% 일치하지 않을 수 있다).
+	      이제 GTSAM을 어느 정도 이해했다면 실전 연습으로 Yun의 <code>DeformationEdgeFactor</code> 구현을 분석해 보자. 앞의 글들을 잘 이해했다면, 이 factor의 동작 원리도 읽어낼 수 있어야 한다(주의: 내부적으로 리팩토링 중인 코드여서, 2025년 2월 5일 기준 official repo의 코드와 100% 일치하지 않을 수 있다).
     </span>
   </p>
 
@@ -3366,7 +3429,7 @@ Class between(const Class&amp; g, ChartJacobian H1,
       As we saw in the <a href="#ch8-pose3-between">Pose3 chapter</a> (re-read from Chapter 6 if any of this feels shaky), when a 3D pose is parameterized by a vector $\bm{\xi}\in\R^6$, the update operation $\bm{\xi}\oplus\bm{\delta}$ is
     </span>
     <span data-lang="ko">
-      앞서 <a href="#ch8-pose3-between">Pose3 글</a>에서 살펴보았듯이(잘 이해가 안되면 6번째 글부터 차근차근 다시 읽어보자), 3차원 상에서의 Pose를 vector form인 $\bm{\xi}\in\R^6$으로 표현하면, update function $\bm{\xi}\oplus\bm{\delta}$는 다음과 같이 정의된다:
+	      앞서 <a href="#ch8-pose3-between">Pose3 글</a>에서 살펴보았듯이(잘 이해가 안 되면 6장부터 차근차근 다시 읽어 보자), 3차원 pose를 vector form인 $\bm{\xi}\in\R^6$으로 표현하면, update function $\bm{\xi}\oplus\bm{\delta}$는 다음과 같이 정의된다:
     </span>
   </p>
 
@@ -3390,10 +3453,10 @@ Class between(const Class&amp; g, ChartJacobian H1,
   </h4>
   <p>
     <span data-lang="en">
-      The deformation factor uses an unusual little trick (perhaps the author finds it more fun than the rest of you do). Before getting to the trick, let us first write the residual the textbook way:
+	      The deformation factor uses a small but useful trick. Before getting to it, let us first write the residual the textbook way:
     </span>
     <span data-lang="ko">
-      그런데 deformation factor에서는 재밌는 technique이 사용되었다(<s>나만 재밌을지도</s>). 먼저 원래의 measurement function을 살펴보자. 원래 error term은 아래와 같이 정의되어서:
+	      그런데 deformation factor에서는 작지만 유용한 technique이 사용된다. 그 trick을 보기 전에 먼저 원래 방식의 measurement function을 살펴보자. Error term을 아래와 같이 정의하면:
     </span>
   </p>
 
@@ -3421,7 +3484,7 @@ Class between(const Class&amp; g, ChartJacobian H1,
       To extract $\bm{H}_1$ and $\bm{H}_2$ for the measurement function above, we plug equation (1) into (3) and expand:
     </span>
     <span data-lang="ko">
-      위의 measurement function에 대한 $\bm{H}_1$과 $\bm{H}_2$를 구하기 위해 (1)을 활용해서 전개하면 아래와 같이 되고:
+	      위의 measurement function에 대한 $\bm{H}_1$과 $\bm{H}_2$를 구하기 위해 (1)을 활용해서 전개하면 다음과 같다:
     </span>
   </p>
 
@@ -3437,7 +3500,7 @@ Class between(const Class&amp; g, ChartJacobian H1,
       Now (a) drop the cross term that multiplies $[\bm{w}_1]_\times$ by $\bm{v}$ (it is second-order in the perturbation), and (b) use the identity $[\bm{w}]_\times\bm{v} = -[\bm{v}]_\times\bm{w}$. Equation (4) then collapses to
     </span>
     <span data-lang="ko">
-      a) $[\bm{w}_1]_\times$ term과 $\bm{v}$이 서로 곱해지는 term은 다른 term에 비해 크기가 월등히 작아지므로 무시, b) $[\bm{w}]_\times\bm{v} = -[\bm{v}]_\times\bm{w}$의 성질을 이용해서 전개하면 (4)는 최종적으로 아래와 같이 전개된다:
+	      (a) $[\bm{w}_1]_\times$ term과 $\bm{v}$가 서로 곱해지는 term은 perturbation의 2차항이므로 무시하고, (b) $[\bm{w}]_\times\bm{v} = -[\bm{v}]_\times\bm{w}$의 성질을 이용해 전개하면 (4)는 다음과 같이 정리된다:
     </span>
   </p>
 
@@ -3461,7 +3524,7 @@ Class between(const Class&amp; g, ChartJacobian H1,
       Reading off the coefficients of $\bm{w}_1, \bm{v}_1, \bm{w}_2, \bm{v}_2$ (remember that in GTSAM a <code>Pose3</code> tangent vector is ordered as (rotation, translation)):
     </span>
     <span data-lang="ko">
-      따라서 $\bm{H}_1$과 $\bm{H}_2$는 아래와 같이 정의된다(다시금 강조하지만 GTSAM에서의 Pose3는 (rotation vector, translation vector)의 순으로 state가 구성되어 있다):
+	      따라서 $\bm{w}_1, \bm{v}_1, \bm{w}_2, \bm{v}_2$의 계수를 읽어내면 $\bm{H}_1$과 $\bm{H}_2$는 아래와 같이 정의된다(다시 강조하지만 GTSAM의 <code>Pose3</code> tangent vector는 rotation vector, translation vector 순서이다):
     </span>
   </p>
 
@@ -3492,7 +3555,7 @@ Class between(const Class&amp; g, ChartJacobian H1,
       Now look back at the code. The residual is actually computed like this:
     </span>
     <span data-lang="ko">
-      그러나, 위의 코드를 다시 살펴보자. 위의 factor에서 아래와 같이 error를 계산한다:
+	      그러나 위의 코드를 다시 살펴보자. 이 factor에서는 아래와 같이 error를 계산한다:
     </span>
   </p>
 
@@ -3513,7 +3576,7 @@ Class between(const Class&amp; g, ChartJacobian H1,
       Written as math, the residual is
     </span>
     <span data-lang="ko">
-      즉, 이를 수식으로 표현하면 error term이 아래와 같이 표현된다:
+	      즉, 이를 수식으로 표현하면 error term은 다음과 같다:
     </span>
   </p>
 
@@ -3524,18 +3587,18 @@ Class between(const Class&amp; g, ChartJacobian H1,
 
   <p>
     <span data-lang="en">
-      In the code, <code>t2_1</code> is $(\bm{R}_1\bm{z} + \bm{t}_1)$ and <code>t2_2</code> is $\bm{t}_2$. Read it this way: starting from node 2's position as seen in node 1's frame, transform it back into the world frame to obtain the warped point <code>t2_1</code>, then compare against node 2's own translation <code>t2_2</code>; the residual is their difference.
+	      In the code, <code>t2_1</code> is $(\bm{R}_1\bm{z} + \bm{t}_1)$ and <code>t2_2</code> is $\bm{t}_2$. Read it this way: take node 2's position as seen from node 1's frame, transform it back into the world frame to obtain the warped point <code>t2_1</code>, then compare it against node 2's own translation <code>t2_2</code>; the residual is their difference.
     </span>
     <span data-lang="ko">
-      코드 상의 <code>t2_1</code>이 $(\bm{R}_1\bm{z} + \bm{t}_1)$이고, <code>t2_2</code>가 $\bm{t}_2$가 된다. 의미를 설명하자면 <code>p1</code>의 좌표축 관점에서 본 <code>p2</code>의 position을 다시 world frame 관점으로 transformation을 했을 때의 warped point <code>t2_1</code>와 <code>p2</code>의 translation 값인 <code>t2_2</code>와의 차이를 error term으로 정의하였다.
+	      코드 상의 <code>t2_1</code>이 $(\bm{R}_1\bm{z} + \bm{t}_1)$이고, <code>t2_2</code>가 $\bm{t}_2$이다. 의미를 풀어 쓰면, <code>p1</code> 좌표계에서 본 <code>p2</code>의 position을 다시 world frame으로 옮겨 warped point <code>t2_1</code>를 만들고, 이를 <code>p2</code>의 translation 값인 <code>t2_2</code>와 비교한 차이를 error term으로 정의한 것이다.
     </span>
   </p>
   <p>
     <span data-lang="en">
-      Something is odd. We expected residual (2), so why is (7) admissible? The trick is <i>rotation invariance</i>: for a residual that measures a length difference, multiplying the vector inside the norm by any rotation matrix leaves the magnitude unchanged. Imagine a rigid stick whose endpoints' separation is the error; rotating the stick in any direction does not change that separation. Applying rotation by $\bm{R}_1$ to the vector inside the norm of (2) gives precisely (7).
+	      Something is odd. We expected residual (2), so why is (7) valid? The trick is <i>rotation invariance</i>: for a residual measured by a vector norm, multiplying the vector inside the norm by any rotation matrix leaves the magnitude unchanged. Imagine a rigid stick whose endpoint separation is the error; rotating the stick in any direction does not change that separation. Applying rotation by $\bm{R}_1$ to the vector inside the norm of (2) gives precisely (7).
     </span>
     <span data-lang="ko">
-      그런데 의아한 점이 있다. 우리가 예상한 error term은 (2)인데, 왜 (7)과 같이 계산할 수 있는 걸까? 여기서 주로 활용되는 technique이 'rotation invariance'이다. Rotation invariance는 위와 같이 거리 차이를 나타내는 error term에는 아무 rotation matrix를 곱해도 error의 크기가 불변한다는 것을 뜻한다. 비유를 통해 설명하자면, 어떤 막대기가 있고 그 막대기의 두 끝점 사이의 길이 차가 error 값이라고 하면, 이 막대기를 어느 방향으로 회전시키더라도 두 끝점 사이의 길이 차는 동일하다는 것이다. 이를 기반으로 (2)의 절댓값 안에 rotation matrix $\bm{R}_1$을 곱하면 (7)이 되는 것을 볼 수 있다.
+	      그런데 의아한 점이 있다. 우리가 예상한 error term은 (2)인데, 왜 (7)처럼 계산해도 될까? 여기서 활용되는 technique이 'rotation invariance'이다. Rotation invariance는 vector norm으로 측정되는 residual의 경우, norm 안의 vector에 어떤 rotation matrix를 곱해도 크기가 변하지 않는다는 뜻이다. 비유하자면, 막대기의 두 끝점 사이 거리가 error라면 막대기를 어느 방향으로 회전시키더라도 두 끝점 사이 거리는 동일하다. 이를 기반으로 (2)의 norm 안에 rotation matrix $\bm{R}_1$을 곱하면 정확히 (7)이 된다.
     </span>
   </p>
 
@@ -3545,10 +3608,10 @@ Class between(const Class&amp; g, ChartJacobian H1,
   </h4>
   <p>
     <span data-lang="en">
-      Why bother? The payoff is in the last paragraph; for now, let us derive $\bm{H}_1$ and $\bm{H}_2$. Substituting $\bm{\xi}_1\oplus\bm{\delta}_1$ and $\bm{\xi}_2\oplus\bm{\delta}_2$ into the vector inside the norm of (7):
+	      Why do this? The benefit appears in the final discussion; for now, let us derive $\bm{H}_1$ and $\bm{H}_2$. Substituting $\bm{\xi}_1\oplus\bm{\delta}_1$ and $\bm{\xi}_2\oplus\bm{\delta}_2$ into the vector inside the norm of (7):
     </span>
     <span data-lang="ko">
-      그럼 이 짓을 왜 하는 걸까? 마지막 부분에 답이 있으니, 궁금증을 뒤로 하고 우선 $\bm{H}_1$과 $\bm{H}_2$를 구해보자. $\bm{e}$의 절댓값 안에 있는 식에 $\bm{\xi}_1\oplus\bm{\delta}_1$와 $\bm{\xi}_2\oplus\bm{\delta}_2$를 넣고 전개해보자. 그럼 (7)은 아래와 같은 수식이 된다:
+	      그렇다면 왜 이런 변형을 하는 걸까? 이점은 마지막 discussion에서 드러나므로, 우선 $\bm{H}_1$과 $\bm{H}_2$를 구해 보자. (7)의 norm 안에 있는 식에 $\bm{\xi}_1\oplus\bm{\delta}_1$과 $\bm{\xi}_2\oplus\bm{\delta}_2$를 넣고 전개하면 다음과 같다:
     </span>
   </p>
 
@@ -3599,24 +3662,24 @@ Class between(const Class&amp; g, ChartJacobian H1,
       Comparing (6) and (9), the two formulations solve the same problem yet yield different Jacobians. The advantage is in the per-iteration cost: (6) requires two matrix products, $\bm{R}_1^{\!\top}(\bm{t}_2 - \bm{t}_1)$ and $\bm{R}_1^{\!\top}\bm{R}_2$ (plus caching $\bm{R}_1^{\!\top}$), whereas (9) requires only $-[\bm{R}_1\bm{z}]_\times\bm{R}_1$ once. Note that in (9) both $\bm{R}_1$ and $\bm{R}_2$ are already member data of the <code>Pose3</code> objects <code>p1</code> and <code>p2</code>, so they cost nothing extra.
     </span>
     <span data-lang="ko">
-      최종적으로 (6)과 (9)를 살펴보면, 우리가 풀고자 하는 문제는 동일하지만, 최종적으로 계산되는 Jacobian이 달라지는 것을 볼 수 있다. 위의 행위의 장점은 (6)에서는 matrix multiplication을 $\bm{R}_1^{\!\top}(\bm{t}_2 - \bm{t}_1)$, $\bm{R}_1^{\!\top}\bm{R}_2$(+ $\bm{R}_1^{\!\top}$ 계산해두기)를 두 번 수행하는 반면, (9)에서는 $-[\bm{R}_1\bm{z}]_\times\bm{R}_1$ 한 번만 수행하면 되는 장점이 있다(note, (9)에서 $\bm{R}_1$과 $\bm{R}_2$는 이미 코드 내의 Pose3인 <code>p1</code>, <code>p2</code>가 각각 member 변수로 지니고 있기 때문에, 추가적인 계산이 들지 않는다).
+	      (6)과 (9)를 비교하면 두 formulation이 같은 문제를 풀지만 서로 다른 Jacobian을 만든다는 것을 볼 수 있다. 장점은 iteration마다 드는 계산 비용에 있다. (6)은 $\bm{R}_1^{\!\top}(\bm{t}_2 - \bm{t}_1)$와 $\bm{R}_1^{\!\top}\bm{R}_2$라는 두 matrix product가 필요한 반면(+ $\bm{R}_1^{\!\top}$ 캐싱), (9)는 $-[\bm{R}_1\bm{z}]_\times\bm{R}_1$ 한 번만 계산하면 된다. 참고로 (9)의 $\bm{R}_1$과 $\bm{R}_2$는 이미 코드 내 <code>Pose3</code> 객체 <code>p1</code>, <code>p2</code>의 member data이므로 추가 계산이 들지 않는다.
     </span>
   </p>
   <p>
     <span data-lang="en">
-      "That is all? One matrix multiply?" Now suppose a SLAM problem builds 1,000, or even 10,000 such factors. Per optimization iteration that saves 1,000 (or 10,000) matrix multiplications; total savings scale as (iterations) $\times$ (factor count). Empirically, mapping a lab-scale indoor scene yields on the order of 4,000 <code>DeformationEdgeFactor</code>s.
+	      One matrix multiplication may sound minor. But suppose a SLAM problem builds 1,000, or even 10,000 such factors. Per optimization iteration that saves 1,000 (or 10,000) matrix multiplications; total savings scale as (iterations) $\times$ (factor count). Empirically, mapping a lab-scale indoor scene yields on the order of 4,000 <code>DeformationEdgeFactor</code>s.
     </span>
     <span data-lang="ko">
-      '고작 그게…전부?'라고 생각할 수 있지만, 우리의 SLAM 문제에서 위의 factor가 1,000개, 더 나아가 10,000개가 된다고 가정해보자. 그러면 optimization의 매 iteration 마다 matrix multiplication을 1,000번, 10,000번을 덜해도 된다는 뜻이다. 즉, 동일한 optimization을 수행하는데 iteration 횟수 * factor의 갯수만큼 연산을 아낄 수 있다. 참고로, 경험적으로 연구실 레벨의 스케일인 실내를 mapping했을 때 약 4,000개의 <code>DeformationEdgeFactor</code>가 형성되는 것을 확인했다.
+	      Matrix multiplication 하나가 별것 아니어 보일 수 있다. 하지만 SLAM 문제에서 위 factor가 1,000개, 더 나아가 10,000개가 된다고 가정해 보자. 그러면 optimization의 매 iteration마다 matrix multiplication을 1,000번 또는 10,000번 줄일 수 있다. 즉, 동일한 optimization을 수행하면서 iteration 횟수 $\times$ factor 개수만큼 연산을 아낄 수 있다. 참고로 연구실 규모의 실내 scene을 mapping했을 때 경험적으로 약 4,000개의 <code>DeformationEdgeFactor</code>가 형성되는 것을 확인했다.
     </span>
   </p>
 
   <div class="note">
     <span data-lang="en">
-      <b>Takeaway.</b> Whenever your residual is a vector norm, you have one free rotation matrix to spend. Apply it so that the perturbation $\bm{w}_1$ couples through a single conjugation, not through a transposed product, and the Jacobian gets cheaper by exactly one matmul per factor per iteration. Same problem, same minimum, fewer FLOPs.
+	      <b>Takeaway.</b> Whenever your residual is a vector norm, you can insert one rotation matrix without changing the objective. Use that freedom so that the perturbation $\bm{w}_1$ couples through a single conjugation, not through a transposed product, and the Jacobian gets cheaper by exactly one matrix multiplication per factor per iteration. Same problem, same minimum, fewer FLOPs.
     </span>
     <span data-lang="ko">
-      <b>핵심 정리.</b> Residual이 vector norm 형태이면 회전 행렬 하나를 마음대로 곱할 수 있는 자유도가 있다. $\bm{w}_1$이 transpose 곱이 아니라 conjugation을 통해 한 번만 끼어들도록 그 자유도를 써주면, factor 하나당 iteration 하나당 정확히 matrix multiplication 한 번 만큼 Jacobian이 싸진다. 같은 문제, 같은 minimum, 더 적은 FLOPs.
+	      <b>핵심 정리.</b> Residual이 vector norm 형태이면 objective를 바꾸지 않고 rotation matrix 하나를 곱해 넣을 수 있다. $\bm{w}_1$이 transpose 곱이 아니라 conjugation을 통해 한 번만 끼어들도록 이 자유도를 쓰면, factor 하나당 iteration 하나마다 정확히 matrix multiplication 한 번만큼 Jacobian 계산이 가벼워진다. 같은 문제, 같은 minimum, 더 적은 FLOPs.
     </span>
   </div>
 
@@ -3632,8 +3695,8 @@ Class between(const Class&amp; g, ChartJacobian H1,
     <span data-lang="ko"><code>numericalDerivative</code>로 factor 디버깅하기</span>
   </h2>
   <p class="section-lead">
-    <span data-lang="en">A practical sanity check: have GTSAM finite-difference your residual and compare against the analytical Jacobian you just hand-derived, so a single sign error stops costing you a week.</span>
-    <span data-lang="ko">한 줄짜리 sanity check: GTSAM이 residual을 finite difference로 미분해주는 값과 직접 손으로 유도한 analytical Jacobian을 자동으로 비교해서, 부호 하나 잘못 적은 실수에 일주일을 날리지 않도록 만든다.</span>
+	    <span data-lang="en">A practical sanity check: have GTSAM finite-difference your residual and compare it against the analytical Jacobian you just hand-derived, so a single sign error does not cost you a week.</span>
+	    <span data-lang="ko">실용적인 sanity check: GTSAM이 residual을 finite difference로 미분한 값과 직접 손으로 유도한 analytical Jacobian을 비교해서, 부호 하나 잘못 적은 실수에 일주일을 날리지 않도록 만든다.</span>
   </p>
 
   <h3>
@@ -3642,10 +3705,10 @@ Class between(const Class&amp; g, ChartJacobian H1,
   </h3>
   <p>
     <span data-lang="en">
-      Do you know what makes SLAM (and optimization research more broadly) so painful? <b>You usually have no idea where in your graph things went wrong.</b> A particularly common case is that the factor's Jacobian itself was hand-coded incorrectly, and the optimizer silently refuses to converge. This chapter is about debugging that situation.
+	      One reason SLAM, and optimization research more broadly, is painful is that <b>you usually have no idea where in your graph things went wrong.</b> A particularly common case is that the factor's Jacobian itself was hand-coded incorrectly, and the optimizer silently refuses to converge. This chapter is about debugging that situation.
     </span>
     <span data-lang="ko">
-      SLAM, 특히나 이런 optimization 관련 연구에서 가장 힘든 점이 무엇인지 아는가? <b>지금 내 graph에서 어디가 틀렸는지 알 턱이 없다는 것</b>이다. 특히, factor 자체의 Jacobian을 잘못 계산해줘서 optimization이 안되는 경우가 왕왕 생기기도 한다. 오늘은 내 factor가 제대로 동작하는지 디버깅하는 방법에 대해 알아보자.
+	      SLAM, 더 넓게는 optimization 관련 연구가 어려운 이유 중 하나는 <b>지금 내 graph에서 어디가 틀렸는지 알기 어렵다는 것</b>이다. 특히 factor 자체의 Jacobian을 잘못 계산해서 optimization이 안 되는 경우가 종종 생긴다. 이 장에서는 그런 상황에서 내 factor가 제대로 동작하는지 디버깅하는 방법을 알아보자.
     </span>
   </p>
 
@@ -3655,10 +3718,10 @@ Class between(const Class&amp; g, ChartJacobian H1,
   </h3>
   <p>
     <span data-lang="en">
-      GTSAM ships with <code>numericalDerivative</code> for exactly this purpose. (The author admits this took embarrassingly long to discover. "Ceres can do automatic numerical Jacobians; GTSAM makes you hand-derive everything!" was a thing the past me used to shout. Sorry, past me.)
+	      GTSAM ships with <code>numericalDerivative</code> for exactly this purpose. It lets you compare a hand-written analytical Jacobian against a numerical finite-difference Jacobian, which is often the fastest way to catch a sign error or a frame-convention mismatch.
     </span>
     <span data-lang="ko">
-      GTSAM에서는 이를 위해 <code>numericalDerivative</code>라는 기능이 존재한다(필자도 이런 게 있는 줄 최근에 알았다. 'Ceres Solver는 numerical하게 알아서 Jacobian을 구해주는 반면 GTSAM은 손수 계산해 줘야한다구욧!'이라고 외치고 다닌 멍청한 과거의 나… 다시금 반성한다…).
+	      GTSAM에는 이를 위한 <code>numericalDerivative</code> 기능이 있다. 손으로 작성한 analytical Jacobian을 numerical finite-difference Jacobian과 비교할 수 있으므로, 부호 실수나 frame convention mismatch를 빠르게 잡아내는 데 매우 유용하다.
     </span>
   </p>
   <p>
@@ -3761,7 +3824,7 @@ int main() {
       <code>evaluateFactor</code> verifies that the Jacobian of your hand-written factor is numerically correct. It compares the numerical Jacobians (<code>H1_expected</code>, <code>H2_expected</code>) produced by <code>gtsam::numericalDerivative21</code> and <code>gtsam::numericalDerivative22</code> against the analytical Jacobians (<code>H1_actual</code>, <code>H2_actual</code>) you painstakingly derived by hand.
     </span>
     <span data-lang="ko">
-      위와 같이 작성한 <code>evaluateFactor</code>라는 함수를 사용해서 현재 내가 짠 factor의 Jacobian이 수치적으로 맞는지 분석해주는 함수이다. 위의 <code>gtsam::numericalDerivative21</code>와 <code>gtsam::numericalDerivative22</code>에서 수치적으로 계산한 Jacobian인 <code>H1_expected</code>, <code>H2_expected</code>와 우리가 손으로 한땀한땀 작성한 <code>H1_actual</code>과 <code>H2_actual</code>이 동일한지 확인해볼 수 있다.
+	      <code>evaluateFactor</code>는 내가 작성한 factor의 Jacobian이 수치적으로 맞는지 확인해 주는 helper이다. <code>gtsam::numericalDerivative21</code>와 <code>gtsam::numericalDerivative22</code>가 계산한 numerical Jacobian(<code>H1_expected</code>, <code>H2_expected</code>)을 손으로 작성한 analytical Jacobian(<code>H1_actual</code>, <code>H2_actual</code>)과 비교한다.
     </span>
   </p>
 
@@ -3774,7 +3837,7 @@ int main() {
       If both versions agree, <code>gtsam::assert_equal</code> prints <code>1</code>. If they disagree, it dumps
     </span>
     <span data-lang="ko">
-      만약에 둘이 비교했을 때 같으면 <code>gtsam::assert_equal</code>이 1을 출력하고, 만약 값이 다르다면, 아마 아래와 같이
+	      두 값이 같으면 <code>gtsam::assert_equal</code>이 <code>1</code>을 출력한다. 값이 다르면 다음 정보를 출력한다:
     </span>
   </p>
   <ul>
@@ -3784,19 +3847,19 @@ int main() {
     </li>
     <li>
       <span data-lang="en">the expected matrix,</span>
-      <span data-lang="ko">예상 값과 실제 값,</span>
+	      <span data-lang="ko">기대 matrix,</span>
     </li>
     <li>
       <span data-lang="en">the actual matrix,</span>
-      <span data-lang="ko">그리고 두 행렬의 차이,</span>
+	      <span data-lang="ko">실제 matrix,</span>
     </li>
     <li>
       <span data-lang="en">the elementwise difference, and</span>
-      <span data-lang="ko">그리고 마지막으로</span>
+	      <span data-lang="ko">원소별 차이,</span>
     </li>
     <li>
       <span data-lang="en">a final <code>0</code> for the failed assertion.</span>
-      <span data-lang="ko"><code>0</code></span>
+	      <span data-lang="ko">failed assertion을 의미하는 마지막 <code>0</code>.</span>
     </li>
   </ul>
   <p>
@@ -3804,7 +3867,7 @@ int main() {
       In one such printout from a different factor, the mismatch was localized to entry $(1,0)$ of the analytical Jacobian, where a minus sign had been dropped. That single line of console output saved a week of mysterious divergence.
     </span>
     <span data-lang="ko">
-      어떤 factor를 구현했을 때 받은 출력에서는, analytical Jacobian의 $(1,0)$ 성분에 minus 부호 하나가 빠진 것이 그대로 드러났다. 그 한 줄의 console 출력이 일주일짜리 미스터리 divergence를 막아준 셈이다. 이처럼 <code>numericalDerivative</code>를 쓰면 내가 계산한 Jacobian이 정확한 값인지 쉽게 확인할 수 있다 (GTSAM 짱짱!).
+	      어떤 factor를 구현했을 때 받은 출력에서는 analytical Jacobian의 $(1,0)$ 성분에 minus 부호 하나가 빠진 것이 그대로 드러났다. 그 한 줄의 console 출력이 일주일짜리 미스터리 divergence를 막아준 셈이다. 이처럼 <code>numericalDerivative</code>를 쓰면 내가 계산한 Jacobian이 정확한 값인지 쉽게 확인할 수 있다.
     </span>
   </p>
 
@@ -3817,7 +3880,7 @@ int main() {
       When analytical and numerical Jacobians disagree, the cause is almost always one of a small set of bugs. The most common culprits, roughly in order:
     </span>
     <span data-lang="ko">
-      Analytical과 numerical Jacobian이 어긋날 때, 원인은 거의 항상 다음 몇 가지 중 하나이다. 빈도순으로 정리해보면:
+	      Analytical Jacobian과 numerical Jacobian이 어긋날 때, 원인은 거의 항상 다음 몇 가지 중 하나이다. 빈도순으로 정리하면:
     </span>
   </p>
   <ul>
@@ -3834,8 +3897,8 @@ int main() {
       <span data-lang="ko"><b>좌측 vs 우측 perturbation.</b> $\bm{T}\,\Exp(\bm{\delta})$(body frame)로 perturb하는 것과 $\Exp(\bm{\delta})\,\bm{T}$(world frame)로 perturb하는 것의 Jacobian은 adjoint만큼 차이가 난다. 둘 다 valid하지만, 손으로 유도한 식이 해당 type에 대해 GTSAM이 쓰는 규약과 일치해야 한다(<a href="#ch7-adjoint">7장</a> 참고).</span>
     </li>
     <li>
-      <span data-lang="en"><b>Higher-order terms not dropped.</b> An exact closed-form residual occasionally retains second-order pieces that the linearization ignores; numerical differentiation, being unbiased, picks them up at large $\varepsilon$ and the test "fails." Lower <code>delta</code> until the apparent error stops shrinking.</span>
-      <span data-lang="ko"><b>고차항 무시 실수.</b> 어떤 residual은 closed-form에서 2차 이상의 term이 살아남는데 linearization 단계에서 무시되는 경우가 있다. Numerical differentiation은 unbiased이기 때문에 $\varepsilon$가 크면 이를 잡아내서 test가 "실패"한 것처럼 보일 수 있다. <code>delta</code>를 줄여가며 오차가 더 이상 작아지지 않는 지점을 찾으면 된다.</span>
+	      <span data-lang="en"><b>Higher-order terms not dropped.</b> An exact closed-form residual occasionally retains second-order pieces that the linearization ignores; numerical differentiation can pick them up when $\varepsilon$ is too large, making the test appear to fail. Lower <code>delta</code> until the apparent error stops shrinking.</span>
+	      <span data-lang="ko"><b>고차항 무시 실수.</b> 어떤 residual은 closed-form에서 2차 이상의 term이 살아남는데 linearization 단계에서는 이를 무시하는 경우가 있다. $\varepsilon$가 너무 크면 numerical differentiation이 이 영향을 잡아내서 test가 "실패"한 것처럼 보일 수 있다. <code>delta</code>를 줄여가며 오차가 더 이상 작아지지 않는 지점을 찾으면 된다.</span>
     </li>
     <li>
       <span data-lang="en"><b>Bad <code>delta</code>.</b> Too large and the central difference truncation error dominates; too small and floating-point cancellation does. The default $\varepsilon = 10^{-5}$ is a reasonable starting point for double precision.</span>
@@ -4072,11 +4135,13 @@ int main() {
         function close() {
           sidebar.classList.remove('open');
           backdrop.classList.remove('active');
+          document.body.classList.remove('sidebar-open');
           toggle.setAttribute('aria-expanded', 'false');
         }
         function open() {
           sidebar.classList.add('open');
           backdrop.classList.add('active');
+          document.body.classList.add('sidebar-open');
           toggle.setAttribute('aria-expanded', 'true');
         }
         toggle.addEventListener('click', () => {
@@ -4087,6 +4152,15 @@ int main() {
           a.addEventListener('click', () => {
             if (window.innerWidth <= 1024) close();
           });
+        });
+        // Close sidebar on Esc and when transitioning back to desktop width
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && sidebar.classList.contains('open')) close();
+        });
+        let lastW = window.innerWidth;
+        window.addEventListener('resize', () => {
+          if (window.innerWidth > 1024 && lastW <= 1024) close();
+          lastW = window.innerWidth;
         });
       }
 
