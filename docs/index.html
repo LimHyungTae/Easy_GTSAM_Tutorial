@@ -3,28 +3,28 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>【GTSAM】 How GTSAM Works · A Bilingual Internals Tutorial</title>
-  <meta name="description" content="A hands-on, bilingual (English/Korean) tutorial that walks through how GTSAM actually works inside: factor graphs, BetweenFactor, Lie group Jacobians, Adjoint map, Pose2/Pose3 derivations, and numerical-derivative debugging. By Hyungtae Lim (MIT SPARK Lab)." />
-  <meta name="keywords" content="GTSAM, GTSAM tutorial, factor graph, factor graph optimization, pose graph SLAM, BetweenFactor, PriorFactor, Lie group, Lie algebra, SE(2), SE(3), SO(3), Jacobian, Adjoint, ISAM2, Levenberg-Marquardt, robotics, SLAM, MIT SPARK Lab, Luca Carlone, Frank Dellaert, Hyungtae Lim, GTSAM 튜토리얼, GTSAM 사용법, 팩터 그래프, 포즈 그래프 SLAM, 리 군, Jacobian 유도" />
+  <title>【Easy】 GTSAM Tutorial · Step-by-Step Scaffolding for Factor Graphs and Lie-Group Jacobians</title>
+  <meta name="description" content="A bilingual (English / 한국어) GTSAM tutorial built around step-by-step scaffolding. Every chapter layers on the previous one: factor graphs, BetweenFactor, Lie-group Jacobians, the Adjoint map, Pose2 and Pose3 Jacobian derivations, and numerical-derivative debugging. By Hyungtae Lim (MIT SPARK Lab)." />
+  <meta name="keywords" content="GTSAM, GTSAM tutorial, Easy GTSAM tutorial, step-by-step GTSAM, scaffolded GTSAM tutorial, factor graph, factor graph optimization, pose graph SLAM, BetweenFactor, PriorFactor, Lie group, Lie algebra, SE(2), SE(3), SO(3), Jacobian, Adjoint, ISAM2, Levenberg-Marquardt, robotics, SLAM, MIT SPARK Lab, Luca Carlone, Frank Dellaert, Hyungtae Lim, GTSAM 튜토리얼, 쉬운 GTSAM, 단계별 GTSAM, 팩터 그래프, 포즈 그래프 SLAM, 리 군, Jacobian 유도" />
   <meta name="author" content="Hyungtae Lim" />
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
 
-  <link rel="canonical" href="https://limhyungtae.github.io/gtsam_for_everyone/" />
+  <link rel="canonical" href="https://limhyungtae.github.io/Easy_GTSAM_Tutorial/" />
 
   <!-- Open Graph -->
-  <meta property="og:title" content="【GTSAM】 How GTSAM Works · A Bilingual Internals Tutorial" />
-  <meta property="og:description" content="A hands-on tutorial on how GTSAM actually works inside: factor graphs, BetweenFactor, Lie group Jacobians, Adjoint map, and numerical-derivative debugging." />
+  <meta property="og:title" content="【Easy】 GTSAM Tutorial · Step-by-Step Scaffolding for Factor Graphs and Lie-Group Jacobians" />
+  <meta property="og:description" content="A bilingual GTSAM tutorial built around step-by-step scaffolding. Each chapter layers on the previous one, from factor graphs and BetweenFactor to Lie-group Jacobians, the Adjoint map, and numerical-derivative debugging." />
   <meta property="og:type" content="article" />
-  <meta property="og:url" content="https://limhyungtae.github.io/gtsam_for_everyone/" />
-  <meta property="og:site_name" content="How GTSAM Works" />
+  <meta property="og:url" content="https://limhyungtae.github.io/Easy_GTSAM_Tutorial/" />
+  <meta property="og:site_name" content="Easy GTSAM Tutorial" />
   <meta property="og:locale" content="en_US" />
   <meta property="og:locale:alternate" content="ko_KR" />
-  <meta property="og:image" content="https://limhyungtae.github.io/gtsam_for_everyone/figures/gtsam_solving.png" />
+  <meta property="og:image" content="https://limhyungtae.github.io/Easy_GTSAM_Tutorial/figures/gtsam_solving.png" />
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="【GTSAM】 How GTSAM Works · A Bilingual Internals Tutorial" />
-  <meta name="twitter:description" content="A hands-on tutorial on how GTSAM actually works inside, with full English and Korean. By Hyungtae Lim (MIT SPARK Lab)." />
+  <meta name="twitter:title" content="【Easy】 GTSAM Tutorial · Step-by-Step Scaffolding for Factor Graphs and Lie-Group Jacobians" />
+  <meta name="twitter:description" content="A bilingual (EN/KO) GTSAM tutorial focused on step-by-step scaffolding. Each chapter layers on the previous. By Hyungtae Lim (MIT SPARK Lab)." />
   <meta name="twitter:creator" content="@LimHyungtae" />
 
   <!-- Structured data: Article + Author -->
@@ -32,15 +32,15 @@
   {
     "@context": "https://schema.org",
     "@type": "Article",
-    "headline": "How GTSAM Works: A Bilingual Internals Tutorial",
-    "alternativeHeadline": "A 10-chapter walk-through of GTSAM's BetweenFactor, Lie group Jacobians, and Adjoint map",
-    "description": "A bilingual (English/Korean) deep-dive into how GTSAM works internally, written by a postdoc working with the GTSAM maintainers at MIT.",
+    "headline": "Easy GTSAM Tutorial: A Bilingual, Step-by-Step Scaffolded Walk-Through",
+    "alternativeHeadline": "Eleven chapters that scaffold on each other, from factor graphs and BetweenFactor to Pose3 Jacobians via the Adjoint map",
+    "description": "A bilingual (English/Korean) GTSAM tutorial built around step-by-step scaffolding, written by a postdoc at the lab that maintains GTSAM.",
     "inLanguage": ["en", "ko"],
-    "keywords": "GTSAM, factor graph, pose graph SLAM, BetweenFactor, Lie group, Jacobian, Adjoint, ISAM2, robotics, SLAM",
-    "url": "https://limhyungtae.github.io/gtsam_for_everyone/",
+    "keywords": "GTSAM, Easy GTSAM Tutorial, step-by-step scaffolding, factor graph, pose graph SLAM, BetweenFactor, Lie group, Jacobian, Adjoint, ISAM2, robotics, SLAM",
+    "url": "https://limhyungtae.github.io/Easy_GTSAM_Tutorial/",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://limhyungtae.github.io/gtsam_for_everyone/"
+      "@id": "https://limhyungtae.github.io/Easy_GTSAM_Tutorial/"
     },
     "author": {
       "@type": "Person",
@@ -887,7 +887,7 @@
     <!-- ==================== SIDEBAR ==================== -->
     <aside class="sidebar" id="sidebar" aria-label="Tutorial navigation">
       <div class="sidebar-inner">
-        <p class="sidebar-brand"><a href="#top">How GTSAM Works</a></p>
+        <p class="sidebar-brand"><a href="#top">Easy GTSAM Tutorial</a></p>
         <p class="sidebar-sub">
           <span data-lang="en">Bilingual tutorial · 11 chapters</span>
           <span data-lang="ko">영/한 튜토리얼 · 11개 챕터</span>
@@ -984,21 +984,21 @@
         </div>
 
         <h1>
-          <span data-lang="en">How GTSAM Works<br/>A Bilingual Internals Tutorial</span>
-          <span data-lang="ko">GTSAM이 어떻게 동작하는가<br/>영/한 병렬 internals 튜토리얼</span>
+          <span data-lang="en">Easy GTSAM Tutorial<br/>A Step-by-Step Scaffolded Walk-Through</span>
+          <span data-lang="ko">쉽게 따라가는 GTSAM 튜토리얼<br/>단계별로 차근차근 쌓아 올리는 scaffolding</span>
         </h1>
 
         <div class="subtitle">
-          <span data-lang="en">A 10-chapter walk-through of factor graphs, Lie group Jacobians, and Adjoint maps, by Hyungtae Lim</span>
-          <span data-lang="ko">Factor graph부터 Lie group Jacobian, Adjoint map까지, 10개 챕터로 풀어쓴 GTSAM 내부 동작 가이드, by 임형태</span>
+          <span data-lang="en">Factor graphs, Lie-group Jacobians, and Adjoint maps in 10 chapters that scaffold on each other, by Hyungtae Lim</span>
+          <span data-lang="ko">Factor graph, Lie group Jacobian, Adjoint map까지 10개 챕터가 단계별로 쌓이는 GTSAM 튜토리얼, by 임형태</span>
         </div>
 
         <p class="lead">
           <span data-lang="en">
-            This site is a living, opinionated tutorial about <b>what actually happens inside GTSAM</b> when you call <code>graph.add(BetweenFactor&lt;Pose2&gt;(...))</code> and <code>LevenbergMarquardtOptimizer(graph, initial).optimize()</code>. It is not a usage guide; it is an internals guide. If you only need to <i>run</i> pose-graph SLAM with GTSAM, read Chapter Q (Quick Start) and stop. If you want to know <i>why</i> the Jacobians look the way they do, why <code>BetweenFactor</code> uses <code>Local</code> on a manifold, and why the Adjoint shows up everywhere, read all 10 chapters.
+            This site is a <b>step-by-step scaffolded</b> tour of what actually happens inside GTSAM. Every chapter is sized to layer on the one before it. Chapter Q is a 5-minute pose-graph SLAM recipe (read it if you only need to <i>run</i> code). Chapters 1 through 8 build up the manifold and Lie-group vocabulary you need to derive your own factors, one small step at a time. Chapters 9 and 10 apply the framework to a real Kimera-PGMO factor and show you how to verify a Jacobian numerically. The goal is that, by the end, deriving <code>BetweenFactor</code> on a new Lie group feels like a routine exercise, not a research project.
           </span>
           <span data-lang="ko">
-            이 사이트는 <b>GTSAM 내부에서 실제로 어떤 일이 일어나는지</b>에 초점을 맞춘 튜토리얼이다. <code>graph.add(BetweenFactor&lt;Pose2&gt;(...))</code>, <code>LevenbergMarquardtOptimizer(graph, initial).optimize()</code> 같은 호출이 도대체 내부에서 어떤 수식으로 풀리는가? GTSAM 사용법만 궁금하다면 Chapter Q (Quick Start)만 읽고 멈춰도 된다. 반면, Jacobian이 왜 저렇게 생겼고, <code>BetweenFactor</code>가 왜 manifold의 <code>Local</code>을 쓰며, Adjoint가 왜 자꾸 튀어나오는지 그 <b>'왜'</b>가 궁금하다면 1장부터 10장까지 차근차근 읽어보자.
+            이 사이트는 <b>step-by-step scaffolding 방식</b>으로 GTSAM 내부 동작을 익히는 튜토리얼이다. 매 챕터가 직전 챕터 위에 차근차근 쌓이도록 분량과 난이도를 의도적으로 조정했다. Chapter Q는 5분짜리 pose-graph SLAM 레시피이니 GTSAM을 <i>돌리기만</i> 하면 된다면 여기까지만 읽어도 된다. 1장부터 8장까지는 본인 손으로 새 factor의 Jacobian을 유도하기 위해 필요한 manifold/Lie group 어휘를 한 단계씩 쌓아간다. 9–10장은 그 framework를 실제 Kimera-PGMO factor에 적용해보고, 본인이 유도한 Jacobian을 numerical하게 검증하는 법까지 다룬다. 이 글을 다 읽었을 때, 새로운 Lie group에 대해 <code>BetweenFactor</code>를 유도하는 일이 research가 아니라 routine한 exercise처럼 느껴지는 것이 목표다.
           </span>
         </p>
 
@@ -4026,8 +4026,8 @@ int main() {
 
       <footer class="page-foot">
         <p>
-          <span data-lang="en">Maintained by <a href="https://limhyungtae.github.io/">Hyungtae Lim</a>. Source on <a href="https://github.com/LimHyungTae/gtsam_for_everyone">GitHub</a>. PRs and issues welcome.</span>
-          <span data-lang="ko"><a href="https://limhyungtae.github.io/">임형태</a>가 유지보수 중. 소스: <a href="https://github.com/LimHyungTae/gtsam_for_everyone">GitHub</a>. PR과 issue 환영.</span>
+          <span data-lang="en">Maintained by <a href="https://limhyungtae.github.io/">Hyungtae Lim</a>. Source on <a href="https://github.com/LimHyungTae/Easy_GTSAM_Tutorial">GitHub</a>. PRs and issues welcome.</span>
+          <span data-lang="ko"><a href="https://limhyungtae.github.io/">임형태</a>가 유지보수 중. 소스: <a href="https://github.com/LimHyungTae/Easy_GTSAM_Tutorial">GitHub</a>. PR과 issue 환영.</span>
         </p>
         <p style="margin-top:6px;font-size:12.5px;">
           <span data-lang="en">Built with KaTeX &amp; Prism. Figures are reproduced from the author's original Korean blog posts.</span>
