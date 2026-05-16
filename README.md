@@ -1,6 +1,6 @@
 # Easy GTSAM Tutorial
 
-A bilingual (English / 한국어) tutorial that teaches what actually happens inside [GTSAM](https://gtsam.org/), built around **step-by-step scaffolding**: every chapter is sized to layer on the previous one, so that by the end deriving a `BetweenFactor` on a new Lie group feels like a routine exercise instead of a research project.
+A bilingual (English / 한국어) tutorial that teaches what actually happens inside [GTSAM](https://gtsam.org/), built around **step-by-step scaffolding**: every chapter is sized to layer on the previous one, so that by the end you understand how `BetweenFactor` works at the implementation level.
 
 **Live site:** <https://limhyungtae.github.io/Easy_GTSAM_Tutorial/>
 
@@ -20,7 +20,7 @@ A bilingual (English / 한국어) tutorial that teaches what actually happens in
 | 9 | Kimera-PGMO's Deformation Factor derivation |
 | 10 | Debugging factors with `numericalDerivative` |
 
-**Audience.** You've run GTSAM on a toy SLAM problem and want to understand *why* its math is structured the way it is. If you only want to *run* pose-graph SLAM, Quick Start is enough; for everything else, the chapters scaffold you up to deriving your own factors.
+**Audience.** You've run GTSAM on a toy SLAM problem and want to understand *why* its math is structured the way it is. If you only want to *run* pose-graph SLAM, Quick Start is enough; for everything else, the chapters build toward a low-level understanding of factor errors, `Local` / `Logmap`, and Jacobian blocks.
 
 **Author.** [Hyungtae Lim](https://limhyungtae.github.io/), Postdoctoral Associate at MIT SPARK Lab (Prof. Luca Carlone's group).
 
