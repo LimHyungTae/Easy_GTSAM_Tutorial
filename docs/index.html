@@ -34,7 +34,7 @@
     "@type": "Article",
     "headline": "Easy GTSAM Tutorial: A Bilingual, Step-by-Step Scaffolded Walk-Through",
     "alternativeHeadline": "A low-level walk-through of factor graphs, BetweenFactor, Lie-group Jacobians, and the Adjoint map",
-    "description": "A bilingual (English/Korean) GTSAM tutorial that explains GTSAM internals, written by a postdoc at the lab that maintains GTSAM.",
+    "description": "A bilingual (English/Korean) GTSAM tutorial that explains GTSAM internals, based on notes written while working as a postdoc at the lab that maintains GTSAM.",
     "inLanguage": ["en", "ko"],
     "keywords": "GTSAM, Easy GTSAM Tutorial, step-by-step scaffolding, factor graph, pose graph SLAM, BetweenFactor, Lie group, Jacobian, Adjoint, ISAM2, robotics, SLAM",
     "url": "https://limhyungtae.github.io/Easy_GTSAM_Tutorial/",
@@ -982,19 +982,19 @@
           <div class="header-tools">
             <div class="lang-toggle" role="tablist" aria-label="Language">
               <button class="lang-btn active" data-lang-btn="en" type="button">EN</button>
-              <button class="lang-btn" data-lang-btn="ko" type="button">한국어</button>
+              <button class="lang-btn" data-lang-btn="ko" type="button">Kor</button>
             </div>
           </div>
         </div>
 
         <h1>
           <span data-lang="en">Easy GTSAM Tutorial<br/>A Step-by-Step Scaffolded Walk-Through</span>
-          <span data-lang="ko">쉽게 따라가는 GTSAM 튜토리얼<br/>단계별로 차근차근 쌓아 올리는 scaffolding</span>
+          <span data-lang="ko">모두를 위한 GTSAM</span>
         </h1>
 
         <div class="subtitle">
           <span data-lang="en">For anyone who wants to understand factor-graph SLAM · By Hyungtae Lim</span>
-          <span data-lang="ko">Factor graph SLAM을 이해하고 싶은 사람들에게 · 임형태</span>
+          <span data-lang="ko">Factor graph SLAM을 제대로 이해하고 싶은 이들에게 · 임형태</span>
         </div>
 
         <p class="lead">
@@ -1002,7 +1002,9 @@
             This site is a <b>step-by-step scaffolded</b> tour of what actually happens inside GTSAM. Every chapter is sized to layer on the one before it. Chapter Q is a 5-minute pose-graph SLAM recipe (read it if you only need to <i>run</i> code). Chapters 1 through 8 build up the manifold and Lie-group vocabulary behind GTSAM factors, one small step at a time. Chapters 9 and 10 apply the framework to a real Kimera-PGMO factor and show you how to verify a Jacobian numerically. By the end, you should understand how <code>BetweenFactor</code> works at the implementation level: how a measurement becomes an error vector, where <code>Local</code> and <code>Logmap</code> enter, and why the Jacobian blocks have the shape they do.
           </span>
           <span data-lang="ko">
-            이 사이트는 <b>step-by-step scaffolding 방식</b>으로 GTSAM 내부 동작을 익히는 튜토리얼이다. 매 챕터가 직전 챕터 위에 차근차근 쌓이도록 분량과 난이도를 의도적으로 조정했다. Chapter Q는 5분짜리 pose-graph SLAM 레시피이니 GTSAM을 <i>돌리기만</i> 하면 된다면 여기까지만 읽어도 된다. 1장부터 8장까지는 GTSAM factor 뒤에 있는 manifold/Lie group 어휘를 한 단계씩 쌓아간다. 9–10장은 그 framework를 실제 Kimera-PGMO factor에 적용해보고, 본인이 유도한 Jacobian을 numerical하게 검증하는 법까지 다룬다. 이 글의 목표는 <code>BetweenFactor</code>가 low-level에서 어떻게 동작하는지 이해하는 것이다. 즉 measurement가 어떻게 error vector가 되고, <code>Local</code>과 <code>Logmap</code>이 어디서 등장하며, Jacobian block의 모양이 왜 그렇게 나오는지를 납득하는 데 있다.
+            이 사이트는 GTSAM 내부 동작을 단계적으로 따라가며 이해하도록 구성한 튜토리얼이다. 각 장은 앞 장의 내용을 바탕으로 자연스럽게 이어지도록 분량과 난이도를 조정했다. Chapter Q는 pose-graph SLAM을 빠르게 실행해 보는 짧은 예제이므로, 우선 GTSAM 코드를 <i>돌려보는 것</i>이 목적이라면 여기까지만 읽어도 된다. 1장부터 8장까지는 GTSAM factor 뒤에 있는 manifold/Lie group 개념을 하나씩 쌓아간다. 9-10장에서는 그 흐름을 실제 Kimera-PGMO factor에 적용하고, 직접 유도한 Jacobian을 수치적으로 검증하는 방법까지 다룬다.
+            <br/><br/>
+            이 글의 목표는 <code>BetweenFactor</code>가 구현 수준에서 어떻게 동작하는지 이해하는 것이다. 즉 측정값이 어떻게 error vector로 바뀌고, <code>Local</code>과 <code>Logmap</code>이 어디서 등장하며, Jacobian block의 모양이 왜 그렇게 나오는지를 납득하는 데 있다.
           </span>
         </p>
 
@@ -1017,15 +1019,15 @@
                 <span data-lang="en">Hyungtae Lim, Ph.D.</span>
                 <span data-lang="ko">임형태 (Hyungtae Lim, Ph.D.)</span>
               </h3>
-              <span class="author-role">Postdoctoral Associate · MIT SPARK Lab</span>
+              <span class="author-role">Former Postdoctoral Associate · MIT SPARK Lab</span>
             </div>
             <p class="author-focus">
               <span data-lang="en">Working on factor-graph SLAM at the lab that maintains GTSAM. Likes to take apart the math.</span>
-              <span data-lang="ko">GTSAM을 유지보수하는 랩에서 factor-graph SLAM 연구를 하며, 수식을 뜯어보는 걸 좋아함.</span>
+              <span data-lang="ko">Robust perception · simultaneous localization and mapping (SLAM) · state estimation 연구.</span>
             </p>
             <p class="author-bio">
-              <span data-lang="en">Hyungtae Lim is a Postdoctoral Associate at MIT's SPARK Lab, working with Prof. Luca Carlone (one of the principal maintainers of GTSAM). He earned his M.S. (2020) and Ph.D. (2023) in Electrical Engineering from KAIST under Prof. Hyun Myung, after receiving his B.S. in Mechanical Engineering from the same institution in 2018. In 2022 he spent time as a visiting scholar in Prof. Cyrill Stachniss's group at the University of Bonn. He was the recipient of the 2022 IEEE RA-L Best Paper Award and currently serves as an Associate Editor for IEEE RA-L. This tutorial is the consolidation of notes he made for himself while learning to write code on top of GTSAM as a postdoc.</span>
-              <span data-lang="ko">임형태는 MIT SPARK Lab에서 Luca Carlone 교수(GTSAM의 주요 유지보수자 중 한 명) 아래 Postdoctoral Associate으로 일하고 있다. 2020·2023년 KAIST에서 명현 교수의 지도 하에 전기 및 전자공학 석사·박사 학위를 받았고, 2018년 KAIST 기계공학과를 졸업했다. 2022년에는 University of Bonn의 Cyrill Stachniss 교수 랩에 visiting scholar로 머물렀다. 2022 IEEE RA-L Best Paper Award 수상자이며 현재 IEEE RA-L의 Associate Editor를 맡고 있다. 이 튜토리얼은 포닥으로 GTSAM 위에서 코드를 짜며 본인이 직접 정리한 노트들을 모아 정돈한 결과물이다.</span>
+              <span data-lang="en">Hyungtae Lim was a Postdoctoral Associate at MIT's SPARK Lab, working with Prof. Luca Carlone (one of the principal maintainers of GTSAM). He earned his M.S. (2020) and Ph.D. (2023) in Electrical Engineering from KAIST under Prof. Hyun Myung, after receiving his B.S. in Mechanical Engineering from the same institution in 2018. In 2022 he spent time as a visiting scholar in Prof. Cyrill Stachniss's group at the University of Bonn. He was the recipient of the 2022 IEEE RA-L Best Paper Award and currently serves as an Associate Editor for IEEE RA-L. He also won first place at the 2023 HILTI SLAM Challenge and the IEEE ICRA 2024 NSS Challenge, taking the top spot two years in a row. This tutorial is the consolidation of notes he made for himself while learning to write code on top of GTSAM as a postdoc.</span>
+              <span data-lang="ko">임형태는 MIT SPARK Lab에서 Luca Carlone 교수(GTSAM의 주요 유지보수자 중 한 명) 아래 Postdoctoral Associate으로 일했다. 2020·2023년 KAIST에서 명현 교수의 지도 하에 전기 및 전자공학 석사·박사 학위를 받았고, 2018년 KAIST 기계공학과를 졸업했다. 2022년에는 University of Bonn의 Cyrill Stachniss 교수 랩에 visiting scholar로 머물렀다. 2022 IEEE RA-L Best Paper Award 수상자이며 현재 IEEE RA-L의 Associate Editor를 맡고 있다. 또한 2023 HILTI SLAM Challenge와 IEEE ICRA 2024 NSS Challenge에서 2년 간 1등을 수상하기도 했다. 이 튜토리얼은 포닥으로 GTSAM 위에서 코드를 짜며 본인이 직접 정리한 노트들을 모아 정돈한 결과물이다.</span>
             </p>
             <div class="author-links">
               <a href="https://limhyungtae.github.io" target="_blank" rel="noreferrer"><span data-lang="en">Personal site</span><span data-lang="ko">개인 사이트</span></a>
@@ -1049,7 +1051,7 @@
             <a href="https://gtsam.org/">GTSAM</a> (Georgia Tech Smoothing And Mapping) is the de-facto factor-graph library for robotics and SLAM. There are plenty of materials on <i>how to use</i> it, including <a href="https://gtsam.org/tutorials/intro.html">the official tutorial</a> and the <a href="https://github.com/borglab/gtsam/tree/develop/examples">official examples</a>. This tutorial is different: it goes <b>one layer deeper</b>, into <code>traits&lt;T&gt;</code>, <code>Local</code>, <code>Logmap</code>, the <code>AdjointMap</code>, and the per-factor Jacobians.
           </span>
           <span data-lang="ko">
-            <a href="https://gtsam.org/">GTSAM</a> (Georgia Tech Smoothing And Mapping)은 로보틱스와 SLAM에서 가장 널리 쓰이는 factor graph 라이브러리이다. '<i>어떻게 쓰는지</i>'를 알려주는 자료는 <a href="https://gtsam.org/tutorials/intro.html">공식 튜토리얼</a>과 <a href="https://github.com/borglab/gtsam/tree/develop/examples">공식 예제</a>를 비롯해 많이 있다. 그러나 이 튜토리얼은 한 단계 더 깊이 들어간다: <code>traits&lt;T&gt;</code>, <code>Local</code>, <code>Logmap</code>, <code>AdjointMap</code>, 그리고 factor별 Jacobian이 실제로 어떻게 유도되는지까지 다룬다.
+            <a href="https://gtsam.org/">GTSAM</a> (Georgia Tech Smoothing And Mapping)은 로보틱스와 SLAM에서 가장 널리 쓰이는 factor graph 라이브러리이다. GTSAM 사용법을 알려주는 자료는 <a href="https://gtsam.org/tutorials/intro.html">공식 튜토리얼</a>과 <a href="https://github.com/borglab/gtsam/tree/develop/examples">공식 예제</a>를 비롯해 많이 있다. 이 튜토리얼은 거기서 한 단계 더 들어가 <code>traits&lt;T&gt;</code>, <code>Local</code>, <code>Logmap</code>, <code>AdjointMap</code>, 그리고 factor별 Jacobian이 실제로 어떻게 유도되는지까지 다룬다.
           </span>
         </p>
         <p>
@@ -1057,7 +1059,7 @@
             You should read this if you've already run GTSAM on a toy SLAM problem but want to understand <b>why</b> things look the way they do. For example: why GTSAM separates "factors" from "values," or why <code>BetweenFactor::evaluateError</code> calls <code>Between</code> and then <code>Local</code>. If you have never written any SLAM code, start with <a href="https://limhyungtae.github.io/slam/">a SLAM-backend intro</a> first, then come back.
           </span>
           <span data-lang="ko">
-            이미 GTSAM으로 toy SLAM을 돌려봤지만, '<b>왜</b> 이렇게 짜여 있나'가 궁금한 사람이 이 글의 대상이다. 예를 들어 왜 GTSAM은 'factor'와 'values'를 분리할까? <code>BetweenFactor::evaluateError</code> 안에서 왜 <code>Between</code> 다음에 <code>Local</code>을 부를까? 만약 SLAM 자체가 처음이라면 <a href="https://limhyungtae.github.io/slam/">SLAM backend intro</a>를 먼저 읽고 오자.
+            이미 GTSAM으로 간단한 SLAM 예제를 돌려본 적은 있지만, '<b>왜</b> 이렇게 짜여 있나'가 궁금한 사람이 이 글의 대상이다. 예를 들어 왜 GTSAM은 'factor'와 'values'를 분리할까? <code>BetweenFactor::evaluateError</code> 안에서 왜 <code>Between</code> 다음에 <code>Local</code>을 부를까? 만약 SLAM 자체가 처음이라면 <a href="https://limhyungtae.github.io/slam/" target="_blank" rel="noreferrer">SLAM backend intro</a>를 먼저 읽고 오자.
           </span>
         </p>
         <p>
@@ -1065,15 +1067,15 @@
             All the math here uses standard Lie-group notation: <span class="kx">$\bm{T} \in SE(2)$</span> for a 2D rigid transform, <span class="kx">$\hat{\boldsymbol{\xi}} \in \mathfrak{se}(2)$</span> for the corresponding Lie algebra element, and <span class="kx">$\mathrm{Exp}(\cdot)$</span> for the exponential map. The notation matches the original Korean blog posts on which this site is based.
           </span>
           <span data-lang="ko">
-            수식은 Lie group의 표준 표기를 따른다: <span class="kx">$\bm{T} \in SE(2)$</span>는 2D rigid transform, <span class="kx">$\hat{\boldsymbol{\xi}} \in \mathfrak{se}(2)$</span>는 대응되는 Lie algebra의 원소, <span class="kx">$\mathrm{Exp}(\cdot)$</span>는 exponential map. 이 글의 기반이 된 한국어 원본 블로그 글들의 표기와 동일하다.
+            수식은 Lie group의 표준 표기를 따른다. <span class="kx">$\bm{T} \in SE(2)$</span>는 2D rigid transform, <span class="kx">$\hat{\boldsymbol{\xi}} \in \mathfrak{se}(2)$</span>는 이에 대응되는 Lie algebra 원소, <span class="kx">$\mathrm{Exp}(\cdot)$</span>는 exponential map을 뜻한다. 이 글의 기반이 된 한국어 원본 블로그 글들과 동일한 표기이다.
           </span>
         </p>
         <div class="note">
           <span data-lang="en">
-            <b>How to read this page:</b> the EN/KO toggle in the top-right switches the entire page between English and Korean. Both languages live in the DOM at the same time (so Google indexes both and your <kbd>Ctrl</kbd>+<kbd>F</kbd> still works on the active language). Click any heading to copy a deep link.
+            <b>How to read this page:</b> the EN/Kor toggle in the top-right switches the entire page between English and Korean. Both languages live in the DOM at the same time (so Google indexes both and your <kbd>Ctrl</kbd>+<kbd>F</kbd> still works on the active language). Click any heading to copy a deep link.
           </span>
           <span data-lang="ko">
-            <b>읽는 방법:</b> 우측 상단의 EN/한국어 토글로 전체 페이지를 영/한 전환할 수 있다. 두 언어가 동시에 DOM에 있어서 Google에서 둘 다 검색이 되고, <kbd>Ctrl</kbd>+<kbd>F</kbd>도 현재 보이는 언어 기준으로 정상 동작한다. 헤딩을 클릭하면 deep link가 클립보드로 복사된다.
+            <b>읽는 방법:</b> 우측 상단의 EN/Kor 토글로 전체 페이지의 언어를 바꿀 수 있다. 두 언어가 동시에 DOM에 들어 있어 Google에서는 둘 다 검색되고, <kbd>Ctrl</kbd>+<kbd>F</kbd>도 현재 보이는 언어 기준으로 동작한다. 제목을 클릭하면 해당 위치로 바로 이동할 수 있는 링크가 클립보드에 복사된다.
           </span>
         </div>
       </section>
@@ -1083,11 +1085,11 @@
         <span class="section-tag">Q · Quick Start</span>
         <h2 class="copy-heading">
           <span data-lang="en">GTSAM in 5 minutes: pose-graph SLAM from scratch</span>
-          <span data-lang="ko">5분 만에 보는 GTSAM: pose-graph SLAM 한 입에 끝내기</span>
+          <span data-lang="ko">5분 만에 돌려보는 GTSAM: pose-graph SLAM 빠른 시작</span>
         </h2>
         <p class="section-lead">
           <span data-lang="en">A minimal end-to-end recipe so you can do pose-graph SLAM today and worry about the internals tomorrow.</span>
-          <span data-lang="ko">우선은 오늘 안에 pose-graph SLAM을 돌리고, 내부 동작은 내일 걱정하기 위한 최소한의 레시피.</span>
+          <span data-lang="ko">우선 pose-graph SLAM을 바로 실행해 보고, 내부 원리는 그다음에 들여다보기 위한 최소 예제.</span>
         </p>
 
         <h3>
@@ -1099,7 +1101,7 @@
             GTSAM lets you express a SLAM problem as a <b>factor graph</b>: a bipartite graph where <i>variables</i> (poses, points, calibrations, …) are connected by <i>factors</i>. You hand GTSAM the graph plus an initial guess, and GTSAM solves a nonlinear least-squares problem on a manifold and returns the optimized values.
           </span>
           <span data-lang="ko">
-            GTSAM은 SLAM 문제를 <b>factor graph</b>로 표현하게 해준다. Factor graph는 두 가지 노드(변수와 factor)로 구성된 bipartite graph이다. 여기서 <i>variables</i>(pose, point, calibration 등)는 우리가 추정하고자 하는 변수들이고, <i>factors</i>는 이들에 부과되는 constraint이다. Factor graph와 initial guess만 던져주면, GTSAM이 manifold 상의 nonlinear least-squares를 풀어서 최적화된 값을 돌려준다.
+            GTSAM은 SLAM 문제를 <b>factor graph</b>로 표현할 수 있게 해준다. Factor graph는 두 종류의 노드, 즉 variable과 factor로 구성된 bipartite graph이다. 여기서 <i>variables</i>(pose, point, calibration 등)는 우리가 추정하려는 대상이고, <i>factors</i>는 이 변수들 사이에 걸리는 제약이다. Factor graph와 초기값을 함께 넘기면, GTSAM이 manifold 위의 nonlinear least-squares 문제를 풀어 최적화된 값을 돌려준다.
           </span>
         </p>
 
@@ -1107,13 +1109,13 @@
           <img alt="A pose graph with a loop closure" src="figures/gtsam_loopclosing.gif" loading="lazy" />
           <figcaption>
             <span data-lang="en">A pose graph: in GTSAM, each node is a robot pose, and each edge is a relative-pose measurement, either odometry from consecutive frames or a loop closure from non-consecutive frames. The dashed orange edge is a loop closure that re-anchors past poses. Since the optimizer minimizes the error over the whole trajectory, this process is also called <i>smoothing</i>.</span>
-            <span data-lang="ko">Pose graph 예시: 각 node는 로봇의 pose, 각 edge는 상대 pose measurement이다. 오렌지색 점선 edge는 loop closure로, 과거의 pose들을 다시 고정해주는 역할을 한다. 전체 trajectory의 error를 최소화하는 과정이기 때문에 이를 <i>smoothing</i>이라고 부르기도 한다.</span>
+            <span data-lang="ko">Pose graph 예시: 각 노드는 로봇의 pose이고, 각 엣지는 연속 프레임 사이의 odometry 또는 떨어진 프레임 사이의 loop closure로 얻은 상대 pose 측정값이다. 오렌지색 점선 엣지는 과거 pose들을 다시 묶어주는 loop closure를 나타낸다. 전체 trajectory의 error를 최소화하는 과정이기 때문에 이를 <i>smoothing</i>이라고 부르기도 한다.</span>
           </figcaption>
         </figure>
 
         <h3>
           <span data-lang="en">2. The four-step recipe</span>
-          <span data-lang="ko">2. 네 줄 레시피</span>
+          <span data-lang="ko">2. 네 단계 요약</span>
         </h3>
         <ol>
           <li>
@@ -1122,21 +1124,21 @@
             <ul>
               <li>
                 <span data-lang="en">The edges are relative-pose constraints, so the whole pose graph can translate or rotate together without changing them. The prior anchors one pose so the absolute pose values are well-defined.</span>
-                <span data-lang="ko">Edge들은 상대 pose constraint이기 때문에, prior가 없으면 graph 전체가 함께 평행이동하거나 회전해도 constraint 값은 그대로다. 그래서 첫 pose 하나를 anchor로 잡아 각 pose의 절대값이 정의되도록 만든다.</span>
+                <span data-lang="ko">엣지는 모두 상대 pose 제약이므로, prior가 없으면 graph 전체를 함께 평행이동하거나 회전해도 제약 값이 변하지 않는다. 그래서 첫 pose 하나를 anchor로 잡아 각 pose의 절대값이 정의되도록 만든다.</span>
               </li>
             </ul>
           </li>
           <li>
             <span data-lang="en">Add <code>BetweenFactor</code> for every odometry measurement and every loop closure.</span>
-            <span data-lang="ko">매 odometry measurement와 loop closure마다 <code>BetweenFactor</code>를 추가한다.</span>
+            <span data-lang="ko">각 odometry 측정값과 loop closure마다 <code>BetweenFactor</code>를 추가한다.</span>
           </li>
           <li>
             <span data-lang="en">Provide <code>Values</code> with an initial guess for every variable in the graph.</span>
-            <span data-lang="ko">graph에 등장하는 모든 변수에 대해 initial guess를 <code>Values</code>로 제공한다.</span>
+            <span data-lang="ko">Graph에 등장하는 모든 변수의 초기값을 <code>Values</code>에 넣어준다.</span>
           </li>
           <li>
             <span data-lang="en">Hand both to an optimizer (<code>LevenbergMarquardtOptimizer</code> for batch, <code>ISAM2</code> for incremental) and call <code>optimize()</code>.</span>
-            <span data-lang="ko">두 객체를 optimizer에 넘긴다. Batch면 <code>LevenbergMarquardtOptimizer</code>, 매 step마다 들어오는 incremental SLAM이면 <code>ISAM2</code>를 쓰고, 마지막에 <code>optimize()</code>를 호출한다.</span>
+            <span data-lang="ko">Graph와 초기값을 optimizer에 넘긴다. Batch 방식이면 <code>LevenbergMarquardtOptimizer</code>, 새 측정값이 계속 들어오는 incremental SLAM이면 <code>ISAM2</code>를 쓰고, 마지막에 <code>optimize()</code>를 호출한다.</span>
           </li>
         </ol>
 
@@ -1187,17 +1189,17 @@ Values result = isam.calculateEstimate();</code></pre>
             New users often want to "store the estimate inside the factor." GTSAM deliberately doesn't do this.
           </span>
           <span data-lang="ko">
-            처음 쓰는 사람들은 'factor 안에 estimate를 같이 넣어놓으면 안 되나?'라고 생각하기 쉬운데, GTSAM은 의도적으로 이 둘을 분리한다.
+            처음에는 'factor 안에 현재 추정값도 같이 넣으면 안 되나?'라고 생각하기 쉽지만, GTSAM은 의도적으로 이 둘을 분리한다.
           </span>
         </p>
         <ul>
           <li>
             <span data-lang="en"><b>Factor</b> — a fixed mathematical object: a measurement, a noise model, and the variable keys it touches.</span>
-            <span data-lang="ko"><b>Factor</b> — 고정된 수학적 객체. Measurement, noise model, 그리고 어떤 변수 key들과 연결되는지만 담고 있다.</span>
+            <span data-lang="ko"><b>Factor</b> — 고정된 수학적 객체. 측정값, noise model, 연결된 variable key만 담고 있다.</span>
           </li>
           <li>
             <span data-lang="en"><b>Value</b> — the current estimate of a variable. This is what changes as optimization proceeds.</span>
-            <span data-lang="ko"><b>Value</b> — 변수의 현재 estimate. Optimization이 진행되면서 실제로 바뀌는 쪽은 이 값이다.</span>
+            <span data-lang="ko"><b>Value</b> — 변수의 현재 추정값. Optimization이 진행되면서 실제로 바뀌는 쪽은 이 값이다.</span>
           </li>
         </ul>
         <p>
@@ -1205,7 +1207,7 @@ Values result = isam.calculateEstimate();</code></pre>
             Keeping them separate means the same <code>BetweenFactor</code> can be re-linearized at many different operating points during optimization without anyone editing the factor. It also makes loop closures clean: you just add another <code>BetweenFactor</code> to the graph, no surgery on existing factors needed.
           </span>
           <span data-lang="ko">
-            둘을 분리해두면, 동일한 <code>BetweenFactor</code>를 optimization 도중 여러 다른 linearization point에서 다시 선형화해도 factor 자체를 건드릴 필요가 없다. Loop closure도 깔끔해진다. 기존 factor를 수정하지 않고 새로운 <code>BetweenFactor</code> 하나만 graph에 추가하면 된다.
+            둘을 분리해두면, 동일한 <code>BetweenFactor</code>를 optimization 도중 여러 선형화 기준점에서 다시 선형화해도 factor 자체를 건드릴 필요가 없다. Loop closure를 추가하는 방식도 단순해진다. 기존 factor를 수정하지 않고 새로운 <code>BetweenFactor</code> 하나만 graph에 추가하면 된다.
           </span>
         </p>
 
@@ -1216,11 +1218,11 @@ Values result = isam.calculateEstimate();</code></pre>
         <ul>
           <li>
             <span data-lang="en"><b><code>LevenbergMarquardtOptimizer(graph, initial).optimize()</code></b> solves the full nonlinear least-squares on the whole graph. Use it when you build the graph once (offline SfM, bundle adjustment, evaluation).</span>
-            <span data-lang="ko"><b><code>LevenbergMarquardtOptimizer(graph, initial).optimize()</code></b> — 전체 graph 위에서 한 번에 nonlinear least-squares를 푼다. 그래프를 한 번 만들고 끝나는 경우(offline SfM, bundle adjustment, 평가용)에 사용.</span>
+            <span data-lang="ko"><b><code>LevenbergMarquardtOptimizer(graph, initial).optimize()</code></b> — 전체 graph에 대해 nonlinear least-squares를 한 번에 푼다. 그래프를 한 번 만들고 끝나는 경우(offline SfM, bundle adjustment, 평가용)에 사용한다.</span>
           </li>
           <li>
             <span data-lang="en"><b><code>ISAM2</code></b> performs incremental smoothing. Each call to <code>isam.update(new_graph, new_values)</code> grafts new factors and values onto the Bayes tree and re-solves only the affected sub-problem. Use it for real-time SLAM, where the graph grows continuously.</span>
-            <span data-lang="ko"><b><code>ISAM2</code></b> — incremental smoothing. <code>isam.update(new_graph, new_values)</code>로 새로운 factor와 value들을 Bayes tree에 붙이고, 영향을 받는 sub-problem만 다시 풀어준다. Graph가 매 frame 자라나는 real-time SLAM에 적합.</span>
+            <span data-lang="ko"><b><code>ISAM2</code></b> — incremental smoothing. <code>isam.update(new_graph, new_values)</code>로 새로운 factor와 value를 Bayes tree에 붙이고, 영향을 받는 sub-problem만 다시 푼다. Graph가 매 frame마다 커지는 real-time SLAM에 적합하다.</span>
           </li>
         </ul>
         <p>
@@ -1228,7 +1230,7 @@ Values result = isam.calculateEstimate();</code></pre>
             Rule of thumb: <code>ISAM2</code> for online SLAM (LIO-SAM, Kimera, FAST-LIO-SAM), batch LM for evaluation and ablations.
           </span>
           <span data-lang="ko">
-            대충 정리하면: online SLAM은 <code>ISAM2</code>(LIO-SAM, Kimera, FAST-LIO-SAM 등), 평가·ablation은 batch LM.
+            간단히 정리하면 online SLAM에는 <code>ISAM2</code>(LIO-SAM, Kimera, FAST-LIO-SAM 등), 평가나 ablation에는 batch LM을 쓰는 경우가 많다.
           </span>
         </p>
 
@@ -1239,7 +1241,7 @@ Values result = isam.calculateEstimate();</code></pre>
           </strong>
           <p style="margin-top:8px;">
             <span data-lang="en">Every variable referenced by a factor <b>must</b> appear in <code>Values</code> before you call <code>optimize()</code> or <code>isam.update()</code>. Forgetting to <code>insert</code> a variable is the single most common source of cryptic GTSAM crashes. Conversely, never <code>insert</code> the same key twice; use <code>update</code> instead.</span>
-            <span data-lang="ko">factor가 참조하는 모든 변수는 <code>optimize()</code> 또는 <code>isam.update()</code>를 호출하기 전에 <code>Values</code>에 <b>반드시</b> 들어 있어야 한다. <code>insert</code>를 빼먹는 것은 GTSAM이 알 수 없는 에러로 죽는 가장 흔한 원인이다. 반대로 같은 key를 두 번 <code>insert</code>하면 안 된다. 갱신하려면 <code>update</code>를 써라.</span>
+            <span data-lang="ko">factor가 참조하는 모든 변수는 <code>optimize()</code> 또는 <code>isam.update()</code>를 호출하기 전에 <code>Values</code>에 <b>반드시</b> 들어 있어야 한다. <code>insert</code>를 빼먹는 것은 GTSAM에서 이해하기 어려운 에러가 나는 가장 흔한 원인이다. 반대로 같은 key를 두 번 <code>insert</code>하면 안 된다. 값을 바꾸려면 <code>update</code>를 사용하자.</span>
           </p>
         </div>
 
@@ -1248,7 +1250,7 @@ Values result = isam.calculateEstimate();</code></pre>
             That's everything you need to run pose-graph SLAM today. The rest of this site (<a href="#ch1-between-factor">Chapter 1</a> onward) explains <i>why</i> the lines above actually work.
           </span>
           <span data-lang="ko">
-            오늘 pose-graph SLAM을 돌리기 위해 필요한 건 여기까지가 전부다. 이 사이트의 나머지(<a href="#ch1-between-factor">Chapter 1</a> 이후)는 위 코드가 <i>왜</i> 동작하는지에 대한 설명이다.
+            pose-graph SLAM을 일단 실행하는 데 필요한 내용은 여기까지가 전부다. 이 사이트의 나머지(<a href="#ch1-between-factor">Chapter 1</a> 이후)는 위 코드가 <i>왜</i> 동작하는지를 설명한다.
           </span>
         </p>
       </section>
@@ -1261,23 +1263,23 @@ Values result = isam.calculateEstimate();</code></pre>
   <span class="section-tag">01 · Internals</span>
   <h2 class="copy-heading">
     <span data-lang="en">BetweenFactor: how SLAM optimization actually works</span>
-	    <span data-lang="ko">BetweenFactor: SLAM optimization은 실제로 어떻게 돌아가나</span>
+	    <span data-lang="ko">BetweenFactor: SLAM optimization은 실제로 어떻게 동작하나</span>
   </h2>
   <p class="section-lead">
     <span data-lang="en">A line-by-line tour of <code>BetweenFactor::evaluateError</code>, the four steps it hides, and why GTSAM phrases the residual as a tangent-space vector rather than a plain matrix difference.</span>
-    <span data-lang="ko"><code>BetweenFactor::evaluateError</code>를 line-by-line으로 뜯어보고, 그 안에 숨어 있는 4단계의 흐름과 GTSAM이 residual을 단순 행렬 차이가 아니라 tangent space vector로 두는 이유를 살펴본다.</span>
+    <span data-lang="ko"><code>BetweenFactor::evaluateError</code>를 한 줄씩 뜯어보고, 그 안에 숨어 있는 네 단계의 흐름과 GTSAM이 residual을 단순한 행렬 차이가 아니라 tangent space vector로 표현하는 이유를 살펴본다.</span>
   </p>
 
   <h3>
     <span data-lang="en">1. Why this chapter exists</span>
-    <span data-lang="ko">1. 이 챕터를 쓴 이유</span>
+    <span data-lang="ko">1. 이 장을 쓴 이유</span>
   </h3>
   <p>
     <span data-lang="en">
 	      I was a postdoc in Luca Carlone's group at MIT, where GTSAM is the default backend, so I often needed to read its internals. Surprisingly little material explains what GTSAM is doing under the hood, so this series fills that gap: it traces the pose-graph (or factor-graph) optimization exposed through GTSAM's tidy classes down to the Lie-group machinery underneath.
     </span>
     <span data-lang="ko">
-	      나는 GTSAM의 주요 관리자인 Luca Carlone 교수님 연구실에서 포닥으로 일하던 시기에 GTSAM 기반 코드를 자주 작성했고, 자연스럽게 내부를 깊이 들여다볼 일도 많았다. GTSAM이 내부적으로 어떻게 동작하는지 설명하는 글은 생각보다 많지 않아서, 이 시리즈에서는 GTSAM이 제공하는 pose graph(혹은 factor graph) optimization이 Lie group 위에서 어떻게 돌아가는지 면밀히 다뤄보고자 한다.
+	      나는 GTSAM의 주요 관리자인 Luca Carlone 교수님 연구실에서 포닥으로 일하던 시기에 GTSAM 기반 코드를 자주 작성했고, 자연스럽게 내부를 깊이 들여다볼 일도 많았다. GTSAM이 내부적으로 어떻게 동작하는지 설명하는 글은 생각보다 많지 않아서, 이 시리즈에서는 GTSAM이 제공하는 pose graph(혹은 factor graph) optimization이 Lie group 위에서 어떻게 돌아가는지 차근차근 따라가 본다.
     </span>
   </p>
   <p>
@@ -1285,7 +1287,7 @@ Values result = isam.calculateEstimate();</code></pre>
       The level of this series sits between "I have run a SLAM example once" and "I want to derive a new factor." If you only need a recipe for pose-graph SLAM, the <a href="#ch0-quickstart">Quick Start</a> is enough. If you have never opened the official <a href="https://gtsam.org/tutorials/intro.html">GTSAM tutorial</a> or <a href="https://github.com/devbharat/gtsam/blob/master/examples/Pose2SLAMExample.cpp"><code>Pose2SLAMExample.cpp</code></a>, skim those first; the rest of this chapter assumes you have.
     </span>
     <span data-lang="ko">
-      이 시리즈는 SLAM을 처음 접하는 이에게 적합한 글은 아니다. SLAM을 한 번이라도 돌려보았고, 내부적으로 어떤 과정이 일어나서 optimization이 되는지 보고 싶은 이들에게 도움이 될 것이다. 본격적으로 들어가기 전에 <a href="https://gtsam.org/tutorials/intro.html">공식 GTSAM 튜토리얼</a>과 <a href="https://github.com/devbharat/gtsam/blob/master/examples/Pose2SLAMExample.cpp"><code>Pose2SLAMExample.cpp</code></a>를 한 번 훑어보고 오자.
+      이 시리즈는 SLAM을 처음 접하는 이에게 적합한 글은 아니다. SLAM 예제를 한 번이라도 돌려보았고, 내부적으로 어떤 과정을 거쳐 optimization이 이루어지는지 보고 싶은 이들에게 도움이 될 것이다. 본격적으로 들어가기 전에 <a href="https://gtsam.org/tutorials/intro.html">공식 GTSAM 튜토리얼</a>과 <a href="https://github.com/devbharat/gtsam/blob/master/examples/Pose2SLAMExample.cpp"><code>Pose2SLAMExample.cpp</code></a>를 먼저 훑어보는 것이 좋다.
     </span>
   </p>
 
@@ -1298,17 +1300,17 @@ Values result = isam.calculateEstimate();</code></pre>
 	      As <code>Pose2SLAMExample.cpp</code> already shows, a pose-graph problem in GTSAM has three steps:
     </span>
     <span data-lang="ko">
-	      <code>Pose2SLAMExample.cpp</code>에서 보았듯이, GTSAM에서 pose graph optimization을 하는 절차는 크게 세 단계이다.
+	      <code>Pose2SLAMExample.cpp</code>에서 보았듯이, GTSAM에서 pose graph optimization을 수행하는 절차는 크게 세 단계이다.
     </span>
   </p>
   <ol>
     <li>
       <span data-lang="en">Build a <code>NonlinearFactorGraph</code> and add the constraints you want, here <code>BetweenFactor</code>s.</span>
-      <span data-lang="ko"><code>NonlinearFactorGraph</code>에 원하는 constraint, 여기서는 <code>BetweenFactor</code>들을 더해 graph 구조를 만든다.</span>
+      <span data-lang="ko"><code>NonlinearFactorGraph</code>에 원하는 제약, 여기서는 <code>BetweenFactor</code>들을 더해 graph 구조를 만든다.</span>
     </li>
     <li>
       <span data-lang="en">Provide an initial guess for every variable through <code>Values</code>.</span>
-      <span data-lang="ko">Graph에 필요한 모든 변수의 initial guess를 <code>Values</code>로 제공한다.</span>
+      <span data-lang="ko">Graph에 필요한 모든 변수의 초기값을 <code>Values</code>로 제공한다.</span>
     </li>
     <li>
       <span data-lang="en">Hand both to an optimizer and call <code>optimize()</code>.</span>
@@ -1351,14 +1353,14 @@ graph.add(BetweenFactor&lt;Pose2&gt;(5, 2, Pose2(2, 0, M_PI_2), model));
 
   <h3>
     <span data-lang="en">3. The heart of the factor: <code>evaluateError</code></span>
-    <span data-lang="ko">3. Factor의 심장: <code>evaluateError</code></span>
+    <span data-lang="ko">3. Factor의 핵심: <code>evaluateError</code></span>
   </h3>
   <p>
     <span data-lang="en">
       Every <code>BetweenFactor</code> ultimately funnels through one method, <a href="https://github.com/borglab/gtsam/blob/bb5cfb22840360a39e590cc19e5db84e58d6f897/gtsam/slam/BetweenFactor.h#L40"><code>evaluateError</code></a>:
     </span>
     <span data-lang="ko">
-      모든 <code>BetweenFactor</code>는 결국 단 하나의 함수, <a href="https://github.com/borglab/gtsam/blob/bb5cfb22840360a39e590cc19e5db84e58d6f897/gtsam/slam/BetweenFactor.h#L40"><code>evaluateError</code></a>로 흘러 들어간다:
+      모든 <code>BetweenFactor</code>는 결국 단 하나의 함수, <a href="https://github.com/borglab/gtsam/blob/bb5cfb22840360a39e590cc19e5db84e58d6f897/gtsam/slam/BetweenFactor.h#L40"><code>evaluateError</code></a>를 통해 계산된다:
     </span>
   </p>
 
@@ -1385,7 +1387,7 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
       It looks dense, but it is really four steps stitched together. We will unpack them one by one.
     </span>
     <span data-lang="ko">
-      얼핏 복잡해 보이지만, 사실은 4 단계가 이어 붙어 있을 뿐이다. 하나씩 뜯어 보자.
+      얼핏 복잡해 보이지만, 사실은 네 단계가 이어져 있을 뿐이다. 하나씩 뜯어 보자.
     </span>
   </p>
 
@@ -1398,7 +1400,7 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
       <code>traits&lt;T&gt;::Between(p1, p2, ...)</code> forwards to the <code>between</code> member of the underlying Lie-group class (<code>Pose2</code>, <code>Pose3</code>, …). All such classes inherit it from the common parent <a href="https://github.com/borglab/gtsam/blob/7150f284a8b6356cbefe78f066b50ad31ea6cbcc/gtsam/base/Lie.h#L52"><code>gtsam/base/Lie.h</code></a>:
     </span>
     <span data-lang="ko">
-      <code>traits&lt;T&gt;::Between(p1, p2, ...)</code>는 해당 Lie group class(<code>Pose2</code>, <code>Pose3</code> 등)의 <code>between</code> 멤버 함수를 호출한다. 모든 Lie group의 '엄마 객체'인 <a href="https://github.com/borglab/gtsam/blob/7150f284a8b6356cbefe78f066b50ad31ea6cbcc/gtsam/base/Lie.h#L52"><code>gtsam/base/Lie.h</code></a>에 다음과 같이 정의되어 있다:
+      <code>traits&lt;T&gt;::Between(p1, p2, ...)</code>는 해당 Lie group class(<code>Pose2</code>, <code>Pose3</code> 등)의 <code>between</code> 멤버 함수를 호출한다. 이 함수는 모든 Lie group class가 공유하는 기반 클래스인 <a href="https://github.com/borglab/gtsam/blob/7150f284a8b6356cbefe78f066b50ad31ea6cbcc/gtsam/base/Lie.h#L52"><code>gtsam/base/Lie.h</code></a>에 다음과 같이 정의되어 있다:
     </span>
   </p>
 
@@ -1420,7 +1422,7 @@ Class between(const Class&amp; g, ChartJacobian H1,
       What are <code>p1</code> and <code>p2</code>? They are the current estimates of the two variables connected by this factor, taken from <code>Values</code>:
     </span>
     <span data-lang="ko">
-      그렇다면 여기 들어가는 <code>p1</code>, <code>p2</code>가 무엇이냐 하면, 이 factor에 연결된 두 변수의 현재 estimate, 즉 <code>Values</code>에 들어 있는 값들이다:
+      그렇다면 여기 들어가는 <code>p1</code>, <code>p2</code>는 무엇일까? 이들은 factor에 연결된 두 변수의 현재 추정값, 즉 <code>Values</code>에 들어 있는 값들이다:
     </span>
   </p>
 
@@ -1437,7 +1439,7 @@ initialEstimate.insert(5, Pose2(2.1, 2.1, -M_PI_2));
       Concretely, for <code>BetweenFactor&lt;Pose2&gt;(2, 3, Pose2(2, 0, M_PI_2), model)</code>, GTSAM substitutes the current estimate of key <code>2</code> as <code>p1</code> and the current estimate of key <code>3</code> as <code>p2</code>, then computes the predicted relative pose
     </span>
     <span data-lang="ko">
-      예를 들어 <code>BetweenFactor&lt;Pose2&gt;(2, 3, Pose2(2, 0, M_PI_2), model)</code>의 경우, optimization 도중 key <code>2</code>에 해당하는 <code>Pose2</code>가 <code>p1</code>에, key <code>3</code>에 해당하는 <code>Pose2</code>가 <code>p2</code>에 들어가서 다음의 예측 상대 pose를 만든다:
+      예를 들어 <code>BetweenFactor&lt;Pose2&gt;(2, 3, Pose2(2, 0, M_PI_2), model)</code>의 경우, optimization 도중 key <code>2</code>의 현재 <code>Pose2</code>가 <code>p1</code>에, key <code>3</code>의 현재 <code>Pose2</code>가 <code>p2</code>에 들어간다. 그러면 다음과 같은 예측 상대 pose가 계산된다:
     </span>
   </p>
 
@@ -1497,7 +1499,7 @@ initialEstimate.insert(5, Pose2(2.1, 2.1, -M_PI_2));
     <img src="figures/gtsam_solving.png" alt="GTSAM optimization summary: factor errors, Jacobians, and the update equation." loading="lazy" />
     <figcaption>
       <span data-lang="en">For each factor, <code>evaluateError</code> populates $H_{j_1}$, $H_{j_2}$ and the residual $b_i$. The linear system is solved for the update vectors $\delta_{j_1}, \delta_{j_2}$ on the tangent space, which are then retracted back onto the manifold.</span>
-      <span data-lang="ko">각 factor의 <code>evaluateError</code>가 $H_{j_1}$, $H_{j_2}$와 residual $b_i$를 채워주고, GTSAM은 이로부터 tangent space 상의 업데이트 vector $\delta_{j_1}, \delta_{j_2}$를 푸는 선형 시스템을 구성한다. 마지막으로 이 update를 manifold 위로 되돌리는 retract 연산이 이어진다.</span>
+      <span data-lang="ko">각 factor의 <code>evaluateError</code>가 $H_{j_1}$, $H_{j_2}$와 residual $b_i$를 채워주고, GTSAM은 이로부터 tangent space 상의 update vector $\delta_{j_1}, \delta_{j_2}$를 구하는 선형 시스템을 구성한다. 마지막으로 이 update를 manifold 위로 되돌리는 retract 연산이 이어진다.</span>
     </figcaption>
   </figure>
 
@@ -1515,7 +1517,7 @@ initialEstimate.insert(5, Pose2(2.1, 2.1, -M_PI_2));
       In other words, <code>BetweenFactor</code> only has to deliver "error here, derivatives there"; assembling those into a Gauss-Newton or Levenberg-Marquardt step is GTSAM's job. That is the cleanest way to see how a single <code>BetweenFactor</code> ends up moving every pose in the graph.
     </span>
     <span data-lang="ko">
-      정리하면, <code>BetweenFactor</code>가 해야 할 일은 "이 자리에서의 error와 derivative"를 GTSAM에 넘겨주는 것뿐이고, 이를 Gauss-Newton/Levenberg-Marquardt step으로 묶는 일은 GTSAM이 알아서 처리한다. 이렇게 보면 <code>BetweenFactor</code> 하나가 graph 전체의 pose를 움직이는 과정이 명확하게 와닿는다.
+      정리하면, <code>BetweenFactor</code>가 해야 할 일은 현재 값에서의 error와 derivative를 GTSAM에 넘겨주는 것뿐이고, 이를 Gauss-Newton/Levenberg-Marquardt step으로 묶는 일은 GTSAM이 처리한다. 이렇게 보면 <code>BetweenFactor</code> 하나가 graph 전체의 pose를 움직이는 과정이 더 명확하게 보인다.
     </span>
   </p>
 
@@ -1572,7 +1574,7 @@ initialEstimate.insert(5, Pose2(2.1, 2.1, -M_PI_2));
       The pattern from <a href="https://github.com/engcang/FAST-LIO-SAM-QN/blob/c586b8955a1b726243f4c44b56fe9ef9100b0e61/fast_lio_sam_qn/src/fast_lio_sam_qn.cpp#L132">FAST-LIO-SAM-QN</a> is representative: when the new frame has moved enough relative to the previous keyframe, add a <code>BetweenFactor</code> for the relative motion and insert the new pose as the initial estimate.
     </span>
     <span data-lang="ko">
-      <a href="https://github.com/engcang/FAST-LIO-SAM-QN/blob/c586b8955a1b726243f4c44b56fe9ef9100b0e61/fast_lio_sam_qn/src/fast_lio_sam_qn.cpp#L132">FAST-LIO-SAM-QN</a>이 전형적인 패턴인데, 직전 keyframe 대비 pose가 충분히 변했을 때 그 상대 motion을 <code>BetweenFactor</code>로 graph에 추가하고, 새 pose를 initial value로 꽂아 준다.
+      <a href="https://github.com/engcang/FAST-LIO-SAM-QN/blob/c586b8955a1b726243f4c44b56fe9ef9100b0e61/fast_lio_sam_qn/src/fast_lio_sam_qn.cpp#L132">FAST-LIO-SAM-QN</a>이 전형적인 패턴인데, 직전 keyframe 대비 pose가 충분히 변했을 때 그 상대 motion을 <code>BetweenFactor</code>로 graph에 추가하고, 새 pose를 초기값으로 넣어준다.
     </span>
   </p>
 
@@ -1606,11 +1608,11 @@ gtsam::Pose3 pose_to   = poseEigToGtsamPose(
     <ul>
       <li>
         <span data-lang="en"><b>Thread safety.</b> The <code>std::lock_guard&lt;std::mutex&gt;</code> guards the graph and initial-estimate containers because the frontend, which extends them, and the backend, which optimizes and writes back, run on separate threads. Without the lock, concurrent access can cause a segfault.</span>
-        <span data-lang="ko"><b>Thread safety.</b> <code>std::lock_guard&lt;std::mutex&gt;</code>는 graph와 initial estimate 컨테이너를 보호한다. 이 컨테이너들을 채워주는 frontend와, optimization 후 결과를 다시 써넣는 backend가 별도 thread로 동시에 돌기 때문에 잠금이 없으면 segmentation fault가 날 수 있다.</span>
+        <span data-lang="ko"><b>Thread safety.</b> <code>std::lock_guard&lt;std::mutex&gt;</code>는 graph와 initial estimate 컨테이너를 보호한다. 이 컨테이너를 채우는 frontend와, optimization 후 결과를 다시 써넣는 backend가 별도 thread에서 동시에 실행되기 때문에 잠금이 없으면 segmentation fault가 날 수 있다.</span>
       </li>
       <li>
         <span data-lang="en"><b>Covariance ordering.</b> In 2D it is <code>{trans, trans, rot}</code>, but in 3D GTSAM uses <code>{rot, rot, rot, trans, trans, trans}</code>: rotation first, then translation, <i>not</i> the intuitive <code>{x, y, z, rotation vector}</code> order.</span>
-        <span data-lang="ko"><b>Covariance ordering.</b> 2D에서는 <code>{trans, trans, rot}</code>이지만, 3D에서는 <code>{rot, rot, rot, trans, trans, trans}</code> 순이다. 직관적으로 떠올리기 쉬운 <code>{x, y, z, rotation vector}</code> 순이 아니라 rotation 먼저, translation 나중이다.</span>
+        <span data-lang="ko"><b>Covariance ordering.</b> 2D에서는 <code>{trans, trans, rot}</code>이지만, 3D에서는 <code>{rot, rot, rot, trans, trans, trans}</code> 순이다. 직관적으로 떠올리기 쉬운 <code>{x, y, z, rotation vector}</code> 순서가 아니라 rotation이 먼저, translation이 나중이다.</span>
       </li>
     </ul>
   </div>
@@ -1637,7 +1639,7 @@ gtsam::Pose3 pose_to   = poseEigToGtsamPose(
   <span class="section-tag">02 · SE(2)</span>
   <h2 class="copy-heading">
     <span data-lang="en">SE(2): transformation matrix, Jacobian, and block operations</span>
-    <span data-lang="ko">SE(2): transformation matrix, Jacobian, 그리고 block 연산</span>
+    <span data-lang="ko">SE(2): transformation matrix와 Jacobian, block 연산</span>
   </h2>
   <p class="section-lead">
 	    <span data-lang="en">Derive the Jacobian of a planar transform two ways: entry by entry, and in the compact block style used by Frank Dellaert. Same matrix, much easier bookkeeping.</span>
@@ -1891,11 +1893,11 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
   <span class="section-tag">03 · Skew-symmetric</span>
   <h2 class="copy-heading">
     <span data-lang="en">Skew-symmetric matrix in 2D: where it actually comes from</span>
-    <span data-lang="ko">2차원에서 본 Skew-symmetric matrix: 도대체 어디서 튀어나왔나</span>
+    <span data-lang="ko">2차원에서 본 Skew-symmetric matrix: 어디서 나오는가</span>
   </h2>
   <p class="section-lead">
 	    <span data-lang="en">Differentiating a 2D rotation naturally produces a skew-symmetric matrix; the small-angle approximation then turns multiplicative rotation updates into ordinary additions. We follow that thread into 3D and into the physical meaning of $\lfloor\cdot\rfloor_\times$.</span>
-	    <span data-lang="ko">2D rotation을 미분하면 skew-symmetric matrix가 자연스럽게 등장하고, small angle approximation을 적용하면 곱셈으로 표현되던 회전 증분을 덧셈으로 적을 수 있게 된다. 이 흐름을 3차원과 $\lfloor\cdot\rfloor_\times$의 물리적 의미까지 이어 본다.</span>
+	    <span data-lang="ko">2D rotation을 미분하면 skew-symmetric matrix가 자연스럽게 등장하고, small angle approximation을 적용하면 곱셈으로 표현되던 회전 증분을 덧셈으로 적을 수 있다. 이 흐름을 3차원과 $\lfloor\cdot\rfloor_\times$의 물리적 의미까지 이어서 살펴본다.</span>
   </p>
 
   <h3>
@@ -2080,7 +2082,7 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
 
   <h3>
     <span data-lang="en">4. A first taste of the 3D skew-symmetric matrix</span>
-    <span data-lang="ko">4. 3차원에서의 Skew-symmetric matrix 맛보기</span>
+    <span data-lang="ko">4. 3차원 Skew-symmetric matrix 미리 보기</span>
   </h3>
   <p>
     <span data-lang="en">
@@ -2163,15 +2165,15 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
   <ul>
     <li>
       <span data-lang="en">The current rotation matrix $\bm{R}$.</span>
-      <span data-lang="ko">현재 rotation matrix $\bm{R}$.</span>
+      <span data-lang="ko">현재 rotation matrix $\bm{R}$,</span>
     </li>
     <li>
       <span data-lang="en">A rotation <i>axis</i> written in skew-symmetric form.</span>
-      <span data-lang="ko">Skew-symmetric 형태로 표현된 rotation axis.</span>
+      <span data-lang="ko">skew-symmetric 형태로 표현된 rotation axis,</span>
     </li>
     <li>
       <span data-lang="en">A rotation <i>magnitude</i>, which is a scalar in 2D and a vector in 3D.</span>
-      <span data-lang="ko">Rotation magnitude. 2D에서는 scalar이고, 3D에서는 vector이다.</span>
+      <span data-lang="ko">회전 크기. 2D에서는 scalar이고, 3D에서는 vector이다.</span>
     </li>
   </ul>
 
@@ -2184,7 +2186,7 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
     <img src="figures/circular_motion.png" alt="Circular motion diagram: position vector, tangent (angular velocity), and circular trajectory." loading="lazy" />
     <figcaption>
       <span data-lang="en">A vector multiplied by the skew matrix lands along the tangent of the circular trajectory at the same radius, i.e., perpendicular to the position vector. Image source: <a href="https://simagebank.net/wp/5257/">simagebank.net</a>.</span>
-      <span data-lang="ko">Vector에 skew matrix를 곱하면 같은 반지름의 원 궤도에서 접선 방향으로 떨어진 위치, 즉 원래 vector에 수직인 방향이 된다. 그림 출처: <a href="https://simagebank.net/wp/5257/">simagebank.net</a>.</span>
+      <span data-lang="ko">Vector에 skew matrix를 곱하면 같은 반지름의 원 궤도에서 접선 방향, 즉 원래 vector에 수직인 방향으로 이동한다. 그림 출처: <a href="https://simagebank.net/wp/5257/">simagebank.net</a>.</span>
     </figcaption>
   </figure>
 
@@ -2233,7 +2235,7 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
 
         <h3>
           <span data-lang="en">1. The puzzle: where does the rotation matrix come from?</span>
-          <span data-lang="ko">1. 미스터리: 왜 rotation matrix가 튀어나올까?</span>
+          <span data-lang="ko">1. 궁금증: 왜 rotation matrix가 나올까?</span>
         </h3>
         <p>
           <span data-lang="en">
@@ -2267,7 +2269,7 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
             The error is the obvious one: the difference between the pose's translation and the measured 2D point. So why is <code>H</code> populated with the rotation $\bm{R}$ instead of an identity in the translation block?
           </span>
           <span data-lang="ko">
-            여기서 <code>H</code> 매트릭스에 왜 rotation matrix $\bm{R}$이 할당되어 있을까? Translation 블록이 단위 행렬일 것 같은데 그렇지 않다.
+            여기서 <code>H</code> matrix에는 왜 rotation matrix $\bm{R}$이 들어갈까? Translation 블록은 단위 행렬일 것 같은데, 실제로는 그렇지 않다.
           </span>
         </p>
 
@@ -2275,7 +2277,7 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
           <img src="figures/gtsam_sping_mass_system.png" alt="Spring-mass system illustrating the unary factor" loading="lazy" />
           <figcaption>
             <span data-lang="en">A spring-mass-style intuition for a unary factor: a single variable (the robot pose) is pulled toward a measured 2D point. The factor exerts a residual whenever the predicted translation disagrees with the measurement.</span>
-            <span data-lang="ko">Unary factor를 직관적으로 보여주는 spring-mass 그림. 하나의 변수(로봇 pose)가 측정된 2D 점 쪽으로 끌려간다. 예측된 translation과 measurement가 어긋날수록 factor가 큰 잔차를 만들어낸다.</span>
+            <span data-lang="ko">Unary factor를 직관적으로 보여주는 spring-mass 그림. 하나의 변수(로봇 pose)가 측정된 2D 점 쪽으로 끌려간다. 예측된 translation과 측정값이 어긋날수록 factor가 큰 잔차를 만들어낸다.</span>
           </figcaption>
         </figure>
 
@@ -2310,7 +2312,7 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
 
         <h3>
           <span data-lang="en">3. Prerequisite: a peek at <code>retract</code></span>
-          <span data-lang="ko">3. 사전 지식: <code>retract</code> 엿보기</span>
+          <span data-lang="ko">3. 사전 지식: <code>retract</code> 간단히 보기</span>
         </h3>
         <p>
           <span data-lang="en">
@@ -2323,11 +2325,11 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
         <ul>
           <li>
             <span data-lang="en">Solve for a small update written as a vector.</span>
-            <span data-lang="ko">Pose를 업데이트할 작은 update를 vector 형태로 구한다.</span>
+            <span data-lang="ko">Pose에 반영할 작은 update를 vector로 구한다.</span>
           </li>
           <li>
             <span data-lang="en">Lift that vector back to a transformation and right-multiply it onto the current pose.</span>
-            <span data-lang="ko">그 vector를 다시 transformation matrix로 되돌린 뒤, 현재 pose의 우측에 곱해 업데이트한다.</span>
+            <span data-lang="ko">그 vector를 다시 transformation matrix로 올린 뒤, 현재 pose의 오른쪽에 곱해 업데이트한다.</span>
           </li>
         </ul>
         <p>
@@ -2790,7 +2792,7 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
   </h2>
   <p class="section-lead">
     <span data-lang="en">A four-step recipe that takes the <code>BetweenFactor</code> for <code>Pose2</code> from raw geometry to the closed-form blocks <code>H1</code> and <code>H2</code> that GTSAM actually computes, and then links the result back to the <code>AdjointMap</code>.</span>
-    <span data-lang="ko"><code>Pose2</code>의 <code>BetweenFactor</code>의 <code>H1</code>과 <code>H2</code>를 update function 정의, measurement function 전개, 양변 비교의 네 단계로 직접 유도하고, 그 결과가 <code>AdjointMap</code>과 어떻게 연결되는지까지 정리한다.</span>
+    <span data-lang="ko"><code>Pose2</code>의 <code>BetweenFactor</code>에서 <code>H1</code>과 <code>H2</code>가 어떻게 나오는지 update function 정의, measurement function 전개, 양변 비교의 네 단계로 직접 유도하고, 그 결과가 <code>AdjointMap</code>과 어떻게 연결되는지까지 정리한다.</span>
   </p>
 
   <h3>
@@ -2821,7 +2823,7 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
 
   <p>
     <span data-lang="en">Generalizing the unary-factor derivation from <a href="#ch4-unary-factor">Chapter 4</a>, we split the work into four steps.</span>
-    <span data-lang="ko">Unary factor에서 유도했던 것을 좀 더 일반화하여, 네 단계로 나눠서 수식을 유도해 보자.</span>
+    <span data-lang="ko">Unary factor에서 사용한 유도 과정을 조금 더 일반화해, 네 단계로 나누어 수식을 전개해 보자.</span>
   </p>
 
   <h3>
@@ -2830,7 +2832,7 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
   </h3>
   <p>
     <span data-lang="en">Let $\bm{\xi}\in\R^3$ be the vector that parameterizes an $\SE(2)$ element, and let $\bm{\delta} = [\delta\bm{t};\,\delta\theta]^\intercal$ be a small perturbation. Composing the two transformation matrices,</span>
-	    <span data-lang="ko">먼저 $\SE(2)$ 원소를 parameterize하는 vector를 $\bm{\xi}\in\R^3$, 작은 perturbation을 $\bm{\delta} = [\delta\bm{t};\,\delta\theta]^\intercal$라 두자. 두 transformation matrix를 다음처럼 곱하면</span>
+	    <span data-lang="ko">먼저 $\SE(2)$ 원소를 표현하는 vector를 $\bm{\xi}\in\R^3$, 작은 perturbation을 $\bm{\delta} = [\delta\bm{t};\,\delta\theta]^\intercal$라 두자. 두 transformation matrix를 다음처럼 곱하면</span>
   </p>
 
   $$
@@ -2845,7 +2847,7 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
 
   <p>
     <span data-lang="en">the translation block becomes $\bm{t} + \mathrm{Rot}(\theta)\,\delta\bm{t}$ and the rotation block becomes $\bm{R}\,\mathrm{Rot}(\delta\theta) = \mathrm{Rot}(\theta)\mathrm{Rot}(\delta\theta)$, whose angle is simply $\theta + \delta\theta$. The update map $\bm{\xi}\oplus\bm{\delta}$ is therefore</span>
-    <span data-lang="ko">translation 부분은 $\bm{t} + \mathrm{Rot}(\theta)\,\delta\bm{t}$가 되고, rotation matrix는 $\bm{R}\,\mathrm{Rot}(\delta\theta) = \mathrm{Rot}(\theta)\mathrm{Rot}(\delta\theta)$이므로 이 rotation matrix에 대응되는 각도 값은 $\theta + \delta\theta$가 된다. 따라서 update function $\bm{\xi}\oplus\bm{\delta}$는 다음과 같이 정의된다:</span>
+    <span data-lang="ko">translation 부분은 $\bm{t} + \mathrm{Rot}(\theta)\,\delta\bm{t}$가 되고, rotation matrix는 $\bm{R}\,\mathrm{Rot}(\delta\theta) = \mathrm{Rot}(\theta)\mathrm{Rot}(\delta\theta)$이므로 이에 대응되는 각도는 $\theta + \delta\theta$가 된다. 따라서 update function $\bm{\xi}\oplus\bm{\delta}$는 다음과 같이 정의된다:</span>
   </p>
 
   $$
@@ -2868,7 +2870,7 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
   </h3>
   <p>
 	    <span data-lang="en">On a Lie group, the "difference" between two poses is realized by multiplying the inverse of $\bm{T}^{w}_1$ by $\bm{T}^{w}_2$, exactly as the C++ snippet does. Expanding,</span>
-	    <span data-lang="ko">Lie group 상에서 두 pose 간의 뺄셈에 대응되는 개념은 위의 코드에서처럼 <code>p1</code>의 transformation matrix를 inverse한 $(\bm{T}^{w}_1)^{-1}$에 <code>p2</code>의 transformation matrix $\bm{T}^{w}_2$를 곱하는 것이다. 따라서 다음 수식을 전개하면:</span>
+	    <span data-lang="ko">Lie group 상에서 두 pose 간의 뺄셈에 대응되는 연산은, 위 코드처럼 <code>p1</code>의 transformation matrix를 inverse한 $(\bm{T}^{w}_1)^{-1}$에 <code>p2</code>의 transformation matrix $\bm{T}^{w}_2$를 곱하는 것이다. 이를 전개하면:</span>
   </p>
 
   $$
@@ -2898,7 +2900,7 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
 
   <p>
     <span data-lang="en">Vectorizing the relative pose gives the measurement function</span>
-    <span data-lang="ko">따라서 두 pose의 차이에 대한 함수를 vector화해서 나타내면</span>
+    <span data-lang="ko">따라서 두 pose의 차이를 vector 형태로 쓰면 measurement function은</span>
   </p>
 
   $$
@@ -2930,7 +2932,7 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
   </h4>
   <p>
     <span data-lang="en">We just substitute the updated quantities from (24) into (26): $\bm{t}_1 \leftarrow \bm{t}_1 + \bm{R}_1\,\delta\bm{t}_1$, $\theta_1 \leftarrow \theta_1 + \delta\theta_1$, $\bm{t}_2 \leftarrow \bm{t}_2 + \bm{R}_2\,\delta\bm{t}_2$, and $\theta_2 \leftarrow \theta_2 + \delta\theta_2$. This yields</span>
-    <span data-lang="ko">$h(\bm{\xi}_1\oplus\bm{\delta}_1, \bm{\xi}_2\oplus\bm{\delta}_2)$는 수식 (24)을 통해 업데이트된 값들을 (26)에 대입하기만 하면 된다. 즉, $\bm{t}_1 \leftarrow \bm{t}_1 + \bm{R}_1\,\delta\bm{t}_1$, $\theta_1 \leftarrow \theta_1 + \delta\theta_1$, $\bm{t}_2 \leftarrow \bm{t}_2 + \bm{R}_2\,\delta\bm{t}_2$, $\theta_2 \leftarrow \theta_2 + \delta\theta_2$를 (26)에 대입하면 다음과 같이 된다:</span>
+    <span data-lang="ko">$h(\bm{\xi}_1\oplus\bm{\delta}_1, \bm{\xi}_2\oplus\bm{\delta}_2)$는 수식 (24)로 업데이트된 값들을 (26)에 대입하면 된다. 즉, $\bm{t}_1 \leftarrow \bm{t}_1 + \bm{R}_1\,\delta\bm{t}_1$, $\theta_1 \leftarrow \theta_1 + \delta\theta_1$, $\bm{t}_2 \leftarrow \bm{t}_2 + \bm{R}_2\,\delta\bm{t}_2$, $\theta_2 \leftarrow \theta_2 + \delta\theta_2$를 (26)에 대입하면 다음과 같다:</span>
   </p>
 
   $$
@@ -2944,7 +2946,7 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
 
   <p>
     <span data-lang="en">Using the small-angle approximation $\mathrm{Rot}(\delta_\theta) \simeq \left[\begin{smallmatrix}1 & -\delta_\theta \\ \delta_\theta & 1\end{smallmatrix}\right] = \bm{I}_{2\times 2} + \hat{\Omega}\,\delta_\theta$ (covered earlier in <a href="#ch3-skew-symmetric">Chapter 3</a>), the first row expands to</span>
-    <span data-lang="ko">미소 각도에 대한 rotation은 $\mathrm{Rot}(\delta_\theta) \simeq \left[\begin{smallmatrix}1 & -\delta_\theta \\ \delta_\theta & 1\end{smallmatrix}\right] = \bm{I}_{2\times 2} + \hat{\Omega}\,\delta_\theta$로 표현할 수 있다는 것을 이미 배웠으므로(<a href="#ch3-skew-symmetric">Chapter 3</a> 참고), 이를 풀어서 쓰면 다음과 같다:</span>
+    <span data-lang="ko">미소 각도에 대한 rotation은 $\mathrm{Rot}(\delta_\theta) \simeq \left[\begin{smallmatrix}1 & -\delta_\theta \\ \delta_\theta & 1\end{smallmatrix}\right] = \bm{I}_{2\times 2} + \hat{\Omega}\,\delta_\theta$로 표현할 수 있다는 것을 이미 배웠으므로(<a href="#ch3-skew-symmetric">3장</a> 참고), 이를 풀어서 쓰면 다음과 같다:</span>
   </p>
 
   $$
@@ -2967,7 +2969,7 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
   </h4>
   <p>
     <span data-lang="en">Take the result of (25) and right-multiply by the transformation matrix associated with $\bm{\delta}$:</span>
-    <span data-lang="ko">$h(\bm{\xi}_1, \bm{\xi}_2)\oplus\bm{\delta}$ 역시 수식 (25)에 $\bm{\delta}$에 해당되는 transformation matrix를 곱해주면 된다:</span>
+    <span data-lang="ko">$h(\bm{\xi}_1, \bm{\xi}_2)\oplus\bm{\delta}$ 역시 수식 (25)에 $\bm{\delta}$에 해당하는 transformation matrix를 곱하면 된다:</span>
   </p>
 
   $$
@@ -2983,7 +2985,7 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
 
   <p>
     <span data-lang="en">Vectorizing back,</span>
-    <span data-lang="ko">다시 vector 꼴로 되돌리면:</span>
+    <span data-lang="ko">다시 vector 형태로 쓰면:</span>
   </p>
 
   $$
@@ -3001,7 +3003,7 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
   </h3>
   <p>
     <span data-lang="en">Setting (28) equal to (29) gives the final equations. The translation row reduces to</span>
-	    <span data-lang="ko">따라서 수식 (28)와 수식 (29)을 같다고 놓고 풀면 우리가 원하는 <code>H1</code>과 <code>H2</code>를 구할 수 있다. 먼저 translation row는 다음과 같이 정리된다:</span>
+	    <span data-lang="ko">따라서 수식 (28)와 수식 (29)을 같다고 놓고 풀면 우리가 원하는 <code>H1</code>과 <code>H2</code>를 구할 수 있다. 먼저 translation 부분은 다음과 같이 정리된다:</span>
   </p>
 
   $$
@@ -3052,11 +3054,11 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
 
   <h3>
     <span data-lang="en">Advanced: the Adjoint map and the beauty of mathematics</span>
-    <span data-lang="ko">Advanced: Adjoint map과 수학의 아름다움</span>
+    <span data-lang="ko">심화: Adjoint map과 수학의 아름다움</span>
   </h3>
   <p>
     <span data-lang="en">We could stop here, but it is worth understanding what $\bm{H}_1$ actually <i>is</i>. Without dwelling on the "why" just yet, observe that both <code>Pose2.cpp</code> and <code>Pose3.cpp</code> implement a function called <code>AdjointMap</code> (the adjoint map itself is discussed in <a href="#ch7-adjoint">Chapter 7</a>):</span>
-    <span data-lang="ko">사실 위처럼 <code>H1</code>과 <code>H2</code>를 구하면 끝나지만, <code>H1</code>이 무엇을 의미하는지 살펴보고 이 글을 마치고자 한다. 먼저 왜?를 묻지 말고 받아들여야 할 것이 있는데, <code>Pose2.cpp</code>나 <code>Pose3.cpp</code>에는 <code>AdjointMap</code>이라는 함수가 구현되어 있다(adjoint map 자체에 대해서는 <a href="#ch7-adjoint">Chapter 7</a>에서 살펴보자):</span>
+    <span data-lang="ko">사실 위처럼 <code>H1</code>과 <code>H2</code>를 구하면 끝나지만, <code>H1</code>이 무엇을 의미하는지도 살펴보고 이 글을 마치고자 한다. 당장은 이유를 깊게 파고들기보다, <code>Pose2.cpp</code>와 <code>Pose3.cpp</code>에 <code>AdjointMap</code>이라는 함수가 구현되어 있다는 점부터 보자(adjoint map 자체는 <a href="#ch7-adjoint">7장</a>에서 다룬다):</span>
   </p>
 
 <pre><code class="language-cpp">// See https://github.com/borglab/gtsam/blob/3af5360ad397422023160604de99d0de447b0a88/gtsam/geometry/Pose2.cpp#L127
@@ -3093,7 +3095,7 @@ Matrix3 Pose2::AdjointMap() const {
 
   <p>
     <span data-lang="en">Looking at the <code>between</code> routine in <code>gtsam/base/Lie.h</code> confirms it: think of <code>derived()</code> as <code>p1</code> and <code>g</code> as <code>p2</code>. The code first inverts $(\bm{T}^{w}_1)^{-1}\bm{T}^{w}_2$ (so the stored transformation now corresponds to $h(\bm{\xi}_2, \bm{\xi}_1)$ instead of $h(\bm{\xi}_1, \bm{\xi}_2)$) and then calls <code>AdjointMap()</code> to obtain $\bm{H}_1$. Because the same identity holds in 3D, GTSAM uses this single trick to compute <code>H1</code> and <code>H2</code> in any dimension:</span>
-    <span data-lang="ko">실제로 <code>gtsam/base/Lie.h</code> 내에서 <code>between</code>을 계산하는 코드를 살펴보면(아래에서 <code>derived()</code>가 <code>p1</code>, <code>g</code>가 <code>p2</code>에 대응된다고 생각하면 된다), <code>H1</code>의 값에 $(\bm{T}^{w}_1)^{-1}\bm{T}^{w}_2$를 한 번 더 inverse한 후(원래 $h(\bm{\xi}_1, \bm{\xi}_2)$와 대응되던 transformation matrix가 <code>inverse()</code>를 통해 $h(\bm{\xi}_2, \bm{\xi}_1)$와 대응되도록 바뀜), <code>AdjointMap()</code> 함수를 통해 <code>H1</code>을 손쉽게 구하는 것을 볼 수 있다. 이는 3D에서도 마찬가지로 적용되기 때문에, 차원에 관계없이 <code>H1</code>과 <code>H2</code>를 손쉽게 구할 수 있게 된다:</span>
+    <span data-lang="ko">실제로 <code>gtsam/base/Lie.h</code> 안에서 <code>between</code>을 계산하는 코드를 살펴보면(아래에서 <code>derived()</code>를 <code>p1</code>, <code>g</code>를 <code>p2</code>에 대응시켜 생각하면 된다), $(\bm{T}^{w}_1)^{-1}\bm{T}^{w}_2$를 한 번 더 inverse한 뒤 <code>AdjointMap()</code>을 호출해 <code>H1</code>을 구한다. 즉 원래 $h(\bm{\xi}_1, \bm{\xi}_2)$에 대응되던 transformation matrix가 <code>inverse()</code>를 통해 $h(\bm{\xi}_2, \bm{\xi}_1)$에 대응되도록 바뀌고, 그 adjoint가 <code>H1</code>에 들어가는 것이다. 같은 구조가 3D에서도 성립하므로, GTSAM은 차원에 관계없이 같은 방식으로 <code>H1</code>과 <code>H2</code>를 계산한다:</span>
   </p>
 
 <pre><code class="language-cpp">// See https://github.com/borglab/gtsam/blob/3af5360ad397422023160604de99d0de447b0a88/gtsam/base/Lie.h#L63C3-L69C4
@@ -3118,11 +3120,11 @@ Class between(const Class&amp; g, ChartJacobian H1,
   </h3>
   <p>
     <span data-lang="en">We have at last derived <code>H1</code> and <code>H2</code> for <code>Pose2::BetweenFactor</code>. To repeat a caveat from earlier chapters: a user who just wants to <i>use</i> <code>BetweenFactor</code> never needs to know any of this. But when SLAM optimization has to be debugged or extended at a low level, this derivation is unavoidable; without it, GTSAM's behavior is opaque.</span>
-	    <span data-lang="ko"><code>Pose2::BetweenFactor</code>의 <code>H1</code>과 <code>H2</code>를 구하는 방법을 유도해 보았다. 다시 강조하지만, 단순히 <code>BetweenFactor</code>를 사용하는 입장에서는 전혀 알 필요가 없는 부분이다. 다만 SLAM optimization을 low-level에서 디버깅하거나 확장해야 할 때는 이런 과정을 모르면 GTSAM이 어떻게 동작하는지 이해하기 어렵다. 그래서 <code>H</code> matrix가 어떻게 유도되는지 정리해 보았다.</span>
+	    <span data-lang="ko"><code>Pose2::BetweenFactor</code>의 <code>H1</code>과 <code>H2</code>를 구하는 방법을 유도해 보았다. 다시 강조하지만, 단순히 <code>BetweenFactor</code>를 사용하는 입장에서는 전혀 알 필요가 없는 부분이다. 다만 SLAM optimization을 구현 수준에서 디버깅하거나 확장해야 할 때는 이런 과정을 모르면 GTSAM이 어떻게 동작하는지 이해하기 어렵다. 그래서 <code>H</code> matrix가 어떻게 유도되는지 정리해 보았다.</span>
   </p>
   <p>
     <span data-lang="en">The exposition above favors readability over rigor. If a step feels opaque, re-read the skew-symmetric and unary-factor chapters (<a href="#ch3-skew-symmetric">Chapter 3</a> and <a href="#ch4-unary-factor">Chapter 4</a>) and try again.</span>
-	    <span data-lang="ko">위 설명은 수학적 엄밀성보다 읽기 쉬운 흐름을 우선했다. 이해가 잘 안 되는 부분이 있다면 앞선 skew-symmetric matrix 장(<a href="#ch3-skew-symmetric">3장</a>)과 unary factor 장(<a href="#ch4-unary-factor">4장</a>)을 다시 한 번 차근차근 읽어본 뒤 재도전해 보자.</span>
+	    <span data-lang="ko">위 설명은 수학적 엄밀성보다 읽기 쉬운 흐름을 우선했다. 이해가 잘 안 되는 부분이 있다면 앞선 skew-symmetric matrix 장(<a href="#ch3-skew-symmetric">3장</a>)과 unary factor 장(<a href="#ch4-unary-factor">4장</a>)을 다시 한 번 차근차근 읽어보면 도움이 된다.</span>
   </p>
 
   <div class="blog-backlink" data-lang="ko">
@@ -3178,7 +3180,7 @@ Class between(const Class&amp; g, ChartJacobian H1,
   </p>
   <p>
     <span data-lang="en">With that in mind, look again at equation (30) from <a href="#ch6-pose2-between">Chapter 6</a>:</span>
-    <span data-lang="ko">이 사실을 기반으로 <a href="#ch6-pose2-between">Chapter 6</a>의 수식 (30)을 다시 살펴보면:</span>
+    <span data-lang="ko">이 사실을 바탕으로 <a href="#ch6-pose2-between">6장</a>의 수식 (30)을 다시 살펴보면:</span>
   </p>
 
   $$
@@ -3230,7 +3232,7 @@ Class between(const Class&amp; g, ChartJacobian H1,
   </h2>
   <p class="section-lead">
     <span data-lang="en">The 3D analog of <a href="#ch6-pose2-between">Chapter 6</a>: define the update and measurement functions for <code>Pose3</code>, list the skew-symmetric identities that drive the expansion, and arrive at the closed-form <code>H1</code> and <code>H2</code> blocks.</span>
-	    <span data-lang="ko"><code>Pose3</code>의 <code>BetweenFactor</code>에서 <code>H1</code>, <code>H2</code>를 직접 유도하기 위해 update function과 measurement function을 정의하고, skew-symmetric matrix identity 등 전개에 필요한 핵심 hint와 최종 결과까지 정리한다.</span>
+	    <span data-lang="ko"><code>Pose3</code>의 <code>BetweenFactor</code>에서 <code>H1</code>, <code>H2</code>를 직접 유도하기 위해 update function과 measurement function을 정의하고, skew-symmetric matrix identity 등 전개에 필요한 핵심 힌트와 최종 결과까지 정리한다.</span>
   </p>
 
   <h3>
@@ -3239,7 +3241,7 @@ Class between(const Class&amp; g, ChartJacobian H1,
   </h3>
   <p>
     <span data-lang="en">Finally, the <code>Pose3</code> case. The same four-step recipe from <a href="#ch6-pose2-between">Chapter 6</a> applies. Rather than spelling out every line of algebra, this chapter sets up the problem and provides the algebraic hints needed to finish the derivation as an exercise.</span>
-	    <span data-lang="ko">이제 마지막으로 <code>Pose3</code>의 <code>H1</code>과 <code>H2</code>를 구해 보자. <a href="#ch6-pose2-between">6장</a>의 <code>Pose2</code> 때와 마찬가지로, 아래 네 단계를 따르면 수식을 유도할 수 있다. 다만 연습 문제처럼 직접 풀어볼 수 있도록 자세한 전개는 생략하고, 필요한 테크닉만 hint로 정리한다.</span>
+	    <span data-lang="ko">이제 마지막으로 <code>Pose3</code>의 <code>H1</code>과 <code>H2</code>를 구해 보자. <a href="#ch6-pose2-between">6장</a>의 <code>Pose2</code> 때와 마찬가지로, 아래 네 단계를 따르면 수식을 유도할 수 있다. 다만 연습 문제처럼 직접 풀어볼 수 있도록 자세한 전개는 생략하고, 필요한 기법만 힌트로 정리한다.</span>
   </p>
 
   <h3>
@@ -3248,7 +3250,7 @@ Class between(const Class&amp; g, ChartJacobian H1,
   </h3>
   <p>
 	    <span data-lang="en">A subtlety first: 2D pose vectors put translation before rotation, but GTSAM's 3D pose vector uses the opposite order: rotation before translation. There is no mathematical reason; it is simply GTSAM's convention. Write the rotation increment as $\bm{w}\in\R^3$ and the translation increment as $\bm{v}\in\R^3$, so the tangent vector is $\bm{\delta} = [\bm{w};\,\bm{v}]^\intercal \in \R^6$. The 2D approximation $\mathrm{Rot}(\delta\theta) \simeq \bm{I} + \hat{\Omega}\,\delta\theta$ generalizes in 3D to $\bm{I} + [\bm{w}]_\times$ (revisit <a href="#ch3-skew-symmetric">Chapter 3</a> if this is unfamiliar). Composing the two transformation matrices,</span>
-	    <span data-lang="ko">먼저 convention을 하나 짚고 가자. Translation-rotation 순으로 적었던 2D와 달리, GTSAM에서 3D pose를 vector화할 때는 rotation-translation 순으로 적는다. 따로 수학적 이유가 있다기보다 GTSAM의 convention이다. Vector 꼴로 표현된 rotation/translation 변화량을 각각 $\bm{w}\in\R^3$, $\bm{v}\in\R^3$라 하면, tangent vector는 $\bm{\delta} = [\bm{w};\,\bm{v}]^\intercal \in \R^6$이다. 2D에서 $\mathrm{Rot}(\delta\theta) \simeq \bm{I} + \hat{\Omega}\,\delta\theta$로 표현했던 근사는 3D에서 $\bm{I} + [\bm{w}]_\times$에 대응된다(이해가 어렵다면 <a href="#ch3-skew-symmetric">3장</a>의 skew-symmetric matrix 글을 다시 보자). 이를 풀어 쓰면 다음과 같다:</span>
+	    <span data-lang="ko">먼저 convention을 하나 짚고 가자. Translation-rotation 순으로 적었던 2D와 달리, GTSAM에서 3D pose를 vector로 표현할 때는 rotation-translation 순으로 적는다. 따로 수학적 이유가 있다기보다 GTSAM의 convention이다. Vector 꼴로 표현된 rotation/translation 변화량을 각각 $\bm{w}\in\R^3$, $\bm{v}\in\R^3$라 하면, tangent vector는 $\bm{\delta} = [\bm{w};\,\bm{v}]^\intercal \in \R^6$이다. 2D에서 $\mathrm{Rot}(\delta\theta) \simeq \bm{I} + \hat{\Omega}\,\delta\theta$로 표현했던 근사는 3D에서 $\bm{I} + [\bm{w}]_\times$에 대응된다(이해가 어렵다면 <a href="#ch3-skew-symmetric">3장</a>의 skew-symmetric matrix 글을 다시 보자). 이를 풀어 쓰면 다음과 같다:</span>
   </p>
 
   <div class="warn">
@@ -3296,7 +3298,7 @@ Class between(const Class&amp; g, ChartJacobian H1,
   </h3>
   <p>
     <span data-lang="en">Identically to the 2D case, the relative pose is</span>
-    <span data-lang="ko">2D에서와 마찬가지로 relative pose에 대응되는 transformation matrix는 다음과 같고:</span>
+    <span data-lang="ko">2D에서와 마찬가지로 relative pose에 대응되는 transformation matrix는 다음과 같다:</span>
   </p>
 
   $$
@@ -3326,7 +3328,7 @@ Class between(const Class&amp; g, ChartJacobian H1,
 
   <p>
     <span data-lang="en">Vectorizing,</span>
-    <span data-lang="ko">두 pose의 차이를 vector화해서 나타내면:</span>
+    <span data-lang="ko">두 pose의 차이를 vector 형태로 쓰면:</span>
   </p>
 
   $$
@@ -3377,7 +3379,7 @@ Class between(const Class&amp; g, ChartJacobian H1,
 
   <h4>
     <span data-lang="en">Hints</span>
-    <span data-lang="ko">Hints</span>
+    <span data-lang="ko">힌트</span>
   </h4>
   <ul>
     <li>
@@ -3398,7 +3400,7 @@ Class between(const Class&amp; g, ChartJacobian H1,
     </li>
     <li>
       <span data-lang="en">$\bm{R}\bm{R}^\intercal = \bm{I}$. As an extra hint, when expanding the translation row you will want to massage $\bm{R}_2^\intercal[\bm{w}]_\times\bm{R}_1$ into $\bm{R}_2^\intercal[\bm{w}]_\times\bm{R}_2\bm{R}_2^\intercal\bm{R}_1 = [\bm{R}_2^\intercal\bm{w}]_\times\bm{R}_2^\intercal\bm{R}_1$.</span>
-      <span data-lang="ko">$\bm{R}\bm{R}^\intercal = \bm{I}$. 좀 더 hint를 주자면, translation 전개 시 $\bm{R}_2^\intercal[\bm{w}]_\times\bm{R}_1 = \bm{R}_2^\intercal[\bm{w}]_\times\bm{R}_2\bm{R}_2^\intercal\bm{R}_1 = [\bm{R}_2^\intercal\bm{w}]_\times\bm{R}_2^\intercal\bm{R}_1$의 꼴로 표현하기 위해 필요하다.</span>
+      <span data-lang="ko">$\bm{R}\bm{R}^\intercal = \bm{I}$. 조금 더 구체적으로는, translation 전개에서 $\bm{R}_2^\intercal[\bm{w}]_\times\bm{R}_1$을 $\bm{R}_2^\intercal[\bm{w}]_\times\bm{R}_2\bm{R}_2^\intercal\bm{R}_1 = [\bm{R}_2^\intercal\bm{w}]_\times\bm{R}_2^\intercal\bm{R}_1$ 꼴로 바꿀 때 필요하다.</span>
     </li>
     <li>
       <span data-lang="en">$[\bm{w}_a]_\times = [\bm{w}_b]_\times + [\bm{w}_c]_\times$ implies $\bm{w}_a = \bm{w}_b + \bm{w}_c$.</span>
@@ -3437,7 +3439,7 @@ Class between(const Class&amp; g, ChartJacobian H1,
   </h2>
   <p class="section-lead">
 	    <span data-lang="en">A worked Jacobian for Kimera-PGMO's <code>DeformationEdgeFactor</code>, showing how rotation invariance reshapes the residual so each iteration needs one matrix multiplication instead of two.</span>
-	    <span data-lang="ko">Kimera-PGMO의 <code>DeformationEdgeFactor</code>를 직접 유도해 보고, rotation invariance를 활용한 residual 재구성으로 매 iteration의 matrix multiplication을 두 번에서 한 번으로 줄이는 방법을 정리한다.</span>
+	    <span data-lang="ko">Kimera-PGMO의 <code>DeformationEdgeFactor</code>를 직접 유도해 보고, rotation invariance를 활용해 residual을 재구성하면 매 iteration의 matrix multiplication을 두 번에서 한 번으로 줄일 수 있음을 정리한다.</span>
   </p>
 
   <h3>
@@ -3457,7 +3459,7 @@ Class between(const Class&amp; g, ChartJacobian H1,
 	      With GTSAM well understood, let us read Yun's implementation of <code>DeformationEdgeFactor</code> as our worked example. If the previous chapters made sense, the inner workings of this factor should be readable too. (Note: the source is still being refactored upstream; as of February 5, 2025, the snippet below may not match the official repo line-for-line.)
     </span>
     <span data-lang="ko">
-	      이제 GTSAM을 어느 정도 이해했다면 실전 연습으로 Yun의 <code>DeformationEdgeFactor</code> 구현을 분석해 보자. 앞의 글들을 잘 이해했다면, 이 factor의 동작 원리도 읽어낼 수 있어야 한다(주의: 내부적으로 리팩토링 중인 코드여서, 2025년 2월 5일 기준 official repo의 코드와 100% 일치하지 않을 수 있다).
+	      이제 GTSAM을 어느 정도 이해했다면 실전 연습으로 Yun의 <code>DeformationEdgeFactor</code> 구현을 분석해 보자. 앞의 글들을 잘 이해했다면 이 factor의 동작 원리도 읽어낼 수 있을 것이다(주의: 내부적으로 리팩토링 중인 코드여서, 2025년 2월 5일 기준 official repo의 코드와 100% 일치하지 않을 수 있다).
     </span>
   </p>
 
@@ -3551,7 +3553,7 @@ Class between(const Class&amp; g, ChartJacobian H1,
 
   <h3>
     <span data-lang="en">3. The textbook derivation</span>
-    <span data-lang="ko">3. 원래대로라면…</span>
+    <span data-lang="ko">3. 정석적인 유도</span>
   </h3>
 
   <h4>
@@ -3563,7 +3565,7 @@ Class between(const Class&amp; g, ChartJacobian H1,
 	      The deformation factor uses a small but useful trick. Before getting to it, let us first write the residual the textbook way:
     </span>
     <span data-lang="ko">
-	      그런데 deformation factor에서는 작지만 유용한 technique이 사용된다. 그 trick을 보기 전에 먼저 원래 방식의 measurement function을 살펴보자. Error term을 아래와 같이 정의하면:
+	      Deformation factor에는 작지만 유용한 변형이 들어간다. 그 변형을 보기 전에 먼저 정석적인 방식으로 residual을 적어보자. Error term을 아래와 같이 정의하면:
     </span>
   </p>
 
@@ -3574,7 +3576,7 @@ Class between(const Class&amp; g, ChartJacobian H1,
 
   <p>
     <span data-lang="en">so the measurement function is</span>
-    <span data-lang="ko">measurement function은 아래와 같이 정의된다:</span>
+    <span data-lang="ko">measurement function은 다음과 같이 정의된다:</span>
   </p>
 
   $$
@@ -3650,7 +3652,7 @@ Class between(const Class&amp; g, ChartJacobian H1,
 
   <h3>
     <span data-lang="en">4. Proposed: using rotation invariance</span>
-    <span data-lang="ko">4. Proposed: Rotation invariance를 활용한 유도</span>
+    <span data-lang="ko">4. 제안된 방식: rotation invariance를 활용한 유도</span>
   </h3>
 
   <h4>
@@ -3705,7 +3707,7 @@ Class between(const Class&amp; g, ChartJacobian H1,
 	      Something is odd. We expected residual (36), so why is (41) valid? The trick is <i>rotation invariance</i>: for a residual measured by a vector norm, multiplying the vector inside the norm by any rotation matrix leaves the magnitude unchanged. Imagine a rigid stick whose endpoint separation is the error; rotating the stick in any direction does not change that separation. Applying rotation by $\bm{R}_1$ to the vector inside the norm of (36) gives precisely (41).
     </span>
     <span data-lang="ko">
-	      그런데 의아한 점이 있다. 우리가 예상한 error term은 (36)인데, 왜 (41)처럼 계산해도 될까? 여기서 활용되는 technique이 'rotation invariance'이다. Rotation invariance는 vector norm으로 측정되는 residual의 경우, norm 안의 vector에 어떤 rotation matrix를 곱해도 크기가 변하지 않는다는 뜻이다. 비유하자면, 막대기의 두 끝점 사이 거리가 error라면 막대기를 어느 방향으로 회전시키더라도 두 끝점 사이 거리는 동일하다. 이를 기반으로 (36)의 norm 안에 rotation matrix $\bm{R}_1$을 곱하면 정확히 (41)이 된다.
+	      그런데 의아한 점이 있다. 우리가 예상한 error term은 (36)인데, 왜 (41)처럼 계산해도 될까? 여기서 활용되는 개념이 'rotation invariance'이다. Vector norm으로 측정되는 residual에서는 norm 안의 vector에 어떤 rotation matrix를 곱해도 크기가 변하지 않는다. 비유하자면, 막대기의 두 끝점 사이 거리가 error라면 막대기를 어느 방향으로 회전시키더라도 두 끝점 사이 거리는 동일하다. 이 성질을 이용해 (36)의 norm 안에 rotation matrix $\bm{R}_1$을 곱하면 정확히 (41)이 된다.
     </span>
   </p>
 
@@ -3762,7 +3764,7 @@ Class between(const Class&amp; g, ChartJacobian H1,
 
   <h3>
     <span data-lang="en">5. Discussion and conclusion</span>
-    <span data-lang="ko">5. 디스커션 &amp; 결론</span>
+    <span data-lang="ko">5. 논의 및 결론</span>
   </h3>
   <p>
     <span data-lang="en">
@@ -3777,7 +3779,7 @@ Class between(const Class&amp; g, ChartJacobian H1,
 	      One matrix multiplication may sound minor. But suppose a SLAM problem builds 1,000, or even 10,000 such factors. Per optimization iteration that saves 1,000 (or 10,000) matrix multiplications; total savings scale as (iterations) $\times$ (factor count). Empirically, mapping a lab-scale indoor scene yields on the order of 4,000 <code>DeformationEdgeFactor</code>s.
     </span>
     <span data-lang="ko">
-	      Matrix multiplication 하나가 별것 아니어 보일 수 있다. 하지만 SLAM 문제에서 위 factor가 1,000개, 더 나아가 10,000개가 된다고 가정해 보자. 그러면 optimization의 매 iteration마다 matrix multiplication을 1,000번 또는 10,000번 줄일 수 있다. 즉, 동일한 optimization을 수행하면서 iteration 횟수 $\times$ factor 개수만큼 연산을 아낄 수 있다. 참고로 연구실 규모의 실내 scene을 mapping했을 때 경험적으로 약 4,000개의 <code>DeformationEdgeFactor</code>가 형성되는 것을 확인했다.
+	      Matrix multiplication 하나가 별것 아니어 보일 수 있다. 하지만 SLAM 문제에서 위 factor가 1,000개, 더 나아가 10,000개가 된다고 가정해 보자. 그러면 optimization의 매 iteration마다 matrix multiplication을 1,000번 또는 10,000번 줄일 수 있다. 즉, 동일한 optimization을 수행하면서 iteration 횟수 $\times$ factor 개수만큼 연산을 아낄 수 있다. 참고로 연구실 규모의 실내 scene을 mapping했을 때는 경험적으로 약 4,000개의 <code>DeformationEdgeFactor</code>가 생겼다.
     </span>
   </p>
 
@@ -3803,7 +3805,7 @@ Class between(const Class&amp; g, ChartJacobian H1,
   </h2>
   <p class="section-lead">
 	    <span data-lang="en">A practical sanity check: have GTSAM finite-difference your residual and compare it against the analytical Jacobian you just hand-derived, so a single sign error does not cost you a week.</span>
-	    <span data-lang="ko">실용적인 sanity check: GTSAM이 residual을 finite difference로 미분한 값과 직접 손으로 유도한 analytical Jacobian을 비교해서, 부호 하나 잘못 적은 실수에 일주일을 날리지 않도록 만든다.</span>
+	    <span data-lang="ko">실전에서 유용한 검증 방법: GTSAM이 residual을 finite difference로 미분한 값과 손으로 유도한 analytical Jacobian을 비교해, 부호 하나 잘못 적은 실수 때문에 일주일을 날리지 않도록 한다.</span>
   </p>
 
   <h3>
@@ -3821,7 +3823,7 @@ Class between(const Class&amp; g, ChartJacobian H1,
 
   <h3>
     <span data-lang="en">2. How to debug your factor smartly</span>
-    <span data-lang="ko">2. Factor를 똑똑하게 디버깅하는 법</span>
+    <span data-lang="ko">2. Factor를 효율적으로 디버깅하는 법</span>
   </h3>
   <p>
     <span data-lang="en">
@@ -3954,7 +3956,7 @@ int main() {
     </li>
     <li>
       <span data-lang="en">the expected matrix,</span>
-	      <span data-lang="ko">기대 matrix,</span>
+	      <span data-lang="ko">예상 matrix,</span>
     </li>
     <li>
       <span data-lang="en">the actual matrix,</span>
@@ -3974,7 +3976,7 @@ int main() {
       In one such printout from a different factor, the mismatch was localized to entry $(1,0)$ of the analytical Jacobian, where a minus sign had been dropped. That single line of console output saved a week of mysterious divergence.
     </span>
     <span data-lang="ko">
-	      어떤 factor를 구현했을 때 받은 출력에서는 analytical Jacobian의 $(1,0)$ 성분에 minus 부호 하나가 빠진 것이 그대로 드러났다. 그 한 줄의 console 출력이 일주일짜리 미스터리 divergence를 막아준 셈이다. 이처럼 <code>numericalDerivative</code>를 쓰면 내가 계산한 Jacobian이 정확한 값인지 쉽게 확인할 수 있다.
+	      어떤 factor를 구현했을 때 받은 출력에서는 analytical Jacobian의 $(1,0)$ 성분에 minus 부호 하나가 빠진 것이 그대로 드러났다. 그 한 줄의 콘솔 출력 덕분에 원인을 알기 어려운 divergence를 며칠씩 추적하지 않아도 되었다. 이처럼 <code>numericalDerivative</code>를 쓰면 내가 계산한 Jacobian이 정확한 값인지 쉽게 확인할 수 있다.
     </span>
   </p>
 
@@ -4001,11 +4003,11 @@ int main() {
     </li>
     <li>
       <span data-lang="en"><b>Left vs right perturbation.</b> Perturbing as $\bm{T}\,\Exp(\bm{\delta})$ (body frame) versus $\Exp(\bm{\delta})\,\bm{T}$ (world frame) gives Jacobians related by an adjoint. Both are valid; the analytical derivation must match whatever convention GTSAM uses for that type (see <a href="#ch7-adjoint">Chapter 7</a>).</span>
-      <span data-lang="ko"><b>좌측 vs 우측 perturbation.</b> $\bm{T}\,\Exp(\bm{\delta})$(body frame)로 perturb하는 것과 $\Exp(\bm{\delta})\,\bm{T}$(world frame)로 perturb하는 것의 Jacobian은 adjoint만큼 차이가 난다. 둘 다 valid하지만, 손으로 유도한 식이 해당 type에 대해 GTSAM이 쓰는 규약과 일치해야 한다(<a href="#ch7-adjoint">7장</a> 참고).</span>
+      <span data-lang="ko"><b>좌측 vs 우측 perturbation.</b> $\bm{T}\,\Exp(\bm{\delta})$(body frame)로 perturb하는 것과 $\Exp(\bm{\delta})\,\bm{T}$(world frame)로 perturb하는 것의 Jacobian은 adjoint만큼 차이가 난다. 수학적으로는 둘 다 가능하지만, 손으로 유도한 식이 해당 type에 대해 GTSAM이 쓰는 규약과 일치해야 한다(<a href="#ch7-adjoint">7장</a> 참고).</span>
     </li>
     <li>
 	      <span data-lang="en"><b>Higher-order terms not dropped.</b> An exact closed-form residual occasionally retains second-order pieces that the linearization ignores; numerical differentiation can pick them up when $\varepsilon$ is too large, making the test appear to fail. Lower <code>delta</code> until the apparent error stops shrinking.</span>
-	      <span data-lang="ko"><b>고차항 무시 실수.</b> 어떤 residual은 closed-form에서 2차 이상의 term이 살아남는데 linearization 단계에서는 이를 무시하는 경우가 있다. $\varepsilon$가 너무 크면 numerical differentiation이 이 영향을 잡아내서 test가 "실패"한 것처럼 보일 수 있다. <code>delta</code>를 줄여가며 오차가 더 이상 작아지지 않는 지점을 찾으면 된다.</span>
+	      <span data-lang="ko"><b>고차항 무시 실수.</b> 어떤 residual은 closed-form에서 2차 이상의 term이 살아남는데 linearization 단계에서는 이를 무시하는 경우가 있다. $\varepsilon$가 너무 크면 numerical differentiation이 이 영향을 잡아내서 검증이 "실패"한 것처럼 보일 수 있다. <code>delta</code>를 줄여가며 오차가 더 이상 작아지지 않는 지점을 찾으면 된다.</span>
     </li>
     <li>
       <span data-lang="en"><b>Bad <code>delta</code>.</b> Too large and the central difference truncation error dominates; too small and floating-point cancellation does. The default $\varepsilon = 10^{-5}$ is a reasonable starting point for double precision.</span>
@@ -4046,7 +4048,7 @@ int main() {
               <h3><a href="https://gtsam.org/tutorials/intro.html">GTSAM official intro tutorial</a></h3>
               <p>
                 <span data-lang="en">Frank Dellaert's own walk-through of GTSAM. Start here before anything else.</span>
-                <span data-lang="ko">Frank Dellaert 교수님이 직접 쓴 GTSAM 입문. 아무튼 한 번은 봐야 함.</span>
+                <span data-lang="ko">Frank Dellaert 교수님이 직접 쓴 GTSAM 입문 자료. GTSAM을 처음 볼 때 먼저 읽기 좋다.</span>
               </p>
             </div>
           </article>
@@ -4056,7 +4058,7 @@ int main() {
               <h3><a href="https://github.com/borglab/gtsam/tree/develop/examples">borglab/gtsam / examples</a></h3>
               <p>
                 <span data-lang="en">Read <code>Pose2SLAMExample.cpp</code> and <code>Pose3SLAMExample.cpp</code> end-to-end.</span>
-                <span data-lang="ko"><code>Pose2SLAMExample.cpp</code>와 <code>Pose3SLAMExample.cpp</code>를 끝까지 한 번 읽어볼 것.</span>
+                <span data-lang="ko"><code>Pose2SLAMExample.cpp</code>와 <code>Pose3SLAMExample.cpp</code>를 처음부터 끝까지 읽어보면 전체 흐름을 잡기 좋다.</span>
               </p>
             </div>
           </article>
@@ -4100,14 +4102,14 @@ int main() {
             <span data-lang="en">About the author</span>
             <span data-lang="ko">저자 소개</span>
           </h3>
-          <span class="about-footer-role">Postdoctoral Associate · MIT SPARK Lab</span>
+          <span class="about-footer-role">Former Postdoctoral Associate · MIT SPARK Lab</span>
         </div>
         <p>
           <span data-lang="en">
-            I'm Hyungtae Lim, a postdoc at MIT working with Prof. Luca Carlone (one of GTSAM's principal maintainers). This site is the consolidated form of personal notes I made while learning GTSAM's internals to build factor-graph SLAM systems. For my papers, my other tutorials (including <a href="https://limhyungtae.github.io/latex-paper-writing-guide/">"Modern LaTeX for Beginning Researchers"</a>), and my other writing, please visit my personal site.
+            I was a postdoc at MIT working with Prof. Luca Carlone (one of GTSAM's principal maintainers). This site is the consolidated form of personal notes I made while learning GTSAM's internals to build factor-graph SLAM systems. For my papers, tutorials, and other writing, please visit my personal site.
           </span>
           <span data-lang="ko">
-            저는 MIT에서 Luca Carlone 교수님(GTSAM 핵심 유지보수자 중 한 분) 아래 포닥 중인 임형태입니다. 이 사이트는 factor-graph SLAM 시스템을 직접 짜기 위해 GTSAM 내부를 공부하면서 만든 개인 노트를 정돈해 모아둔 결과물입니다. 논문, 다른 튜토리얼(<a href="https://limhyungtae.github.io/latex-paper-writing-guide/">"Modern LaTeX for Beginning Researchers"</a> 등), 기타 글들은 제 개인 사이트에서 확인하실 수 있습니다.
+            저는 MIT에서 Luca Carlone 교수님(GTSAM 핵심 유지보수자 중 한 분) 아래 포닥으로 일했던 임형태입니다. 이 사이트는 factor-graph SLAM 시스템을 직접 짜기 위해 GTSAM 내부를 공부하면서 만든 개인 노트를 정돈해 모아둔 결과물입니다. 논문, 튜토리얼, 기타 글들은 제 개인 사이트에서 확인하실 수 있습니다.
           </span>
         </p>
         <div class="about-cta">
