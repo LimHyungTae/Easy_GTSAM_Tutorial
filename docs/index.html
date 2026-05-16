@@ -643,6 +643,21 @@
     .author-links a::after { content: "↗"; color: #9ca3af; margin-left: 1px; }
     .author-links a:hover::after { color: var(--accent); }
 
+    .author-avatar {
+      float: right;
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin: 0 0 12px 18px;
+      border: 2px solid #fff;
+      box-shadow: 0 4px 12px rgba(17,24,39,.12);
+      shape-outside: circle();
+    }
+    @media (max-width: 600px) {
+      .author-avatar { width: 72px; height: 72px; margin: 0 0 10px 12px; }
+    }
+
     /* === About-me persistent footer card === */
     .about-footer {
       margin-top: 36px;
@@ -1014,6 +1029,7 @@
             <span class="close-label">× <span data-lang="en">Close</span><span data-lang="ko">닫기</span></span>
           </button>
           <div class="author-card" id="author-card" role="region" aria-label="About the author">
+            <img class="author-avatar" src="figures/profile_hyungtae.png" alt="Hyungtae Lim portrait" loading="lazy" />
             <div class="author-head">
               <h3>
                 <span data-lang="en">Hyungtae Lim, Ph.D.</span>
@@ -1033,6 +1049,7 @@
               <a href="https://limhyungtae.github.io" target="_blank" rel="noreferrer"><span data-lang="en">Personal site</span><span data-lang="ko">개인 사이트</span></a>
               <a href="https://github.com/LimHyungTae" target="_blank" rel="noreferrer">GitHub</a>
               <a href="https://scholar.google.com/citations?user=GAdEUgUAAAAJ" target="_blank" rel="noreferrer">Google Scholar</a>
+              <a href="https://www.linkedin.com/in/hyungtae-lim/" target="_blank" rel="noreferrer">LinkedIn</a>
               <a href="mailto:shapelim@mit.edu">Email</a>
             </div>
           </div>
@@ -4097,6 +4114,7 @@ int main() {
 
       <!-- ===== ABOUT (persistent footer card) ===== -->
       <section class="about-footer" id="about">
+        <img class="author-avatar" src="figures/profile_hyungtae.png" alt="Hyungtae Lim portrait" loading="lazy" />
         <div class="about-footer-head">
           <h3>
             <span data-lang="en">About the author</span>
@@ -4119,6 +4137,7 @@ int main() {
           </a>
           <a href="https://github.com/LimHyungTae" target="_blank" rel="noreferrer">GitHub</a>
           <a href="https://scholar.google.com/citations?user=GAdEUgUAAAAJ" target="_blank" rel="noreferrer">Google Scholar</a>
+          <a href="https://www.linkedin.com/in/hyungtae-lim/" target="_blank" rel="noreferrer">LinkedIn</a>
           <a href="mailto:shapelim@mit.edu">Email</a>
         </div>
       </section>
