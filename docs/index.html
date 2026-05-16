@@ -960,8 +960,8 @@
         </nav>
 
         <div class="sidebar-foot">
-          <span data-lang="en">By <a href="https://limhyungtae.github.io/">Hyungtae Lim</a> · MIT SPARK Lab</span>
-          <span data-lang="ko"><a href="https://limhyungtae.github.io/">임형태</a> 작성 · MIT SPARK Lab</span>
+          <span data-lang="en">By <a href="https://limhyungtae.github.io/">Hyungtae Lim</a> · <a href="https://web.mit.edu/sparklab/">MIT SPARK Lab</a></span>
+          <span data-lang="ko"><a href="https://limhyungtae.github.io/">임형태</a> 작성 · <a href="https://web.mit.edu/sparklab/">MIT SPARK Lab</a></span>
         </div>
       </div>
     </aside>
@@ -1551,10 +1551,28 @@ initialEstimate.insert(5, Pose2(2.1, 2.1, -M_PI_2));
   </h3>
   <p>
     <span data-lang="en">
-      The toy example builds the whole graph upfront. A real system has to (i) extend the graph incrementally as new frames arrive and (ii) keep <code>Values</code> in sync with that growth. The pattern from <a href="https://github.com/engcang/FAST-LIO-SAM-QN/blob/c586b8955a1b726243f4c44b56fe9ef9100b0e61/fast_lio_sam_qn/src/fast_lio_sam_qn.cpp#L132">FAST-LIO-SAM-QN</a> is representative: when the new frame has moved enough relative to the previous keyframe, add a <code>BetweenFactor</code> for the relative motion and insert the new pose as the initial estimate.
+      The toy example builds the whole graph upfront. A real system has to do two things continuously:
     </span>
     <span data-lang="ko">
-      예제 코드는 graph를 한 번에 다 만들지만, 실제 SLAM system은 (i) 새 frame이 들어올 때마다 graph 구조를 점진적으로 키우고, (ii) 그에 맞춰 <code>Values</code>도 같이 업데이트해 줘야 한다. <a href="https://github.com/engcang/FAST-LIO-SAM-QN/blob/c586b8955a1b726243f4c44b56fe9ef9100b0e61/fast_lio_sam_qn/src/fast_lio_sam_qn.cpp#L132">FAST-LIO-SAM-QN</a>이 전형적인 패턴인데, 직전 keyframe 대비 pose가 충분히 변했을 때 그 상대 motion을 <code>BetweenFactor</code>로 graph에 추가하고, 새 pose를 initial value로 꽂아 준다.
+      예제 코드는 graph를 한 번에 다 만들지만, 실제 SLAM system은 아래 두 가지를 계속 수행해야 한다:
+    </span>
+  </p>
+  <ul>
+    <li>
+      <span data-lang="en">Extend the graph incrementally as new frames arrive.</span>
+      <span data-lang="ko">새 frame이 들어올 때마다 graph 구조를 점진적으로 키운다.</span>
+    </li>
+    <li>
+      <span data-lang="en">Keep <code>Values</code> in sync with that growth.</span>
+      <span data-lang="ko">그에 맞춰 <code>Values</code>도 같이 업데이트한다.</span>
+    </li>
+  </ul>
+  <p>
+    <span data-lang="en">
+      The pattern from <a href="https://github.com/engcang/FAST-LIO-SAM-QN/blob/c586b8955a1b726243f4c44b56fe9ef9100b0e61/fast_lio_sam_qn/src/fast_lio_sam_qn.cpp#L132">FAST-LIO-SAM-QN</a> is representative: when the new frame has moved enough relative to the previous keyframe, add a <code>BetweenFactor</code> for the relative motion and insert the new pose as the initial estimate.
+    </span>
+    <span data-lang="ko">
+      <a href="https://github.com/engcang/FAST-LIO-SAM-QN/blob/c586b8955a1b726243f4c44b56fe9ef9100b0e61/fast_lio_sam_qn/src/fast_lio_sam_qn.cpp#L132">FAST-LIO-SAM-QN</a>이 전형적인 패턴인데, 직전 keyframe 대비 pose가 충분히 변했을 때 그 상대 motion을 <code>BetweenFactor</code>로 graph에 추가하고, 새 pose를 initial value로 꽂아 준다.
     </span>
   </p>
 
@@ -1959,10 +1977,10 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
 
   <p>
     <span data-lang="en">
-      This $\hat{\Omega}$ is precisely the <b>skew-symmetric matrix</b> that anyone who has read about Lie algebras has seen. Plugging (6) back into equation (5) of <a href="#ch2-se2-jacobian">the previous chapter</a>, the SE(2) Jacobian's rotation block becomes
+      This $\hat{\Omega}$ is precisely the <i>skew-symmetric matrix</i> that anyone who has read about Lie algebras has seen. Plugging (6) back into equation (5) of <a href="#ch2-se2-jacobian">the previous chapter</a>, the SE(2) Jacobian's rotation block becomes
     </span>
     <span data-lang="ko">
-      여기 등장한 $\hat{\Omega}$가 Lie algebra를 공부하면서 흔히 보던 그 <b>skew-symmetric matrix</b>이다. 식 (6)을 <a href="#ch2-se2-jacobian">이전 글</a>의 식 (5)에 대입해 보면, SE(2) Jacobian의 회전 부분은 다음으로 정리된다:
+      여기 등장한 $\hat{\Omega}$가 Lie algebra를 공부하면서 흔히 보던 그 <i>skew-symmetric matrix</i>이다. 식 (6)을 <a href="#ch2-se2-jacobian">이전 글</a>의 식 (5)에 대입해 보면, SE(2) Jacobian의 회전 부분은 다음으로 정리된다:
     </span>
   </p>
 
@@ -2051,6 +2069,15 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
     </span>
   </p>
 
+  <div class="note">
+    <span data-lang="en">
+      <b>Takeaway.</b> The skew-symmetric matrix is the bridge that turns a tiny multiplicative rotation update into a linear additive term. That is why it keeps reappearing whenever GTSAM linearizes a factor on a Lie group.
+    </span>
+    <span data-lang="ko">
+      <b>핵심.</b> Skew-symmetric matrix는 작은 곱셈형 rotation update를 선형적인 덧셈 항으로 바꿔주는 다리 역할을 한다. 그래서 GTSAM이 Lie group 위의 factor를 선형화할 때마다 이 구조가 반복해서 등장한다.
+    </span>
+  </div>
+
   <h3>
     <span data-lang="en">4. A first taste of the 3D skew-symmetric matrix</span>
     <span data-lang="ko">4. 3차원에서의 Skew-symmetric matrix 맛보기</span>
@@ -2127,12 +2154,26 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
 
   <p>
     <span data-lang="en">
-      So whether in 2D or 3D, an increment of a rotation $\bm{R}$ factors as a product of three pieces: (i) the current rotation matrix $\bm{R}$, (ii) a rotation <i>axis</i> in skew-symmetric form, and (iii) a rotation <i>magnitude</i> (a scalar in 2D, a vector in 3D).
+      So whether in 2D or 3D, an increment of a rotation $\bm{R}$ factors as a product of three pieces:
     </span>
     <span data-lang="ko">
-      따라서 2D이든 3D이든, 어떤 회전 $\bm{R}$의 증분은 (i) 그 회전 행렬 $\bm{R}$ 자체, (ii) skew-symmetric으로 표현된 회전축, (iii) 회전량(2D는 scalar, 3D는 vector)이라는 세 가지 항의 곱으로 나타낼 수 있다는 결론에 도달한다.
+      따라서 2D이든 3D이든, 어떤 회전 $\bm{R}$의 증분은 아래 세 가지 항의 곱으로 나타낼 수 있다는 결론에 도달한다:
     </span>
   </p>
+  <ul>
+    <li>
+      <span data-lang="en">The current rotation matrix $\bm{R}$.</span>
+      <span data-lang="ko">현재 rotation matrix $\bm{R}$.</span>
+    </li>
+    <li>
+      <span data-lang="en">A rotation <i>axis</i> written in skew-symmetric form.</span>
+      <span data-lang="ko">Skew-symmetric 형태로 표현된 rotation axis.</span>
+    </li>
+    <li>
+      <span data-lang="en">A rotation <i>magnitude</i>, which is a scalar in 2D and a vector in 3D.</span>
+      <span data-lang="ko">Rotation magnitude. 2D에서는 scalar이고, 3D에서는 vector이다.</span>
+    </li>
+  </ul>
 
   <h3>
     <span data-lang="en">5. The physical meaning of $\lfloor\cdot\rfloor_\times$</span>
@@ -2167,7 +2208,7 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
 
   <p>
     <span data-lang="en">
-	      The picture in 3D is the same, except that the tangent now lies in the plane normal to the rotation axis. If you have read about Lie groups and Lie algebras and felt the terminology was the hardest part, the intuition is just this: a multiplicative quantity that lives on the manifold (the group) can, near the identity, be re-expressed through additions and subtractions (the algebra). Equation (9) and equation (10) are precisely that re-expression in 2D and 3D, with $\hat{\Omega}$ and $\lfloor\cdot\rfloor_\times$ as the bridge.
+	      The picture in 3D is the same, except that the tangent now lies in the plane normal to the rotation axis. If you have read about Lie groups and Lie algebras and felt the terminology was the hardest part, the intuition is just this: a multiplicative quantity that lives on the manifold (the group) can, near the identity, be re-expressed through additions and subtractions (the algebra). Eqs. (9) and (10) are precisely that re-expression in 2D and 3D, with $\hat{\Omega}$ and $\lfloor\cdot\rfloor_\times$ as the bridge.
     </span>
     <span data-lang="ko">
 	      3차원에서도 그림은 같다. 다만 접선 방향 vector가 이제 회전축에 수직인 평면 안에 놓인다는 점만 다르다. SLAM을 깊게 들여다본 이라면 Lie group이니 Lie algebra니 하는 말을 들어 보았을 텐데, 직관만 말하면 이런 얘기이다. 원래라면 곱셈으로 표현해야 하는 값(group)을, 항등원 주변에서는 덧셈/뺄셈(algebra)으로 표현 가능하게 만들어 주는 것. 식 (9)와 식 (10)이 2D와 3D에서의 바로 그 표현이며, $\hat{\Omega}$와 $\lfloor\cdot\rfloor_\times$가 그 다리 역할을 한다.
@@ -2260,7 +2301,7 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
 
         <p>
           <span data-lang="en">
-            By that reasoning the leading $2\times 2$ block of $\bm{H}$ should be $\bm{I}_{2\times 2}$, not $\bm{R}$. To avoid any suspense: this approach is simply wrong for GTSAM. The reason has nothing to do with the algebra above and everything to do with what the variable we are differentiating against actually is.
+            By that reasoning the leading $2\times 2$ block of $\bm{H}$ should be $\bm{I}_{2\times 2}$, not <a href="https://github.com/borglab/gtsam/blob/623361909581719d4af9f32cc359f87c88d2467f/doc/Code/LocalizationFactor.cpp#L12-L16">$\bm{R}$</a>. To avoid any suspense: <i>this approach is simply wrong for GTSAM.</i> The reason has nothing to do with the algebra above and everything to do with what the variable we are differentiating against actually is.
           </span>
           <span data-lang="ko">
             이렇게 보면 $\bm{H}$의 앞 $2\times 2$ 부분이 $\bm{I}_{2\times 2}$가 되어야 할 것 같지만, 실제 코드에서는 translation 블록이 $\bm{R}$이다. 오해를 방지하기 위해 미리 말하자면, 이 접근 자체가 GTSAM에서는 완전히 틀린 접근 방식이다. 위의 대수가 잘못된 것이 아니라, 우리가 미분하고 있는 "변수"의 의미를 잘못 잡은 것이다.
@@ -2273,49 +2314,63 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
         </h3>
         <p>
           <span data-lang="en">
-	            The reason $\bm{H}$ does not look like a flat partial derivative is that the optimization variable lives on a Lie group rather than in a flat vector space. The full meaning of $\bm{H}$ will come at the end; first, the mechanics. In the Lie-group picture, a pose is a transformation matrix $\bm{T}$. During optimization GTSAM (i) solves for a small update written as a vector, then (ii) lifts it back to a transformation and right-multiplies it onto the current pose. The update rule is
+	            The reason $\bm{H}$ does not look like a flat partial derivative is that the <i>optimization variable lives on a Lie group</i> rather than in a flat vector space. The full meaning of $\bm{H}$ will come at the end; first, the mechanics. In the Lie-group picture, a pose is a transformation matrix $\bm{T}$. During optimization GTSAM does two things:
           </span>
           <span data-lang="ko">
-	            $\bm{H}$가 우리가 생각한 것과 다른 형태로 유도되는 이유는, 우리가 optimize하고자 하는 변수가 flat vector space가 아니라 Lie group 위의 값이기 때문이다($\bm{H}$의 진짜 의미는 글의 마지막에 다시 정리한다). Lie group의 세계에서는 pose가 transformation matrix $\bm{T}$로 표현되고, optimization 시에는 (i) pose를 업데이트할 작은 update를 vector 형태로 구한 뒤 (ii) 이를 다시 transformation matrix로 되돌려 pose의 우측에 곱해 업데이트한다.
+	            $\bm{H}$가 우리가 생각한 것과 다른 형태로 유도되는 이유는, 우리가 optimize하고자 하는 변수가 flat vector space가 아니라 Lie group 위의 값이기 때문이다($\bm{H}$의 진짜 의미는 글의 마지막에 다시 정리한다). Lie group의 세계에서는 pose가 transformation matrix $\bm{T}$로 표현되고, optimization 시 GTSAM은 아래 두 단계를 수행한다.
           </span>
+        </p>
+        <ul>
+          <li>
+            <span data-lang="en">Solve for a small update written as a vector.</span>
+            <span data-lang="ko">Pose를 업데이트할 작은 update를 vector 형태로 구한다.</span>
+          </li>
+          <li>
+            <span data-lang="en">Lift that vector back to a transformation and right-multiply it onto the current pose.</span>
+            <span data-lang="ko">그 vector를 다시 transformation matrix로 되돌린 뒤, 현재 pose의 우측에 곱해 업데이트한다.</span>
+          </li>
+        </ul>
+        <p>
+          <span data-lang="en">The update rule is</span>
+          <span data-lang="ko">이 update rule은 다음과 같다:</span>
         </p>
 
         $$
-        \bm{T} \leftarrow \bm{T}\,\Delta\bm{T} \quad\quad (1)
+        \bm{T} \leftarrow \bm{T}\,\Delta\bm{T} \quad\quad (12)
         $$
 
         <p>
           <span data-lang="en">
-            Rewriting (1) at the level of the vector parameterization (the "boxplus" convention), a small vector $\bm{\delta}$ updates the vector-form pose $\bm{\xi}$ as
+            Rewriting (12) at the level of the vector parameterization (the "boxplus" convention), a small vector $\bm{\delta}$ updates the vector-form pose $\bm{\xi}$ as
           </span>
           <span data-lang="ko">
-	            수식 (1)을 vector 형태의 parameterization으로 다시 쓰면, 미소 vector $\bm{\delta}$에 의해 vector꼴 pose $\bm{\xi}$가 다음과 같이 증분된다.
+	            수식 (12)을 vector 형태의 parameterization으로 다시 쓰면, 미소 vector $\bm{\delta}$에 의해 vector꼴 pose $\bm{\xi}$가 다음과 같이 증분된다.
           </span>
         </p>
 
         $$
-        \bm{\xi} \leftarrow \bm{\xi} \oplus \bm{\delta} \quad\quad (2)
+        \bm{\xi} \leftarrow \bm{\xi} \oplus \bm{\delta} \quad\quad (13)
         $$
 
         <p>
           <span data-lang="en">
-            In the Lie-group setting the increment in (1) is nonlinear: it is not a plain vector sum. Worse, the measurement function evaluated at the updated pose is also nonlinear. To run least-squares we need a linearization. For a unary factor (one variable, unlike a between factor that touches two poses) the linearization is
+            In the Lie-group setting the increment in (12) is nonlinear: it is not a plain vector sum. Worse, the measurement function evaluated at the updated pose is also nonlinear. To run least-squares we need a linearization. For a unary factor (one variable, unlike a between factor that touches two poses) the linearization is
           </span>
           <span data-lang="ko">
-            Lie group의 세계에서는 최적화하고자 하는 값의 변화량이 수식 (1)처럼 비선형으로 표현된다. measurement function 역시 비선형이라 그대로 쓰면 계산이 복잡해지므로, 효율적인 최적화를 위해 선형화가 필요하다. Unary factor의 경우에는 (두 pose를 다룬 <a href="#ch1-between-factor">between factor</a>와 달리) 업데이트할 변수가 하나이므로 선형화는 아래와 같이 적을 수 있다.
+            Lie group의 세계에서는 최적화하고자 하는 값의 변화량이 수식 (12)처럼 비선형으로 표현된다. measurement function 역시 비선형이라 그대로 쓰면 계산이 복잡해지므로, 효율적인 최적화를 위해 선형화가 필요하다. Unary factor의 경우에는 (두 pose를 다룬 <a href="#ch1-between-factor">between factor</a>와 달리) 업데이트할 변수가 하나이므로 선형화는 아래와 같이 적을 수 있다.
           </span>
         </p>
 
         $$
-        h(\bm{\xi} \oplus \bm{\delta}) \;\simeq\; h(\bm{\xi}) + \bm{H}\,\bm{\delta} \quad\quad (3)
+        h(\bm{\xi} \oplus \bm{\delta}) \;\simeq\; h(\bm{\xi}) + \bm{H}\,\bm{\delta} \quad\quad (14)
         $$
 
         <p>
           <span data-lang="en">
-            Here $h(\cdot)$ is the unary factor's measurement function, which for our example returns the translation part of the Lie-group pose. The linearization in (3) is what lets us cast the objective into $\tfrac{1}{2}\|\bm{A}\bm{x}-\bm{b}\|_2$ form, as seen in the very first chapter:
+            Here $h(\cdot)$ is the unary factor's measurement function, which for our example returns the translation part of the Lie-group pose. The linearization in (14) is what lets us cast the objective into $\tfrac{1}{2}\|\bm{A}\bm{x}-\bm{b}\|_2$ form, as seen in the very first chapter:
           </span>
           <span data-lang="ko">
-            여기서 $h(\cdot)$은 unary factor의 measurement function으로, 우리 예제에서는 Lie group pose의 translation만 돌려준다. 수식 (3)처럼 선형화를 해주어야 첫 글에서 보았던 objective function을 $\tfrac{1}{2}\|\bm{A}\bm{x}-\bm{b}\|_2$ 꼴로 표현할 수 있게 된다.
+            여기서 $h(\cdot)$은 unary factor의 measurement function으로, 우리 예제에서는 Lie group pose의 translation만 돌려준다. 수식 (14)처럼 선형화를 해주어야 첫 글에서 보았던 objective function을 $\tfrac{1}{2}\|\bm{A}\bm{x}-\bm{b}\|_2$ 꼴로 표현할 수 있게 된다.
           </span>
         </p>
 
@@ -2336,24 +2391,16 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
           </span>
         </p>
 
-        <figure class="gh-fig">
-          <img src="figures/0206_evaluateError.png" alt="evaluateError data flow inside a GTSAM factor" loading="lazy" />
-          <figcaption>
-            <span data-lang="en">Inside <code>evaluateError</code>: the factor receives the current estimate of its variable(s), returns the residual vector, and (optionally) populates the Jacobian block(s) $\bm{H}$ that multiply the local perturbation $\bm{\delta}$ during linearization.</span>
-            <span data-lang="ko"><code>evaluateError</code> 내부의 데이터 흐름. Factor는 현재 변수 추정값을 받아 residual vector를 돌려주고, 선형화 시 $\bm{\delta}$에 곱해질 Jacobian 블록 $\bm{H}$를 (옵션으로) 채워준다.</span>
-          </figcaption>
-        </figure>
-
         <h3>
           <span data-lang="en">4. Deriving $\bm{H}$ step by step</span>
           <span data-lang="ko">4. 수식 유도 과정</span>
         </h3>
         <p>
           <span data-lang="en">
-            With the framing settled, let's actually compute $\bm{H}$. Take the variables in (2) as $\bm{\xi} = [t_x,\,t_y,\,\theta]^\intercal$ and $\bm{\delta} = [\delta_x,\,\delta_y,\,\delta_\theta]^\intercal$. The right-multiplication update of (1) on $\SE(2)$ reads
+            With the framing settled, let's actually compute $\bm{H}$. Take the variables in (13) as $\bm{\xi} = [t_x,\,t_y,\,\theta]^\intercal$ and $\bm{\delta} = [\delta_x,\,\delta_y,\,\delta_\theta]^\intercal$. The right-multiplication update of (12) on $\SE(2)$ reads
           </span>
           <span data-lang="ko">
-	            이제 직접 $\bm{H}$를 유도해 보자. 수식 (2)의 변수들을 각각 $\bm{\xi} = [t_x,\,t_y,\,\theta]^\intercal$, $\bm{\delta} = [\delta_x,\,\delta_y,\,\delta_\theta]^\intercal$라 하자. 수식 (1)을 활용하면 $\SE(2)$ 상에서의 증분은 다음과 같다.
+	            이제 직접 $\bm{H}$를 유도해 보자. 수식 (13)의 변수들을 각각 $\bm{\xi} = [t_x,\,t_y,\,\theta]^\intercal$, $\bm{\delta} = [\delta_x,\,\delta_y,\,\delta_\theta]^\intercal$라 하자. 수식 (12)을 활용하면 $\SE(2)$ 상에서의 증분은 다음과 같다.
           </span>
         </p>
 
@@ -2367,7 +2414,7 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
         \cos\delta_\theta & -\sin\delta_\theta & \delta_x \\
         \sin\delta_\theta &  \cos\delta_\theta & \delta_y \\
         0 & 0 & 1
-        \end{bmatrix}. \quad\quad (4)
+        \end{bmatrix}. \quad\quad (15)
         $$
 
         <p>
@@ -2375,7 +2422,7 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
             Because $\delta_\theta$ is small, apply the small-angle approximation $\cos\delta_\theta \simeq 1$, $\sin\delta_\theta \simeq \delta_\theta$. The right factor simplifies to
           </span>
           <span data-lang="ko">
-            수식 (4)에서 $\delta_\theta$는 매우 작은 값이므로 small angle approximation에 의해 $\cos\delta_\theta \simeq 1$, $\sin\delta_\theta \simeq \delta_\theta$로 근사할 수 있다. 그러면 (4)의 오른쪽 항은 다음과 같이 단순화된다.
+            수식 (15)에서 $\delta_\theta$는 매우 작은 값이므로 small angle approximation에 의해 $\cos\delta_\theta \simeq 1$, $\sin\delta_\theta \simeq \delta_\theta$로 근사할 수 있다. 그러면 (15)의 오른쪽 항은 다음과 같이 단순화된다.
           </span>
         </p>
 
@@ -2389,15 +2436,15 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
         1 & -\delta_\theta & \delta_x \\
         \delta_\theta & 1 & \delta_y \\
         0 & 0 & 1
-        \end{bmatrix}. \quad\quad (5)
+        \end{bmatrix}. \quad\quad (16)
         $$
 
         <p>
           <span data-lang="en">
-            Expanding this product and reading off the translation part gives $h(\bm{\xi} \oplus \bm{\delta})$. Writing $\bm{t} = [t_x,\,t_y]^\intercal$ and $\bm{\delta}_{\bm{t}} = [\delta_x,\,\delta_y]^\intercal$, (5) is the block product
+            Expanding this product and reading off the translation part gives $h(\bm{\xi} \oplus \bm{\delta})$. Writing $\bm{t} = [t_x,\,t_y]^\intercal$ and $\bm{\delta}_{\bm{t}} = [\delta_x,\,\delta_y]^\intercal$, (16) is the block product
           </span>
           <span data-lang="ko">
-            이 곱셈을 전개했을 때 translation에 해당하는 부분이 $h(\bm{\xi} \oplus \bm{\delta})$이다. 편의를 위해 $\bm{t} = [t_x,\,t_y]^\intercal$, $\bm{\delta}_{\bm{t}} = [\delta_x,\,\delta_y]^\intercal$로 표기하면, (5)는 다음과 같이 block operation으로 정리된다.
+            이 곱셈을 전개했을 때 translation에 해당하는 부분이 $h(\bm{\xi} \oplus \bm{\delta})$이다. 편의를 위해 $\bm{t} = [t_x,\,t_y]^\intercal$, $\bm{\delta}_{\bm{t}} = [\delta_x,\,\delta_y]^\intercal$로 표기하면, (16)는 다음과 같이 block operation으로 정리된다.
           </span>
         </p>
 
@@ -2409,30 +2456,30 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
         \begin{bmatrix}
         \bm{I}_{2\times 2} + \hat{\bm{\Omega}}\,\delta_\theta & \bm{\delta}_{\bm{t}} \\
         \bm{0}_{1\times 2} & 1
-        \end{bmatrix}, \quad\quad (6)
+        \end{bmatrix}, \quad\quad (17)
         $$
 
         <p>
           <span data-lang="en">
-            where $\hat{\bm{\Omega}}$ is the $2\times 2$ skew-symmetric generator introduced in the previous chapter. Multiplying out (6), the upper-right (translation) block becomes
+            where $\hat{\bm{\Omega}}$ is the $2\times 2$ skew-symmetric generator introduced in the previous chapter. Multiplying out (17), the upper-right (translation) block becomes
           </span>
           <span data-lang="ko">
-            여기서 $\hat{\bm{\Omega}}$는 앞 챕터에서 소개한 $2\times 2$ skew-symmetric 행렬이다. (6)을 전개하면 우상단(translation) 블록은 다음과 같다.
+            여기서 $\hat{\bm{\Omega}}$는 앞 챕터에서 소개한 $2\times 2$ skew-symmetric 행렬이다. (17)을 전개하면 우상단(translation) 블록은 다음과 같다.
           </span>
         </p>
 
         $$
         h(\bm{\xi} \oplus \bm{\delta})
         = \bm{t} + \bm{R}(\theta)\,\bm{\delta}_{\bm{t}}
-        = h(\bm{\xi}) + \bm{R}(\theta)\,\bm{\delta}_{\bm{t}}. \quad\quad (7)
+        = h(\bm{\xi}) + \bm{R}(\theta)\,\bm{\delta}_{\bm{t}}. \quad\quad (18)
         $$
 
         <p>
           <span data-lang="en">
-            Now compare (7) with the linearization template (3). We need the matrix multiplying the full $\bm{\delta}$, not the truncated $\bm{\delta}_{\bm{t}}$. Since $\delta_\theta$ does not appear in (7) at all, its column in the Jacobian is zero. Hence
+            Now compare (18) with the linearization template (14). We need the matrix multiplying the full $\bm{\delta}$, not the truncated $\bm{\delta}_{\bm{t}}$. Since $\delta_\theta$ does not appear in (18) at all, its column in the Jacobian is zero. Hence
           </span>
           <span data-lang="ko">
-            우리가 최종적으로 구하고자 하는 $\bm{H}$는 $\bm{\delta}$ ($\bm{\delta}_{\bm{t}}$가 아니라 $\bm{\delta}$임에 주의) 앞에 곱해지는 행렬이다. 수식 (7) 안에 $\delta_\theta$가 등장하지 않으므로 $\delta_\theta$에 대한 column은 모두 0이 된다. 따라서 다음과 같이 적을 수 있다.
+            우리가 최종적으로 구하고자 하는 $\bm{H}$는 $\bm{\delta}$ ($\bm{\delta}_{\bm{t}}$가 아니라 $\bm{\delta}$임에 주의) 앞에 곱해지는 행렬이다. 수식 (18) 안에 $\delta_\theta$가 등장하지 않으므로 $\delta_\theta$에 대한 column은 모두 0이 된다. 따라서 다음과 같이 적을 수 있다.
           </span>
         </p>
 
@@ -2559,7 +2606,7 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
 
         $$
         f(\theta + \delta\theta,\, \bm{p} + \delta\bm{p})
-        \;=\; f(\theta, \bm{p}) + \bm{H}_1\,\delta\theta + \bm{H}_2\,\delta\bm{p}. \quad\quad (1)
+        \;=\; f(\theta, \bm{p}) + \bm{H}_1\,\delta\theta + \bm{H}_2\,\delta\bm{p}. \quad\quad (19)
         $$
 
         <p>
@@ -2574,7 +2621,7 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
         $$
         f(\theta + \delta\theta,\, \bm{p} + \delta\bm{p})
         = \bm{R}(\theta + \delta\theta)^\intercal\,(\bm{p} + \delta\bm{p})
-        = \bm{R}(-\theta - \delta\theta)\,(\bm{p} + \delta\bm{p}). \quad\quad (2)
+        = \bm{R}(-\theta - \delta\theta)\,(\bm{p} + \delta\bm{p}). \quad\quad (20)
         $$
 
         <h3>
@@ -2601,15 +2648,15 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
         1 & \delta\theta \\
         -\delta\theta & 1
         \end{bmatrix}
-        = \bm{I} - \bm{R}(\pi/2)\,\delta\theta. \quad\quad (3)
+        = \bm{I} - \bm{R}(\pi/2)\,\delta\theta. \quad\quad (21)
         $$
 
         <p>
           <span data-lang="en">
-            Using $\bm{R}(-\theta - \delta\theta) = \bm{R}(-\theta)\bm{R}(-\delta\theta)$, we can substitute (3) into (2) and expand:
+            Using $\bm{R}(-\theta - \delta\theta) = \bm{R}(-\theta)\bm{R}(-\delta\theta)$, we can substitute (21) into (20) and expand:
           </span>
           <span data-lang="ko">
-            2D에서는 $\bm{R}(-\theta - \delta\theta) = \bm{R}(-\theta)\,\bm{R}(-\delta\theta)$이므로, (3)을 (2)에 대입해 전개하면 다음과 같다.
+            2D에서는 $\bm{R}(-\theta - \delta\theta) = \bm{R}(-\theta)\,\bm{R}(-\delta\theta)$이므로, (21)을 (20)에 대입해 전개하면 다음과 같다.
           </span>
         </p>
 
@@ -2623,7 +2670,7 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
          - \bm{R}^\intercal \bm{R}(\pi/2)\,\delta\theta\,\delta\bm{p} \\
         &\simeq f(\theta, \bm{p})
          + \bm{R}^\intercal \delta\bm{p}
-         - \bm{R}^\intercal \bm{R}(\pi/2)\,\delta\theta\,\bm{p}. \quad\quad (4)
+         - \bm{R}^\intercal \bm{R}(\pi/2)\,\delta\theta\,\bm{p}. \quad\quad (22)
         \end{aligned}
         $$
 
@@ -2642,10 +2689,10 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
         </h3>
         <p>
           <span data-lang="en">
-            Comparing the surviving terms in (4) with the template (1) gives $\bm{H}_2$ at a glance: the coefficient of $\delta\bm{p}$ is $\bm{R}^\intercal$, so
+            Comparing the surviving terms in (22) with the template (19) gives $\bm{H}_2$ at a glance: the coefficient of $\delta\bm{p}$ is $\bm{R}^\intercal$, so
           </span>
           <span data-lang="ko">
-            (4)에서 살아남은 항들을 (1)과 비교하면 $\bm{H}_2$는 바로 보인다. $\delta\bm{p}$의 계수가 $\bm{R}^\intercal$이므로
+            (22)에서 살아남은 항들을 (19)과 비교하면 $\bm{H}_2$는 바로 보인다. $\delta\bm{p}$의 계수가 $\bm{R}^\intercal$이므로
           </span>
         </p>
 
@@ -2667,15 +2714,15 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
         = \bm{R}(\theta)\,\hat{\bm{\Omega}}
         = \hat{\bm{\Omega}}\,\bm{R}(\theta),
         \quad\text{where}\quad
-        \hat{\bm{\Omega}} = \begin{bmatrix} 0 & -1 \\ 1 & 0 \end{bmatrix}. \quad\quad (5)
+        \hat{\bm{\Omega}} = \begin{bmatrix} 0 & -1 \\ 1 & 0 \end{bmatrix}. \quad\quad (23)
         $$
 
         <p>
           <span data-lang="en">
-            Here $\hat{\bm{\Omega}} = \bm{R}(\pi/2)$ (the same matrix, different name). The identity (5) is exactly the statement that $\bm{R}(\theta)$ and $\bm{R}(\pi/2)$ commute, so $\bm{R}^\intercal \bm{R}(\pi/2) = \bm{R}(\pi/2)\,\bm{R}^\intercal$. Substituting this swap back into (4) and matching coefficients against (1) yields
+            Here $\hat{\bm{\Omega}} = \bm{R}(\pi/2)$ (the same matrix, different name). The identity (23) is exactly the statement that $\bm{R}(\theta)$ and $\bm{R}(\pi/2)$ commute, so $\bm{R}^\intercal \bm{R}(\pi/2) = \bm{R}(\pi/2)\,\bm{R}^\intercal$. Substituting this swap back into (22) and matching coefficients against (19) yields
           </span>
           <span data-lang="ko">
-            을 활용하자. 현재 $\hat{\bm{\Omega}} = \bm{R}(\pi/2)$이고 표기만 다른 동일한 행렬이다. (5)는 곧 $\bm{R}(\theta)$와 $\bm{R}(\pi/2)$가 교환 가능하다는 진술이므로 $\bm{R}^\intercal \bm{R}(\pi/2) = \bm{R}(\pi/2)\,\bm{R}^\intercal$이다. 이를 (4)에 다시 대입하고 (1)과 계수를 맞추면 최종적으로 다음과 같이 정리된다.
+            을 활용하자. 현재 $\hat{\bm{\Omega}} = \bm{R}(\pi/2)$이고 표기만 다른 동일한 행렬이다. (23)는 곧 $\bm{R}(\theta)$와 $\bm{R}(\pi/2)$가 교환 가능하다는 진술이므로 $\bm{R}^\intercal \bm{R}(\pi/2) = \bm{R}(\pi/2)\,\bm{R}^\intercal$이다. 이를 (22)에 다시 대입하고 (19)과 계수를 맞추면 최종적으로 다음과 같이 정리된다.
           </span>
         </p>
 
@@ -2807,12 +2854,12 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
   \bm{t} + \mathrm{Rot}(\theta)\,\delta\bm{t} \\
   \theta + \delta\theta
   \end{array}\right] \in \R^3.
-  \qquad\text{(1)}
+  \qquad\text{(24)}
   $$
 
   <p>
-	    <span data-lang="en">In 2D the rotation part of $\SE(2)$ reduces to a single yaw angle, so the rotation update is just an ordinary scalar addition and (1) stays simple. In 3D the same step is more involved. From here on we write $\bm{0}_{1\times 2}$ simply as $\bm{0}$.</span>
-	    <span data-lang="ko">2D에서는 $\SE(2)$의 rotation이 단일 yaw angle로 줄어들기 때문에, 회전 update가 단순한 scalar 덧셈이 되어 (1)처럼 간단히 표기할 수 있다. 3D에서는 같은 단계가 훨씬 복잡해진다. 앞으로는 편의상 $\bm{0}_{1\times 2}$를 그냥 $\bm{0}$이라고 적겠다.</span>
+	    <span data-lang="en">In 2D the rotation part of $\SE(2)$ reduces to a single yaw angle, so the rotation update is just an ordinary scalar addition and (24) stays simple. In 3D the same step is more involved. From here on we write $\bm{0}_{1\times 2}$ simply as $\bm{0}$.</span>
+	    <span data-lang="ko">2D에서는 $\SE(2)$의 rotation이 단일 yaw angle로 줄어들기 때문에, 회전 update가 단순한 scalar 덧셈이 되어 (24)처럼 간단히 표기할 수 있다. 3D에서는 같은 단계가 훨씬 복잡해진다. 앞으로는 편의상 $\bm{0}_{1\times 2}$를 그냥 $\bm{0}$이라고 적겠다.</span>
   </p>
 
   <h3>
@@ -2846,7 +2893,7 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
   \bm{R}^{\intercal}_1\bm{R}_2 & \bm{R}^{\intercal}_1(\bm{t}_2 - \bm{t}_1) \\
   \bm{0} & 1
   \end{array}\right].
-  \qquad\text{(2)}
+  \qquad\text{(25)}
   $$
 
   <p>
@@ -2860,7 +2907,7 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
   \mathrm{Rot}(-\theta_1)(\bm{t}_2 - \bm{t}_1) \\
   \theta_2 - \theta_1
   \end{array}\right].
-  \qquad\text{(3)}
+  \qquad\text{(26)}
   $$
 
   <p>
@@ -2882,8 +2929,8 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
     <span data-lang="ko">Step 3-1. $h(\bm{\xi}_1\oplus\bm{\delta}_1, \bm{\xi}_2\oplus\bm{\delta}_2)$ 전개하기</span>
   </h4>
   <p>
-    <span data-lang="en">We just substitute the updated quantities from (1) into (3): $\bm{t}_1 \leftarrow \bm{t}_1 + \bm{R}_1\,\delta\bm{t}_1$, $\theta_1 \leftarrow \theta_1 + \delta\theta_1$, $\bm{t}_2 \leftarrow \bm{t}_2 + \bm{R}_2\,\delta\bm{t}_2$, and $\theta_2 \leftarrow \theta_2 + \delta\theta_2$. This yields</span>
-    <span data-lang="ko">$h(\bm{\xi}_1\oplus\bm{\delta}_1, \bm{\xi}_2\oplus\bm{\delta}_2)$는 수식 (1)을 통해 업데이트된 값들을 (3)에 대입하기만 하면 된다. 즉, $\bm{t}_1 \leftarrow \bm{t}_1 + \bm{R}_1\,\delta\bm{t}_1$, $\theta_1 \leftarrow \theta_1 + \delta\theta_1$, $\bm{t}_2 \leftarrow \bm{t}_2 + \bm{R}_2\,\delta\bm{t}_2$, $\theta_2 \leftarrow \theta_2 + \delta\theta_2$를 (3)에 대입하면 다음과 같이 된다:</span>
+    <span data-lang="en">We just substitute the updated quantities from (24) into (26): $\bm{t}_1 \leftarrow \bm{t}_1 + \bm{R}_1\,\delta\bm{t}_1$, $\theta_1 \leftarrow \theta_1 + \delta\theta_1$, $\bm{t}_2 \leftarrow \bm{t}_2 + \bm{R}_2\,\delta\bm{t}_2$, and $\theta_2 \leftarrow \theta_2 + \delta\theta_2$. This yields</span>
+    <span data-lang="ko">$h(\bm{\xi}_1\oplus\bm{\delta}_1, \bm{\xi}_2\oplus\bm{\delta}_2)$는 수식 (24)을 통해 업데이트된 값들을 (26)에 대입하기만 하면 된다. 즉, $\bm{t}_1 \leftarrow \bm{t}_1 + \bm{R}_1\,\delta\bm{t}_1$, $\theta_1 \leftarrow \theta_1 + \delta\theta_1$, $\bm{t}_2 \leftarrow \bm{t}_2 + \bm{R}_2\,\delta\bm{t}_2$, $\theta_2 \leftarrow \theta_2 + \delta\theta_2$를 (26)에 대입하면 다음과 같이 된다:</span>
   </p>
 
   $$
@@ -2892,7 +2939,7 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
   \mathrm{Rot}(-\theta_1 - \delta\theta_1)\,(\bm{t}_2 + \bm{R}_2\,\delta\bm{t}_2 - \bm{t}_1 - \bm{R}_1\,\delta\bm{t}_1) \\
   \theta_2 + \delta\theta_2 - \theta_1 - \delta\theta_1
   \end{array}\right].
-  \qquad\text{(4)}
+  \qquad\text{(27)}
   $$
 
   <p>
@@ -2906,7 +2953,7 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
   \left(\bm{R}_1^\intercal - \bm{R}_1^\intercal\hat{\Omega}\,\delta\theta_1\right)(\bm{t}_2 + \bm{R}_2\,\delta\bm{t}_2 - \bm{t}_1 - \bm{R}_1\,\delta\bm{t}_1) \\
   \theta_2 + \delta\theta_2 - \theta_1 - \delta\theta_1
   \end{array}\right].
-  \qquad\text{(5)}
+  \qquad\text{(28)}
   $$
 
   <p>
@@ -2919,8 +2966,8 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
     <span data-lang="ko">Step 3-2. $h(\bm{\xi}_1, \bm{\xi}_2)\oplus\bm{\delta}$ 전개하기</span>
   </h4>
   <p>
-    <span data-lang="en">Take the result of (2) and right-multiply by the transformation matrix associated with $\bm{\delta}$:</span>
-    <span data-lang="ko">$h(\bm{\xi}_1, \bm{\xi}_2)\oplus\bm{\delta}$ 역시 수식 (2)에 $\bm{\delta}$에 해당되는 transformation matrix를 곱해주면 된다:</span>
+    <span data-lang="en">Take the result of (25) and right-multiply by the transformation matrix associated with $\bm{\delta}$:</span>
+    <span data-lang="ko">$h(\bm{\xi}_1, \bm{\xi}_2)\oplus\bm{\delta}$ 역시 수식 (25)에 $\bm{\delta}$에 해당되는 transformation matrix를 곱해주면 된다:</span>
   </p>
 
   $$
@@ -2945,7 +2992,7 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
   \bm{R}_1^\intercal\bm{R}_2\,\delta\bm{t} + \bm{R}_1^\intercal(\bm{t}_2 - \bm{t}_1) \\
   \theta_2 - \theta_1 + \delta\theta
   \end{array}\right].
-  \qquad\text{(6)}
+  \qquad\text{(29)}
   $$
 
   <h3>
@@ -2953,8 +3000,8 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
     <span data-lang="ko">Step 4. 수식 전개해서 <code>H1</code>, <code>H2</code>에 대응되는 값 유도</span>
   </h3>
   <p>
-    <span data-lang="en">Setting (5) equal to (6) gives the final equations. The translation row reduces to</span>
-	    <span data-lang="ko">따라서 수식 (5)와 수식 (6)을 같다고 놓고 풀면 우리가 원하는 <code>H1</code>과 <code>H2</code>를 구할 수 있다. 먼저 translation row는 다음과 같이 정리된다:</span>
+    <span data-lang="en">Setting (28) equal to (29) gives the final equations. The translation row reduces to</span>
+	    <span data-lang="ko">따라서 수식 (28)와 수식 (29)을 같다고 놓고 풀면 우리가 원하는 <code>H1</code>과 <code>H2</code>를 구할 수 있다. 먼저 translation row는 다음과 같이 정리된다:</span>
   </p>
 
   $$
@@ -3000,7 +3047,7 @@ Vector evaluateError(const T&amp; p1, const T&amp; p2,
   \delta\bm{t}_2 \\
   \delta\theta_2
   \end{array}\right].
-  \qquad\text{(7)}
+  \qquad\text{(30)}
   $$
 
   <h3>
@@ -3028,8 +3075,8 @@ Matrix3 Pose2::AdjointMap() const {
 </code></pre>
 
   <p>
-	    <span data-lang="en">Now look again at (7). The block in front of $\bm{\delta}_1$ is the <code>AdjointMap</code> of the relative pose with the indices swapped, namely $h(\bm{\xi}_2, \bm{\xi}_1)$:</span>
-	    <span data-lang="ko">이제 수식 (7)을 다시 보자. $\bm{\delta}_1$ 앞에 있는 블록은 index가 뒤바뀐 상대 pose, 즉 $h(\bm{\xi}_2, \bm{\xi}_1)$의 <code>AdjointMap</code>에 해당한다:</span>
+	    <span data-lang="en">Now look again at (30). The block in front of $\bm{\delta}_1$ is the <code>AdjointMap</code> of the relative pose with the indices swapped, namely $h(\bm{\xi}_2, \bm{\xi}_1)$:</span>
+	    <span data-lang="ko">이제 수식 (30)을 다시 보자. $\bm{\delta}_1$ 앞에 있는 블록은 index가 뒤바뀐 상대 pose, 즉 $h(\bm{\xi}_2, \bm{\xi}_1)$의 <code>AdjointMap</code>에 해당한다:</span>
   </p>
 
   $$
@@ -3130,8 +3177,8 @@ Class between(const Class&amp; g, ChartJacobian H1,
 	    <span data-lang="ko">따라서 이전 <code>BetweenFactor</code>에서 도출한 $\bm{\delta}_1$과 $\bm{\delta}_2$는 각각 <code>p1</code>과 <code>p2</code>의 서로 다른 local frame에 표현되어 있으므로 바로 뺄 수 없다. 하지만 <code>p1</code> 관점의 미소 pose 변화량 $\bm{\delta}_1$에 adjoint map을 곱해 좌표계를 <code>p2</code> 관점으로 통일하면 뺄셈이 가능해진다.</span>
   </p>
   <p>
-    <span data-lang="en">With that in mind, look again at equation (7) from <a href="#ch6-pose2-between">Chapter 6</a>:</span>
-    <span data-lang="ko">이 사실을 기반으로 <a href="#ch6-pose2-between">Chapter 6</a>의 수식 (7)을 다시 살펴보면:</span>
+    <span data-lang="en">With that in mind, look again at equation (30) from <a href="#ch6-pose2-between">Chapter 6</a>:</span>
+    <span data-lang="ko">이 사실을 기반으로 <a href="#ch6-pose2-between">Chapter 6</a>의 수식 (30)을 다시 살펴보면:</span>
   </p>
 
   $$
@@ -3157,11 +3204,11 @@ Class between(const Class&amp; g, ChartJacobian H1,
   \delta\bm{t}_2 \\
   \delta\theta_2
   \end{array}\right].
-  \qquad\text{(7)}
+  \qquad\text{(30)}
   $$
 
   <p>
-    <span data-lang="en">It is now clear why $\bm{H}_2$ collapses to the $3\times 3$ identity. The whole point of (7) is to express the combined perturbation $\bm{\delta}$ in <code>p2</code>'s frame. Since $\bm{\delta}_2$ already lives in <code>p2</code>'s frame, it needs no change of basis; only $\bm{\delta}_1$ must be transported from <code>p1</code>'s frame to <code>p2</code>'s frame, which is exactly what the adjoint matrix does.</span>
+    <span data-lang="en">It is now clear why $\bm{H}_2$ collapses to the $3\times 3$ identity. The whole point of (30) is to express the combined perturbation $\bm{\delta}$ in <code>p2</code>'s frame. Since $\bm{\delta}_2$ already lives in <code>p2</code>'s frame, it needs no change of basis; only $\bm{\delta}_1$ must be transported from <code>p1</code>'s frame to <code>p2</code>'s frame, which is exactly what the adjoint matrix does.</span>
     <span data-lang="ko">왜 $\bm{\delta}_2$에는 <code>H2</code>가 단순히 $3\times 3$ identity matrix가 곱해지는지 이제 이해할 수 있다. 우리가 하고자 했던 것은 각기 다른 좌표계 상의 두 pose의 미소 변화량 $\bm{\delta}$를 <code>p2</code> 좌표계로 통일하는 것이었다. $\bm{\delta}_2$는 이미 <code>p2</code> 좌표계로 기술되어 있으니 변환할 필요가 없고, <code>p1</code>의 $\bm{\delta}_1$만 <code>p2</code> 좌표계로 옮겨주면 된다.</span>
   </p>
 
@@ -3212,7 +3259,7 @@ Class between(const Class&amp; g, ChartJacobian H1,
   \bm{I} + [\bm{w}]_\times & \bm{v} \\
   \bm{0} & 1
   \end{array}\right].
-  \qquad\text{(1)}
+  \qquad\text{(31)}
   $$
 
   <p>
@@ -3226,7 +3273,7 @@ Class between(const Class&amp; g, ChartJacobian H1,
   \Log\!\left(\bm{R}(\bm{I} + [\bm{w}]_\times)\right) \\
   \bm{t} + \bm{R}\,\bm{v}
   \end{array}\right] \in \R^6.
-  \qquad\text{(2)}
+  \qquad\text{(32)}
   $$
 
   <p>
@@ -3265,7 +3312,7 @@ Class between(const Class&amp; g, ChartJacobian H1,
   \bm{R}^{\intercal}_1\bm{R}_2 & \bm{R}^{\intercal}_1(\bm{t}_2 - \bm{t}_1) \\
   \bm{0} & 1
   \end{array}\right].
-  \qquad\text{(3)}
+  \qquad\text{(33)}
   $$
 
   <p>
@@ -3279,7 +3326,7 @@ Class between(const Class&amp; g, ChartJacobian H1,
   \Log\!\left(\bm{R}^{\intercal}_1\bm{R}_2\right) \\
   \bm{R}^{\intercal}_1(\bm{t}_2 - \bm{t}_1)
   \end{array}\right] \in \R^6.
-  \qquad\text{(4)}
+  \qquad\text{(34)}
   $$
 
   <p>
@@ -3490,7 +3537,7 @@ Class between(const Class&amp; g, ChartJacobian H1,
     \Log\!\left(\bm{R}\bigl(\bm{I} + [\bm{w}]_\times\bigr)\right) \\
     \bm{t} + \bm{R}\bm{v}
   \end{bmatrix} \in \R^6
-  \qquad (1)
+  \qquad (35)
   $$
 
   <h3>
@@ -3513,7 +3560,7 @@ Class between(const Class&amp; g, ChartJacobian H1,
 
   $$
   \bm{e} = \bigl\lVert \bm{z} - \bm{R}_1^{\!\top}(\bm{t}_2 - \bm{t}_1)\bigr\rVert^2
-  \qquad (2)
+  \qquad (36)
   $$
 
   <p>
@@ -3523,7 +3570,7 @@ Class between(const Class&amp; g, ChartJacobian H1,
 
   $$
   h(\bm{\xi}_1, \bm{\xi}_2) = \bm{R}_1^{\!\top}(\bm{t}_2 - \bm{t}_1) \in \R^3
-  \qquad (3)
+  \qquad (37)
   $$
 
   <h4>
@@ -3532,10 +3579,10 @@ Class between(const Class&amp; g, ChartJacobian H1,
   </h4>
   <p>
     <span data-lang="en">
-      To extract $\bm{H}_1$ and $\bm{H}_2$ for the measurement function above, we plug equation (1) into (3) and expand:
+      To extract $\bm{H}_1$ and $\bm{H}_2$ for the measurement function above, we plug equation (35) into (37) and expand:
     </span>
     <span data-lang="ko">
-	      위의 measurement function에 대한 $\bm{H}_1$과 $\bm{H}_2$를 구하기 위해 (1)을 활용해서 전개하면 다음과 같다:
+	      위의 measurement function에 대한 $\bm{H}_1$과 $\bm{H}_2$를 구하기 위해 (35)을 활용해서 전개하면 다음과 같다:
     </span>
   </p>
 
@@ -3543,15 +3590,15 @@ Class between(const Class&amp; g, ChartJacobian H1,
   h(\bm{\xi}_1\oplus\bm{\delta}_1,\bm{\xi}_2\oplus\bm{\delta}_2) =
   \bigl(\bm{I} - [\bm{w}]_\times\bigr)\bm{R}_1^{\!\top}
   \bigl(\bm{t}_2 + \bm{R}_2\bm{v}_2 - \bm{t}_1 - \bm{R}_1\bm{v}_1\bigr)
-  \qquad (4)
+  \qquad (38)
   $$
 
   <p>
     <span data-lang="en">
-      Now (a) drop the cross term that multiplies $[\bm{w}_1]_\times$ by $\bm{v}$ (it is second-order in the perturbation), and (b) use the identity $[\bm{w}]_\times\bm{v} = -[\bm{v}]_\times\bm{w}$. Equation (4) then collapses to
+      Now (a) drop the cross term that multiplies $[\bm{w}_1]_\times$ by $\bm{v}$ (it is second-order in the perturbation), and (b) use the identity $[\bm{w}]_\times\bm{v} = -[\bm{v}]_\times\bm{w}$. Equation (38) then collapses to
     </span>
     <span data-lang="ko">
-	      (a) $[\bm{w}_1]_\times$ term과 $\bm{v}$가 서로 곱해지는 term은 perturbation의 2차항이므로 무시하고, (b) $[\bm{w}]_\times\bm{v} = -[\bm{v}]_\times\bm{w}$의 성질을 이용해 전개하면 (4)는 다음과 같이 정리된다:
+	      (a) $[\bm{w}_1]_\times$ term과 $\bm{v}$가 서로 곱해지는 term은 perturbation의 2차항이므로 무시하고, (b) $[\bm{w}]_\times\bm{v} = -[\bm{v}]_\times\bm{w}$의 성질을 이용해 전개하면 (38)는 다음과 같이 정리된다:
     </span>
   </p>
 
@@ -3567,7 +3614,7 @@ Class between(const Class&amp; g, ChartJacobian H1,
    - \bm{v}_1
    + \bigl[\bm{R}_1^{\!\top}(\bm{t}_2 - \bm{t}_1)\bigr]_\times\bm{w}_1
   \end{aligned}
-  \qquad (5)
+  \qquad (39)
   $$
 
   <p>
@@ -3589,7 +3636,7 @@ Class between(const Class&amp; g, ChartJacobian H1,
   \begin{bmatrix}
     \bm{O}_{3\times 3} & \bm{R}_1^{\!\top}\bm{R}_2
   \end{bmatrix} \in \R^{3\times 6}
-  \qquad (6)
+  \qquad (40)
   $$
 
   <h3>
@@ -3633,7 +3680,7 @@ Class between(const Class&amp; g, ChartJacobian H1,
 
   $$
   \bm{e} = \bigl\lVert (\bm{R}_1\bm{z} + \bm{t}_1) - \bm{t}_2 \bigr\rVert^2
-  \qquad (7)
+  \qquad (41)
   $$
 
   <p>
@@ -3646,10 +3693,10 @@ Class between(const Class&amp; g, ChartJacobian H1,
   </p>
   <p>
     <span data-lang="en">
-	      Something is odd. We expected residual (2), so why is (7) valid? The trick is <i>rotation invariance</i>: for a residual measured by a vector norm, multiplying the vector inside the norm by any rotation matrix leaves the magnitude unchanged. Imagine a rigid stick whose endpoint separation is the error; rotating the stick in any direction does not change that separation. Applying rotation by $\bm{R}_1$ to the vector inside the norm of (2) gives precisely (7).
+	      Something is odd. We expected residual (36), so why is (41) valid? The trick is <i>rotation invariance</i>: for a residual measured by a vector norm, multiplying the vector inside the norm by any rotation matrix leaves the magnitude unchanged. Imagine a rigid stick whose endpoint separation is the error; rotating the stick in any direction does not change that separation. Applying rotation by $\bm{R}_1$ to the vector inside the norm of (36) gives precisely (41).
     </span>
     <span data-lang="ko">
-	      그런데 의아한 점이 있다. 우리가 예상한 error term은 (2)인데, 왜 (7)처럼 계산해도 될까? 여기서 활용되는 technique이 'rotation invariance'이다. Rotation invariance는 vector norm으로 측정되는 residual의 경우, norm 안의 vector에 어떤 rotation matrix를 곱해도 크기가 변하지 않는다는 뜻이다. 비유하자면, 막대기의 두 끝점 사이 거리가 error라면 막대기를 어느 방향으로 회전시키더라도 두 끝점 사이 거리는 동일하다. 이를 기반으로 (2)의 norm 안에 rotation matrix $\bm{R}_1$을 곱하면 정확히 (7)이 된다.
+	      그런데 의아한 점이 있다. 우리가 예상한 error term은 (36)인데, 왜 (41)처럼 계산해도 될까? 여기서 활용되는 technique이 'rotation invariance'이다. Rotation invariance는 vector norm으로 측정되는 residual의 경우, norm 안의 vector에 어떤 rotation matrix를 곱해도 크기가 변하지 않는다는 뜻이다. 비유하자면, 막대기의 두 끝점 사이 거리가 error라면 막대기를 어느 방향으로 회전시키더라도 두 끝점 사이 거리는 동일하다. 이를 기반으로 (36)의 norm 안에 rotation matrix $\bm{R}_1$을 곱하면 정확히 (41)이 된다.
     </span>
   </p>
 
@@ -3659,10 +3706,10 @@ Class between(const Class&amp; g, ChartJacobian H1,
   </h4>
   <p>
     <span data-lang="en">
-	      Why do this? The benefit appears in the final discussion; for now, let us derive $\bm{H}_1$ and $\bm{H}_2$. Substituting $\bm{\xi}_1\oplus\bm{\delta}_1$ and $\bm{\xi}_2\oplus\bm{\delta}_2$ into the vector inside the norm of (7):
+	      Why do this? The benefit appears in the final discussion; for now, let us derive $\bm{H}_1$ and $\bm{H}_2$. Substituting $\bm{\xi}_1\oplus\bm{\delta}_1$ and $\bm{\xi}_2\oplus\bm{\delta}_2$ into the vector inside the norm of (41):
     </span>
     <span data-lang="ko">
-	      그렇다면 왜 이런 변형을 하는 걸까? 이점은 마지막 discussion에서 드러나므로, 우선 $\bm{H}_1$과 $\bm{H}_2$를 구해 보자. (7)의 norm 안에 있는 식에 $\bm{\xi}_1\oplus\bm{\delta}_1$과 $\bm{\xi}_2\oplus\bm{\delta}_2$를 넣고 전개하면 다음과 같다:
+	      그렇다면 왜 이런 변형을 하는 걸까? 이점은 마지막 discussion에서 드러나므로, 우선 $\bm{H}_1$과 $\bm{H}_2$를 구해 보자. (41)의 norm 안에 있는 식에 $\bm{\xi}_1\oplus\bm{\delta}_1$과 $\bm{\xi}_2\oplus\bm{\delta}_2$를 넣고 전개하면 다음과 같다:
     </span>
   </p>
 
@@ -3679,7 +3726,7 @@ Class between(const Class&amp; g, ChartJacobian H1,
    - \bigl[\bm{R}_1\bm{z}\bigr]_\times \bm{R}_1\bm{w}_1
    + \bm{R}_1\bm{v}_1 - \bm{R}_2\bm{v}_2
   \end{aligned}
-  \qquad (8)
+  \qquad (42)
   $$
 
   <p>
@@ -3687,7 +3734,7 @@ Class between(const Class&amp; g, ChartJacobian H1,
       The last line uses the conjugation identity $\bm{R}[\bm{w}]_\times\bm{R}^{\!\top} = [\bm{R}\bm{w}]_\times$ followed by the same antisymmetry trick as before. Reading off the linear-in-perturbation coefficients gives
     </span>
     <span data-lang="ko">
-      마지막 줄은 $\bm{R}[\bm{w}]_\times\bm{R}^{\!\top} = [\bm{R}\bm{w}]_\times$의 conjugation 성질과 앞서 사용한 antisymmetry trick을 그대로 적용한 결과이다. 따라서 (8)에 따라 $\bm{H}_1$과 $\bm{H}_2$는 아래와 같이 정의된다:
+      마지막 줄은 $\bm{R}[\bm{w}]_\times\bm{R}^{\!\top} = [\bm{R}\bm{w}]_\times$의 conjugation 성질과 앞서 사용한 antisymmetry trick을 그대로 적용한 결과이다. 따라서 (42)에 따라 $\bm{H}_1$과 $\bm{H}_2$는 아래와 같이 정의된다:
     </span>
   </p>
 
@@ -3701,7 +3748,7 @@ Class between(const Class&amp; g, ChartJacobian H1,
   \begin{bmatrix}
     \bm{O}_{3\times 3} & -\bm{R}_2
   \end{bmatrix} \in \R^{3\times 6}
-  \qquad (9)
+  \qquad (43)
   $$
 
   <h3>
@@ -3710,10 +3757,10 @@ Class between(const Class&amp; g, ChartJacobian H1,
   </h3>
   <p>
     <span data-lang="en">
-      Comparing (6) and (9), the two formulations solve the same problem yet yield different Jacobians. The advantage is in the per-iteration cost: (6) requires two matrix products, $\bm{R}_1^{\!\top}(\bm{t}_2 - \bm{t}_1)$ and $\bm{R}_1^{\!\top}\bm{R}_2$ (plus caching $\bm{R}_1^{\!\top}$), whereas (9) requires only $-[\bm{R}_1\bm{z}]_\times\bm{R}_1$ once. Note that in (9) both $\bm{R}_1$ and $\bm{R}_2$ are already member data of the <code>Pose3</code> objects <code>p1</code> and <code>p2</code>, so they cost nothing extra.
+      Comparing (40) and (43), the two formulations solve the same problem yet yield different Jacobians. The advantage is in the per-iteration cost: (40) requires two matrix products, $\bm{R}_1^{\!\top}(\bm{t}_2 - \bm{t}_1)$ and $\bm{R}_1^{\!\top}\bm{R}_2$ (plus caching $\bm{R}_1^{\!\top}$), whereas (43) requires only $-[\bm{R}_1\bm{z}]_\times\bm{R}_1$ once. Note that in (43) both $\bm{R}_1$ and $\bm{R}_2$ are already member data of the <code>Pose3</code> objects <code>p1</code> and <code>p2</code>, so they cost nothing extra.
     </span>
     <span data-lang="ko">
-	      (6)과 (9)를 비교하면 두 formulation이 같은 문제를 풀지만 서로 다른 Jacobian을 만든다는 것을 볼 수 있다. 장점은 iteration마다 드는 계산 비용에 있다. (6)은 $\bm{R}_1^{\!\top}(\bm{t}_2 - \bm{t}_1)$와 $\bm{R}_1^{\!\top}\bm{R}_2$라는 두 matrix product가 필요한 반면(+ $\bm{R}_1^{\!\top}$ 캐싱), (9)는 $-[\bm{R}_1\bm{z}]_\times\bm{R}_1$ 한 번만 계산하면 된다. 참고로 (9)의 $\bm{R}_1$과 $\bm{R}_2$는 이미 코드 내 <code>Pose3</code> 객체 <code>p1</code>, <code>p2</code>의 member data이므로 추가 계산이 들지 않는다.
+	      (40)과 (43)를 비교하면 두 formulation이 같은 문제를 풀지만 서로 다른 Jacobian을 만든다는 것을 볼 수 있다. 장점은 iteration마다 드는 계산 비용에 있다. (40)은 $\bm{R}_1^{\!\top}(\bm{t}_2 - \bm{t}_1)$와 $\bm{R}_1^{\!\top}\bm{R}_2$라는 두 matrix product가 필요한 반면(+ $\bm{R}_1^{\!\top}$ 캐싱), (43)는 $-[\bm{R}_1\bm{z}]_\times\bm{R}_1$ 한 번만 계산하면 된다. 참고로 (43)의 $\bm{R}_1$과 $\bm{R}_2$는 이미 코드 내 <code>Pose3</code> 객체 <code>p1</code>, <code>p2</code>의 member data이므로 추가 계산이 들지 않는다.
     </span>
   </p>
   <p>
