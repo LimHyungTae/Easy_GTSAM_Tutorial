@@ -3251,6 +3251,15 @@ Class between(const Class&amp; g, ChartJacobian H1,
 	    <span data-lang="ko">먼저 convention을 하나 짚고 가자. Translation-rotation 순으로 적었던 2D와 달리, GTSAM에서 3D pose를 vector화할 때는 rotation-translation 순으로 적는다. 따로 수학적 이유가 있다기보다 GTSAM의 convention이다. Vector 꼴로 표현된 rotation/translation 변화량을 각각 $\bm{w}\in\R^3$, $\bm{v}\in\R^3$라 하면, tangent vector는 $\bm{\delta} = [\bm{w};\,\bm{v}]^\intercal \in \R^6$이다. 2D에서 $\mathrm{Rot}(\delta\theta) \simeq \bm{I} + \hat{\Omega}\,\delta\theta$로 표현했던 근사는 3D에서 $\bm{I} + [\bm{w}]_\times$에 대응된다(이해가 어렵다면 <a href="#ch3-skew-symmetric">3장</a>의 skew-symmetric matrix 글을 다시 보자). 이를 풀어 쓰면 다음과 같다:</span>
   </p>
 
+  <div class="warn">
+    <span data-lang="en">
+      <b>Convention check.</b> In GTSAM, a <code>Pose3</code> tangent vector is ordered as <b>rotation first, translation second</b>: $\bm{\delta} = [\bm{w};\,\bm{v}]^\intercal$. Do not read it as $[x,y,z,\mathrm{rotation}]$; swapping the order permutes the Jacobian columns.
+    </span>
+    <span data-lang="ko">
+      <b>Convention 확인.</b> GTSAM의 <code>Pose3</code> tangent vector는 <b>rotation 먼저, translation 나중</b> 순서이다: $\bm{\delta} = [\bm{w};\,\bm{v}]^\intercal$. 이를 $[x,y,z,\mathrm{rotation}]$ 순서로 읽으면 안 된다. 순서를 바꾸면 Jacobian column이 통째로 permute된다.
+    </span>
+  </div>
+
   $$
   \left[\begin{array}{cc}
   \bm{R} & \bm{t} \\
@@ -3437,10 +3446,10 @@ Class between(const Class&amp; g, ChartJacobian H1,
   </h3>
   <p>
     <span data-lang="en">
-      Kimera-PGMO (Pose-Graph Mesh Optimization), introduced by Chang et al. at MIT SPARK Lab (RA-L 2022), couples a pose graph with a deformable mesh so that whenever the optimizer updates a pose, the attached mesh vertices follow consistently. The key building block is the <code>DeformationEdgeFactor</code>, which connects two mesh nodes (each represented as a <code>Pose3</code>) through a relative-position measurement and lets the optimizer "drag" mesh vertices along with the pose update.
+      Kimera-PGMO (Pose-Graph Mesh Optimization), described in <a href="https://doi.org/10.1177/02783649211056674">Rosinol et al. (IJRR 2021)</a> as part of Kimera, couples a pose graph with a deformable mesh so that whenever the optimizer updates a pose, the attached mesh vertices follow consistently. The key building block is the <code>DeformationEdgeFactor</code>, which connects two mesh nodes (each represented as a <code>Pose3</code>) through a relative-position measurement and lets the optimizer "drag" mesh vertices along with the pose update.
     </span>
     <span data-lang="ko">
-      Kimera-PGMO(Pose-Graph Mesh Optimization)는 MIT SPARK Lab의 Chang et al.이 RA-L 2022에서 제안한 시스템으로, pose graph와 deformable mesh를 결합해서 optimizer가 pose를 업데이트할 때마다 거기 붙어 있는 mesh vertex도 같이 변형되게 만든다. 그 핵심 구성요소가 <code>DeformationEdgeFactor</code>인데, 두 mesh node(각각 <code>Pose3</code>로 표현)를 상대 위치 measurement로 연결해서, optimizer가 pose 갱신과 함께 mesh vertex를 끌고 가도록 만든다.
+      Kimera-PGMO(Pose-Graph Mesh Optimization)는 <a href="https://doi.org/10.1177/02783649211056674">Rosinol et al. (IJRR 2021)</a>의 Kimera 논문에서 설명된 구성요소로, pose graph와 deformable mesh를 결합해서 optimizer가 pose를 업데이트할 때마다 거기 붙어 있는 mesh vertex도 같이 변형되게 만든다. 그 핵심 구성요소가 <code>DeformationEdgeFactor</code>인데, 두 mesh node(각각 <code>Pose3</code>로 표현)를 상대 위치 measurement로 연결해서, optimizer가 pose 갱신과 함께 mesh vertex를 끌고 가도록 만든다.
     </span>
   </p>
   <p>
@@ -4052,12 +4061,12 @@ int main() {
             </div>
           </article>
           <article class="reading-item">
-            <div><span class="reading-tag">Korean</span></div>
+            <div><span class="reading-tag">Lecture</span></div>
             <div>
-              <h3><a href="https://engcang.github.io/gtsam_tutorial.html">engcang's GTSAM tutorial</a></h3>
+              <h3><a href="https://limhyungtae.github.io/slam/">SLAM lecture notes for undergraduate juniors and seniors</a></h3>
               <p>
-                <span data-lang="en">A Korean-language, user-facing guide that complements this internals-focused page. Includes a full FAST-LIO-SAM-style example.</span>
-                <span data-lang="ko">이 사이트(내부 동작 위주)와 보완 관계인 한국어 사용자 관점 가이드. FAST-LIO-SAM 스타일의 전체 예제 포함.</span>
+                <span data-lang="en">A Korean lecture-note series for upper-level undergraduates who want the broader SLAM background before diving into GTSAM internals.</span>
+                <span data-lang="ko">학부 3-4학년을 위한 SLAM lecture note. GTSAM 내부 동작으로 들어가기 전에 SLAM의 큰 그림을 잡기 좋다.</span>
               </p>
             </div>
           </article>
@@ -4078,16 +4087,6 @@ int main() {
               <p>
                 <span data-lang="en">The original iSAM2 paper. Explains the Bayes tree, fluid relinearization, and partial updates.</span>
                 <span data-lang="ko">iSAM2 원논문. Bayes tree, fluid relinearization, partial update를 다룬다.</span>
-              </p>
-            </div>
-          </article>
-          <article class="reading-item">
-            <div><span class="reading-tag">SLAM intro</span></div>
-            <div>
-              <h3><a href="https://limhyungtae.github.io/slam/">SLAM backend intro</a></h3>
-              <p>
-                <span data-lang="en">A friendly introduction to SLAM backends before diving into GTSAM internals.</span>
-                <span data-lang="ko">GTSAM 내부 동작으로 들어가기 전에 읽기 좋은 SLAM backend 입문.</span>
               </p>
             </div>
           </article>
